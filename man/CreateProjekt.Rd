@@ -2,31 +2,37 @@
 % Please edit documentation in R/CreateProjekt.R
 \name{CreateProjekt}
 \alias{CreateProjekt}
-\title{Neues Projekt erstellen}
+\title{Projekt erstellen}
 \usage{
-CreateProjekt(project = "000 Dummy",
-  path = "C:/Users/wpete/Dropbox/1_Projekte", knr = 0,
-  datum = date(), time = "08:08", name = "Name",
-  email = "name@email.com", tel = "Tel", adr = "Adresse",
-  h = "5-9 Stunden", thema = Thema, comment = "Test Dummy",
-  euro = "76", anrede = "Sehr geehrte Damen und Herren",
-  Betreff = "statistische Beratung")
+CreateProjekt(Name = "Romana Dampf", Anrede = "Sehr geehrte Frau",
+  Email = "romi@gmail.com", Tel = "Tel 0650 8550 525",
+  Adresse = "Srasse, Ort", Aufwand = "5-9 Stunden",
+  Thema = "Forschung und Entwicklung", Kommentar = "Kein Kommentar",
+  Betreff = "statistische Beratung im Zuge einer wissenschaftlichen Arbeit",
+  Stundensatz = 76, Datum = format(Sys.time(), "\%d.\%m.\%Y"),
+  Zeit = format(Sys.time(), "\%H:\%M"),
+  Folder = "C:/Users/wpete/Dropbox/1_Projekte", KNr = NA,
+  save_KNr = is.na(KNr),
+  kunden_file = "C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv",
+  FunktionsTest = FALSE, useGoogel = FALSE,
+  googel_file = "ProjektVorlageKunde", googel_reiter = "Stammdaten",
+  googel_zell = "A:K")
 }
 \arguments{
-\item{project}{Name des projektes}
+\item{Name, Anrede, Email, Tel, Adresse}{Kunde}
 
-\item{path}{Pfad default Dropbox/1_Projekte}
+\item{Aufwand, Thema, Kommentar, Betreff, Stundensatz}{Projekt Daten}
 
-\item{knr, time, name, tel, email, adr, h, thema, euro, anrede, Betreff}{Kunden-Daten}
+\item{Datum, Zeit, Folder}{Allgemeine Parameter}
 
-\item{datum}{Datum}
+\item{KNr, save_KNr}{Kundennummer normal ist NA}
 
-\item{comment}{Beschreibung}
+\item{kunden_file, FunktionsTest, useGoogel, googel_file, googel_reiter, googel_zell}{Datenbank}
+}
+\value{
+nichts
 }
 \description{
 Erstellt ein neues Projekt mit der Ordnerstrucktur
- und den R-Auswertungs-Files.
-}
-\examples{
-## Not run:
+und den R-Auswertungs-Files.
 }

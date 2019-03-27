@@ -6,7 +6,7 @@
 \usage{
 Vertrag(name = "Vorname Nachname", adr = "bitte ergänzen",
   tel = "bitte ergänzen", email = "bitte ergänzen", knr = "0",
-  euro = "76", h = " 5-9 Stunden")
+  euro = "76", h = " 5-9 Stunden", Betreff = "statistische Beratung")
 }
 \arguments{
 \item{name, adr, tel, email, knr, euro, h}{Kunde}
