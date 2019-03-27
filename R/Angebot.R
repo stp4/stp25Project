@@ -1,6 +1,3 @@
-
-
-
 #' Angebot erstellen
 #' 
 #'  
@@ -209,5 +206,3 @@ Ergebnisbericht_mit_stichwortartigen_Kommentaren	 2
 }
   
   
-Angebot()
-

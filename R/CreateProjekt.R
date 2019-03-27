@@ -1,203 +1,149 @@
-#' Neues Projekt erstellen
-#'
-#'  Erstellt ein neues Projekt mit der Ordnerstrucktur
-#'  und den R-Auswertungs-Files.
-#'
-#' @param project Name des projektes
-#' @param datum Datum
-#' @param comment Beschreibung
-#' @param knr,time,name,tel,email,adr,h,thema,euro,anrede,Betreff Kunden-Daten
-#' @param path Pfad default Dropbox/1_Projekte
-#'
+
+#' Projekt erstellen
+#' 
+#'  
+#' Erstellt ein neues Projekt mit der Ordnerstrucktur
+#' und den R-Auswertungs-Files.
+#'  
+#' @param Name,Anrede,Email,Tel,Adresse Kunde
+#' @param Aufwand,Thema,Kommentar,Betreff,Stundensatz Projekt Daten
+#' @param Datum,Zeit,Folder Allgemeine Parameter
+#' @param KNr,save_KNr Kundennummer normal ist NA 
+#' @param kunden_file,FunktionsTest,useGoogel,googel_file,googel_reiter,googel_zell Datenbank
+#' @return nichts
 #' @export
-#' @examples
-#' ## Not run:
- 
-
-
-CreateProjekt <-function(project = "000 Dummy",
-                         path = "C:/Users/wpete/Dropbox/1_Projekte",
-                         knr= 0,
-                         datum =   date(),
-                         time= "08:08",	
-                         name= "Name",
-                         email= "name@email.com",
-                         tel= "Tel",
-                         adr= "Adresse",
-                         h= "5-9 Stunden",
-                         thema= Thema,
-                         comment = "Test Dummy" ,
-                         euro= "76",
-                         anrede="Sehr geehrte Damen und Herren",
-                         Betreff="statistische Beratung"
-                         ){
-  WD <- getwd()
-  on.exit(setwd(WD))
-  day_time<- Sys.time()
-  year<- format(day_time, "%Y")
-  day1<- format(day_time, "%d.%m")
-  t1 <- format(day_time, "%H:%M")
-  t2<-  format(day_time+17*60, "%H:%M")
+#'
+CreateProjekt<- function(Name = "Romana Dampf", 
+                         Anrede = "Sehr geehrte Frau",
+                         Email = "romi@gmail.com",
+                         Tel = "Tel 0650 8550 525",
+                         Adresse = "Srasse, Ort",
+                         Aufwand = "5-9 Stunden",
+                         Thema = "Forschung und Entwicklung",
+                         Kommentar = "Kein Kommentar",
+                         Betreff = "statistische Beratung im Zuge einer wissenschaftlichen Arbeit",
+                         Stundensatz = 76,
+                         Datum = format(Sys.time(), "%d.%m.%Y"),
+                         Zeit = format(Sys.time(), "%H:%M"),
+                         Folder = "C:/Users/wpete/Dropbox/1_Projekte",
+                         KNr = NA, 
+                         save_KNr =  is.na(KNr),
+                         kunden_file = "C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv",
+                         FunktionsTest = FALSE,
+                         useGoogel= FALSE,
+                         googel_file="ProjektVorlageKunde",
+                         googel_reiter="Stammdaten",
+                         googel_zell="A:K"
+                         
+                         
+){
   
-  Rdata<- paste0(gsub("[^[:alpha:]]", "", stpvers:::cleansing_umlaute(project)), ".Rdata")
-
-  if(file.exists(paste0(path, "/", project))){
-    cat(paste0("\"", paste0(path, "/", project), "\" already exists:\nDo you want to overwrite?\n\n"))
-    ans <- menu(c("Yes", "No"))
-    if (ans == "2") {stop("new_project aborted")
-    }else {file.remove(paste0(path, "/", project))}
+  
+  print(paste("KNR:", KNr, "  save:", save_KNr))
+  
+  
+  if(useGoogel) {
+    user_session_info <- gs_user()
+    
+    Projekt <-
+      googlesheets::gs_gs(googlesheets::gs_title(googel_file))
+    Kunde <-
+      googlesheets::gs_read(Projekt,
+                            ws = googel_reiter,
+                            range = cell_cols(googel_zell))
+    n_row <- n + 2
+    if(is.na(KNr)) KNr <- as.numeric(as.character(last_KNr)) + 1
+    Kunden_Daten<-c(KNr,
+                    Datum,Zeit,	Name,
+                    Email,Tel,Adresse,Aufwand,
+                    Thema,Kommentar,Stundensatz)
+    neuer_Kunde <-stpvers:::cleansing_umlaute( paste(KNr, Name))
+    
+    myCopy <-
+      googlesheets::gs_copy(Projekt,
+                            to = neuer_Kunde)
+    
+    # cat("\n Erstelle neues Googel-Dokument:",
+    #     myCopy$sheet_title,
+    #     "\n\n")
+    if(save_KNr){
+    try(googlesheets::gs_edit_cells(
+      Projekt,
+      ws = googel_reiter,
+      input = Kunden_Daten,
+      anchor = paste0("A", n_row),
+      trim = TRUE,
+      byrow = TRUE
+    ))
+    #  cat("\nKopiere neuen Kunden in die Projektliste\n")
+    
+    try(googlesheets::gs_edit_cells(
+      myCopy,
+      ws = googel_reiter,
+      input = Kunden_Daten,
+      anchor = paste0("A", 2),
+      trim = TRUE,
+      byrow = TRUE
+    ))
+      }
+    
+  } else{
+    
+    Kunde <- read.csv(kunden_file)
+    if(is.na(KNr)) KNr <- Kunde[nrow(Kunde), 1] + 1
+    Kunden_Daten <-  lapply( 
+      list(KNr, Datum, Zeit, 
+           Name, Email, Tel,
+           Adresse, Aufwand, 
+           Thema, Kommentar, Stundensatz),
+      function(x) gsub("[,;]", " ", x))
+    
+    
+    
+    neuer_Kunde <- stpvers:::cleansing_umlaute( paste(KNr, Name))
+    
+    #print(save_KNr)
+    
+    if(save_KNr){
+      
+    cat("\n\nSpeichere neue Kunde\n\n")  
+      
+    write.table(
+      Kunden_Daten,
+      file = kunden_file,
+      sep = ",",
+      append = TRUE,
+      quote = FALSE,
+      col.names = FALSE,
+      row.names = FALSE
+    ) }
+    
   }
-  x <- suppressWarnings(invisible(
-           folder(folder.name = paste0(path,"/", project))))
-  setwd(x)
-  "Processed data" <- "Raw scripts" <- "Raw data"  <-  Results <- R <-Docs <- Fig <- NULL
-  invisible(folder("Processed data", "Raw data", Results, R, Docs, Fig))
-  myswd<- paste0("setwd(\"", x,"\")")
- #---------------------------------------------------------------------------------
-
   
+  if(!FunktionsTest) {
+    setwd(Folder)
+    install_projekt(
+      project = neuer_Kunde,
+      path = Folder,
+      knr = KNr,
+      datum =   Datum,
+      time = Zeit,
+      name = Name,
+      email = Email,
+      tel = Tel,
+      adr = Adresse,
+      h = Aufwand,
+      thema = Thema,
+      comment = Kommentar,
+      betreff=Betreff,
+      euro = Stundensatz,
+      anrede = Anrede
+    )
+    
+    rmarkdown::render(paste0(neuer_Kunde, "/Vertrag.Rmd"), encoding = "UTF-8")
+    
+  }
+  cat("\nFolder:", Folder, "\n\n")
   
-  cat("#-- Eigene Funktionen",
-      file = "R/miscFun.r")
-  
-  cat(paste(project, datum, path, comment, sep = "\n"),
-      file = "README.txt")
-  
-  vrtg <-Vertrag(name, adr, tel, email, knr, euro, h, Betreff)
-    rty <- file("Vertrag.Rmd", encoding="UTF-8")
-    write(vrtg, file=rty)
-    close(rty)
-  
- rcng <-  Rechnung(KNr,Name,Email,Tel,Adresse,Anrede,Betreff)
-   rty <- file("Rechnung.Rmd", encoding="UTF-8")
-   write(rcng, file=rty)
-   close(rty)
- 
- 
- cat( Stundenliste(euro, myswd), file = "Stundenliste.R")
- 
- cat(paste0(
-"rmarkdown::render('Rechnung.Rmd', 
-                   encoding='UTF-8', 
-                   output_file= '../../2_Finanzen/Honorarnoten ", year, "/",
-project,".pdf')
-"), file = "Invoice.R")
- 
- 
-  
-  cat("",
-       file = paste0(project, "(1).docx"))
-
-
-  cat(
-    paste0(
-'
-require(stpvers)
-require(tidyverse)
-
-# set_my_options(prozent=list(digits=c(1,0), style=2))
-  graphics.off()
-# require(stp25plot)
-# reset_lattice()
- 
-'
-,myswd,
-'
-Projekt("", "',project,'", "'      ,datum,'")
-
-#- Arbeitszeit 
- source("Stundenliste.R")
- arbeitszeit[-nrow(arbeitszeit),]
-
-Methode()
-  Materials("Data laden und transformieren")
-  Research_Design("Beschreibung des Studiendesigns (Experiment, Kohortenstudie, ...)")
-  Measures("Fragebogen und Skalen (Reliabilitaetsanalyse)")
-    # load("Processed data/', Rdata,'")
-    # N <- nrow(DF)
-Results()
-  Demographic_Variables()
-  Statistic("H1 Korrelation", file="(4) Analyse.R")
-  Statistic("H2 Regressionsanalyse", file="(5) Analyse.R")
-  Statistic("H3 Korrelation", file="(6) Analyse.R")
-  Statistic("H4 Regressionsanalyse", file="(7) Analyse.R")
-  Statistic("Weitere Befunde", file="(8) Analyse.R")
-
-  #Anhang()
-End()
-
-'), file = "(0) Run All.R")
-
- cat(
-      paste0(
-'
-#require(stpvers)
-#require(tidyverse)
-
-# source("R/miscFun.r", echo=F)
-# -- Load Data ---------------------------------------------
-# data <- unzip("Raw data/auswertung.zip", exdir= Folder[1] )
-# car::some(DF <- GetData("Raw data/File.R"))
-# save(DF, file="Raw data/', Rdata,'")
-# -- Tidy Data ---------------------------------------------
-# DF %>% Drop_NA(key) %>%
-#        mutate(jahr = factor(jahr)) %>%
-#        Label(sex=Geschlecht)
-
-#  save(DF, file="Processed data/', Rdata,'")
-
-'), file = "(1) Get Data.R")
-
-
- cat(paste0(
-   '
-# load("Raw data/', Rdata,'")
-# -- Tidy Data ---------------------------------------------
-# DF %>% Drop_NA(key) %>%
-   #        mutate(jahr = factor(jahr)) %>%
-   #        Label(sex=Geschlecht)
-
-# fit1<- Principal(DF[c( )], 4, cut=.35, sort=FALSE)
-# fit1$Loadings %>% Output()
-#
-# DF$x1 <- Reliability2(DF[ ])$index
-# DF$c2 <- Reliability2(DF ])$index
-#   save(DF, file="Processed data/', Rdata,'")
-   '), file = "(2) Measures.R")
-
- cat(paste0(
-   '
-# load("Processed data/', Rdata,'")
-# APA2(~ sex + age, DF, caption="Beschreibung der Untersuchungsgruppe")
-#
-# DF %>% Tabelle2(sex, caption="Skalen")
-'), file = "(3) Demographic.R")
-
-
-cat(paste0(
-'
-# load("Processed data/', Rdata,'")
-'), file = "(4) Analyse.R")
-
-cat(paste0(
-  '
-# load("Processed data/', Rdata,'")
-  '), file = "(5) Analyse.R")
-cat(paste0(
-  '
-# load("Processed data/', Rdata,'")
-  '), file = "(6) Analyse.R")
-cat(paste0(
-  '
-# load("Processed data/', Rdata,'")
-  '), file = "(7) Analyse.R")
-cat(paste0(
-  '
-# load("Processed data/', Rdata,'")
-  '), file = "(8) Analyse.R")
-
-
-  cat("\nOk\n\n")
+  neuer_Kunde
 }
-
-

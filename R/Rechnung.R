@@ -27,7 +27,7 @@ adr_kunde<-paste("  -", Name, "\n",
   
 paste(   
 '---
-author: DI Wolfgang Peter
+author: Dipl.-Ing. Wolfgang Peter
 return-address: 
   - Innsbrucker Straße 14
   - 6176 Völs
