@@ -3,8 +3,8 @@ Title: Projekt Verwaltung
 Description:Erstellen von Projekten.
 Authors@R: person("Wolfgang", "Peter", email = "w.peter@statistik-peter.at",  role = c("aut", "cre"))
 Type: Package
-Version: 0.2.2
-Date: 2018-11-22
+Version: 0.3.0
+Date: 2019-03-27
 License: GPL-3
 Encoding: UTF-8
 Imports: 
