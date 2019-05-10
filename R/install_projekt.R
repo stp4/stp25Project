@@ -63,13 +63,13 @@ install_projekt <-function(project = "000 Dummy",
     write(vrtg, file=rty)
     close(rty)
   
- rcng <-  Rechnung(knr, name, email,tel, adr, anrede, betreff)
+ rcng <-  Rechnung(knr, name, email, tel, adr, anrede, betreff)
    rty <- file("Rechnung.Rmd", encoding="UTF-8")
    write(rcng, file=rty)
    close(rty)
  
  
- cat( Stundenliste(euro, myswd), file = "Stundenliste.R")
+ cat( Stundenliste(euro, myswd, knr, name, email, tel, adr, anrede, betreffv), file = "Stundenliste.R")
  
  cat(paste0(
 "rmarkdown::render('Rechnung.Rmd', 

@@ -4,7 +4,8 @@
 #'
 #' @return text
  
-Stundenliste<- function(euro=76, myswd=""){
+Stundenliste<- function(euro=76, myswd="",
+                        knr, name, email,tel, adr, anrede, betreff){
   
   
   jetzt <- Sys.time()
@@ -16,7 +17,7 @@ Stundenliste<- function(euro=76, myswd=""){
   ) 
  
   
-  msg<- paste(
+msg<- paste(
     "#' ---
 #' title: Stundenliste
 #' author: Wolfgang Peter
@@ -58,6 +59,21 @@ leistungszeitraum <-
 # arbeitszeit
 # paste( leistungszeitraum, ', Betrag', euro, 'Euro')
 # achtung das geht nicht von hier rmarkdown::render('Rechnung.Rmd', encoding='UTF-8')
+
+
+
+
+cat(stp25Project::rechnung_email(
+  ", name, ",
+  ", email, ",
+  ", anrede, ",
+  ", euro, ",
+  ", knr, ",
+  arbeitszeit
+  )
+  , file = 'Invoice.txt'
+)
+
 
 "
 
