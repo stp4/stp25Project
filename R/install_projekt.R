@@ -24,7 +24,8 @@ install_projekt <-function(project = "000 Dummy",
                          comment = "Test Dummy" ,
                          euro= "76",
                          anrede="Sehr geehrte Damen und Herren",
-                         betreff="statistische Beratung"
+                         betreff="statistische Beratung", 
+                         templat= c("small", "large", "chemistry", "technical-report")
                          ){
   WD <- getwd()
   on.exit(setwd(WD))
@@ -79,6 +80,15 @@ project,".pdf')
 "), file = "Invoice.R")
  
  cat("",file = paste0(project, "(1).docx"))
+ 
+ if(templat[1]=="small"){
+   
+   cat( small_project(project, datum, myswd, Rdata), file = "(0) Run All.R")
+   
+ }
+ 
+ else{
+ 
 
  cat(RunAll(project, datum, myswd, Rdata), file = "(0) Run All.R")
 
@@ -130,7 +140,7 @@ cat(paste0(
   '
 # load("Processed data/', Rdata,'")
   '), file = "(8) Analyse.R")
-
+}
 
   cat("\nOk ... all files created.\n\n")
 }

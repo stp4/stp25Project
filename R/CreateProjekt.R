@@ -33,7 +33,8 @@ CreateProjekt<- function(Name = "Romana Dampf",
                          useGoogel= FALSE,
                          googel_file="ProjektVorlageKunde",
                          googel_reiter="Stammdaten",
-                         googel_zell="A:K"
+                         googel_zell="A:K",
+                         Templat="small"
                          
                          
 ){
@@ -137,7 +138,8 @@ CreateProjekt<- function(Name = "Romana Dampf",
       comment = Kommentar,
       betreff=Betreff,
       euro = Stundensatz,
-      anrede = Anrede
+      anrede = Anrede,
+      templat=Templat
     )
     
     rmarkdown::render(paste0(neuer_Kunde, "/Vertrag.Rmd"), encoding = "UTF-8")

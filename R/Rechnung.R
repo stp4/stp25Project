@@ -113,7 +113,10 @@ rechnung_email<- function(Name="Hans Dampf",
   
   Euro<-  paste0(sprintf("%1.1f", Euro), "0")
   
-  paste0(Anrede, ' ', Name,',
+  paste0(Email,
+  '
+  
+  ', Anrede, ' ', Name,',
 für die statistisch Beratung erlaube ich mir das vereinbarte Honorar in Rechnung zu stellen. Falls noch Fragen auftauche können Sie mich natürlich jederzeit kontaktieren.
 
 zu zahlender Betrag ',	Euro,' Euro 
