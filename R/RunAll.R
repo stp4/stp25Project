@@ -42,7 +42,7 @@ Projekt("", "',project,'", "' ,datum,'")
 
 small_project <-  function(project="dummy", 
                            datum="Fri May 10 08:46:24 2019", 
-                           myswd="C:/Users/wpete/Dropbox/1_Projekte/001 Dummy", 
+                           myswd=NA, 
                            Rdata="DF.Rdata") {
   
   
@@ -62,7 +62,7 @@ small_project <-  function(project="dummy",
   require(stpvers)
   require(tidyverse)
 
-  setwd('",myswd,"')
+  ",myswd," 
   # source( 'R/miscFun.r' , echo=F)
   Projekt('', '", project,"', '" ,datum,"')
   # set_my_options(prozent=list(digits=c(1,0), style=2))     
@@ -76,7 +76,7 @@ small_project <-  function(project="dummy",
 
 
 
-#+ Arbeitszeit, include=TRUE
+#+ tab-arbeitszeit, include=TRUE, echo=FALSE, results='asis'
   source('Stundenliste.R')
   Output( arbeitszeit[-nrow(arbeitszeit),] )
 
