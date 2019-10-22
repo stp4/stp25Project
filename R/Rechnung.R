@@ -74,8 +74,10 @@ Steuer-Nr. 81 248/5589, Leistungszeitraum: `r leistungszeitraum `
 
 
 
-```{r echo=FALSE, results="asis"}
-stp25output::Output(arbeitszeit, output="text") 
+
+```{r stunden-liste, results="markup", echo=FALSE}
+
+knitr::kable(arbeitszeit, format="markdown")
 
 ```
 
