@@ -89,10 +89,10 @@ opts_chunk$set(
 echo = FALSE,
 warning = FALSE)
 
-source("stundenliste.R")
+#source("stundenliste.R")
 
 x <- "', x, '"
-stundensatz<- ', stundensatz, '
+stundensatz <- ', stundensatz, '
 
 angebot <-   stp25aggregate::GetData(x, output = FALSE)
 angebot[, 1] <- gsub("_", " ", as.character(angebot[, 1]))
@@ -105,8 +105,8 @@ euro <-   sprintf("%1.2f Euro", mysum*stundensatz)
 
 '
 
-```{r echo=FALSE, results="asis"}
-stp25output::Output(angebot, output="text") 
+```{r echo=FALSE}
+ knitr::kable(angebot)
 
 ```
 
