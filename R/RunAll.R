@@ -8,7 +8,8 @@ require(tidyverse)
 # set_my_options(prozent=list(digits=c(1,0), style=2))
 graphics.off()
 # require(stp25plot)
-# reset_lattice()
+#  reset_lattice()
+#  set_lattice_bw(col = grey.colors(4, start = 0.4, end = 0.9))
 '
 ,myswd,
 '
