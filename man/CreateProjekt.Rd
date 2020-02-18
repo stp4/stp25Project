@@ -16,7 +16,7 @@ CreateProjekt(Name = "Romana Dampf", Anrede = "Sehr geehrte Frau",
   kunden_file = "C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv",
   FunktionsTest = FALSE, useGoogel = FALSE,
   googel_file = "ProjektVorlageKunde", googel_reiter = "Stammdaten",
-  googel_zell = "A:K")
+  googel_zell = "A:K", Templat = "small")
 }
 \arguments{
 \item{Name, Anrede, Email, Tel, Adresse}{Kunde}

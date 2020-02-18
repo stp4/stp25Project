@@ -4,7 +4,8 @@
 \alias{Stundenliste}
 \title{Stundenliste}
 \usage{
-Stundenliste(euro = 76, myswd = "")
+Stundenliste(euro = 76, myswd = "", knr, name, email, tel, adr, anrede,
+  betreff)
 }
 \arguments{
 \item{euro}{Zahl}

@@ -10,7 +10,8 @@ install_projekt(project = "000 Dummy",
   email = "name@email.com", tel = "Tel", adr = "Adresse",
   h = "5-9 Stunden", thema = Thema, comment = "Test Dummy",
   euro = "76", anrede = "Sehr geehrte Damen und Herren",
-  betreff = "statistische Beratung")
+  betreff = "statistische Beratung", templat = c("small", "large",
+  "chemistry", "technical-report"))
 }
 \arguments{
 \item{project}{Name des projektes}
