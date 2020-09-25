@@ -35,7 +35,7 @@ install_projekt <-function(project = "000 Dummy",
   t1 <- format(day_time, "%H:%M")
   t2<-  format(day_time+17*60, "%H:%M")
   
-  Rdata<- paste0(gsub("[^[:alpha:]]", "", stpvers:::cleansing_umlaute(project)), ".Rdata")
+  Rdata<- paste0(gsub("[^[:alpha:]]", "", stp25output::cleansing_umlaute(project)), ".Rdata")
 
   if(file.exists(paste0(path, "/", project))){
     cat(paste0("\"", paste0(path, "/", project), "\" already exists:\nDo you want to overwrite?\n\n"))

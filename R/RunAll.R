@@ -66,14 +66,36 @@ small_project <-  function(project="dummy",
   ",myswd," 
   # source( 'R/miscFun.r' , echo=F)
   Projekt('', '", project,"', '" ,datum,"')
-  # set_my_options(prozent=list(digits=c(1,0), style=2))     
-  set_my_options(prozent = list(null_percent_sign = '.'))
+
+
+  #-- Speicherort aendern
+  # set_my_options(fig_folder='Fig2/')
+  #
+  #
+  #-- Format aendern
+  #set_my_options(prozent=list(digits=c(1,0), style=2))
+  #
+  #set_my_options(mittelwert=list(digits=c(1,0), plusmin_sign=TRUE))
+  set_my_options(prozent = list(null_percent_sign =  ' . ' ))
+  #
+  #-- Impliziet (also nicht als default vorhanden) #set_my_options(mittelwert=list(include_name=FALSE)))
+  # set_my_options(style_mean = list(line_break = '<br>'))
+  #
+  # set_my_options(mittelwert = list(median.style = 'IQR'))
+  # set_my_options(caption= 'include.n') 
+  #
+  #-- Sprache ändern
+  # set_my_options(bez=list(statistics='Sig-Test'))
+  # options()$stp25$bez$sig.test
+  # set_my_options(bez=NULL)
+  
+  
 
 #+ setup-plot, include=FALSE
   # require(stp25plot)
   graphics.off()
   reset_lattice() 
-  set_lattice_bw(  col = grey.colors(4, start = 0.4, end = 0.9)) 
+  set_lattice_bw(col = grey.colors(4, start = 0.4, end = 0.9)) 
 
 
 

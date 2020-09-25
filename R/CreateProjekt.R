@@ -42,55 +42,59 @@ CreateProjekt<- function(Name = "Romana Dampf",
   
   print(paste("KNR:", KNr, "  save:", save_KNr))
   
-  
-  if(useGoogel) {
-    user_session_info <- gs_user()
-    
-    Projekt <-
-      googlesheets::gs_gs(googlesheets::gs_title(googel_file))
-    Kunde <-
-      googlesheets::gs_read(Projekt,
-                            ws = googel_reiter,
-                            range = cell_cols(googel_zell))
-    n_row <- n + 2
-    if(is.na(KNr)) KNr <- as.numeric(as.character(last_KNr)) + 1
-    Kunden_Daten<-c(KNr,
-                    Datum,Zeit,	Name,
-                    Email,Tel,Adresse,Aufwand,
-                    Thema,Kommentar,Stundensatz)
-    neuer_Kunde <-stpvers:::cleansing_umlaute( paste(KNr, Name))
-    
-    myCopy <-
-      googlesheets::gs_copy(Projekt,
-                            to = neuer_Kunde)
-    
-    # cat("\n Erstelle neues Googel-Dokument:",
-    #     myCopy$sheet_title,
-    #     "\n\n")
-    if(save_KNr){
-    try(googlesheets::gs_edit_cells(
-      Projekt,
-      ws = googel_reiter,
-      input = Kunden_Daten,
-      anchor = paste0("A", n_row),
-      trim = TRUE,
-      byrow = TRUE
-    ))
-    #  cat("\nKopiere neuen Kunden in die Projektliste\n")
-    
-    try(googlesheets::gs_edit_cells(
-      myCopy,
-      ws = googel_reiter,
-      input = Kunden_Daten,
-      anchor = paste0("A", 2),
-      trim = TRUE,
-      byrow = TRUE
-    ))
-      }
-    
-  } else{
-    
+  # 
+  # if(useGoogel) {
+  #   user_session_info <- gs_user()
+  #   
+  #   Projekt <-
+  #     googlesheets::gs_gs(googlesheets::gs_title(googel_file))
+  #   Kunde <-
+  #     googlesheets::gs_read(Projekt,
+  #                           ws = googel_reiter,
+  #                           range = cell_cols(googel_zell))
+  #   n_row <- n + 2
+  #   if(is.na(KNr)) KNr <- as.numeric(as.character(last_KNr)) + 1
+  #   Kunden_Daten<-c(KNr,
+  #                   Datum,Zeit,	Name,
+  #                   Email,Tel,Adresse,Aufwand,
+  #                   Thema,Kommentar,Stundensatz)
+  #   neuer_Kunde <-cleansing_umlaute( paste(KNr, Name))
+  #   
+  #   myCopy <-
+  #     googlesheets::gs_copy(Projekt,
+  #                           to = neuer_Kunde)
+  #   
+  #   # cat("\n Erstelle neues Googel-Dokument:",
+  #   #     myCopy$sheet_title,
+  #   #     "\n\n")
+  #   if(save_KNr){
+  #   try(googlesheets::gs_edit_cells(
+  #     Projekt,
+  #     ws = googel_reiter,
+  #     input = Kunden_Daten,
+  #     anchor = paste0("A", n_row),
+  #     trim = TRUE,
+  #     byrow = TRUE
+  #   ))
+  #   #  cat("\nKopiere neuen Kunden in die Projektliste\n")
+  #   
+  #   try(googlesheets::gs_edit_cells(
+  #     myCopy,
+  #     ws = googel_reiter,
+  #     input = Kunden_Daten,
+  #     anchor = paste0("A", 2),
+  #     trim = TRUE,
+  #     byrow = TRUE
+  #   ))
+  #     }
+  #   
+  # } 
+ # else{ # }
+    cat(kunden_file,"\n")
     Kunde <- read.csv(kunden_file)
+    print(tail(Kunde[1:4]))
+    
+ 
     if(is.na(KNr)) KNr <- Kunde[nrow(Kunde), 1] + 1
     Kunden_Daten <-  lapply( 
       list(KNr, Datum, Zeit, 
@@ -99,11 +103,7 @@ CreateProjekt<- function(Name = "Romana Dampf",
            Thema, Kommentar, Stundensatz),
       function(x) gsub("[,;]", " ", x))
     
-    
-    
-    neuer_Kunde <- stpvers:::cleansing_umlaute( paste(KNr, Name))
-    
-    #print(save_KNr)
+    neuer_Kunde <- stp25output::cleansing_umlaute(paste(KNr, Name))
     
     if(save_KNr){
       
@@ -119,7 +119,7 @@ CreateProjekt<- function(Name = "Romana Dampf",
       row.names = FALSE
     ) }
     
-  }
+
   
   if(!FunktionsTest) {
     setwd(Folder)
