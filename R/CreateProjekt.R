@@ -103,7 +103,7 @@ CreateProjekt<- function(Name = "Romana Dampf",
            Thema, Kommentar, Stundensatz),
       function(x) gsub("[,;]", " ", x))
     
-    neuer_Kunde <- stp25output::cleansing_umlaute(paste(KNr, Name))
+    neuer_Kunde <- stp25tools::cleansing_umlaute(paste(KNr, Name))
     
     if(save_KNr){
       
