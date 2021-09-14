@@ -3,6 +3,7 @@
 export(AZ)
 export(AfA)
 export(Angebot)
+export(Arbz)
 export(CreateAngebot)
 export(CreateProjekt)
 export(Steuer)

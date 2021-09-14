@@ -132,8 +132,8 @@ small_project <-  function(project="dummy",
 
 #+ filter, results='asis'
 #
-#  NURMI_2<- Drop_NA(NURMI_2, diet)
-#  NURMI_2<- Drop_NA(NURMI_2,  age)
+#  DF<- Drop_NA(DF, diet)
+#  DF<- Drop_NA(DF,  age)
 #
 #  N <- nrow(DF)
 

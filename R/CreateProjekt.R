@@ -9,7 +9,7 @@
 #' @param Aufwand,Thema,Kommentar,Betreff,Stundensatz Projekt Daten
 #' @param Datum,Zeit,Folder Allgemeine Parameter
 #' @param KNr,save_KNr Kundennummer normal ist NA 
-#' @param kunden_file,FunktionsTest,useGoogel,googel_file,googel_reiter,googel_zell Datenbank
+#' @param kunden_file,FunktionsTest Datenbank
 #' @return nichts
 #' @export
 #'
@@ -30,10 +30,10 @@ CreateProjekt<- function(Name = "Romana Dampf",
                          save_KNr =  is.na(KNr),
                          kunden_file = "C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv",
                          FunktionsTest = FALSE,
-                         useGoogel= FALSE,
-                         googel_file="ProjektVorlageKunde",
-                         googel_reiter="Stammdaten",
-                         googel_zell="A:K",
+                     #    useGoogel= FALSE,
+                     #    googel_file="ProjektVorlageKunde",
+                     #    googel_reiter="Stammdaten",
+                     #    googel_zell="A:K",
                          Templat="small"
                          
                          

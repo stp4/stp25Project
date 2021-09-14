@@ -103,7 +103,8 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                      "TIWAG",
                      "Privatentnahme",
                      "Hechenblaikner",
-                     "0006000079753746"
+                     "0006000079753746",
+                     "Wolfgang Peter"
                    ),
                    kirche = "Bischöfliche",
                    spenden = c("ÖRK", "Kinderpatenschaft"),
