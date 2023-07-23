@@ -8,7 +8,15 @@
 #'
 #'  
 #'
-#' Önace Code	Text	Tätigkeit 73200	Markt- und Meinungsforschung
+#' Önace Code	Text	Tätigkeit 73.	Markt- und Meinungsforschung
+#' 
+#' 
+#' Angaben zur Kommunalsteuer
+#' 
+#' Gemeindekennziffer: 70364 
+#' Bemessungsgrundlage: 0
+#' Gesamtbetrag der Bemessungsgrundlage: 0
+#' Gesamtbetrag Kommunalsteuer: 0
 #' 
 #' Tätigkeit als  Liebhaberei 
 #' Wenn die Vermietung oder Verpachtung über einen längeren Zeitraum keinen Gewinn
@@ -30,11 +38,11 @@
 #' @param konto_path Pfad
 #' @param eigene_buchung_konto,visa,versicherung,privat,kirche,spenden,sva Such-String fuer die jeweilige Buchung
 #'
-#' @return
+#' @return data.frame
 #' @export
 #'
 #' @examples
-#' #' 
+#'  \dontrun{
 #' afa<- 
 #' AfA(
 #'   list(
@@ -78,6 +86,7 @@
 #'   jahr=2019,
 #'   konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2019/" 
 #' )
+#' }
 Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    konto = "umsaetze2019.csv",
                    SVA = NA,
@@ -85,7 +94,7 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    Reisespesen = c(Bus = 0, Taxi = 0),
                    Versicherungspraemien = 0, Steuerberater = 0,
                    # bar_einnahmen = 0,
-                   pauschale = 0.20,
+                   pauschale = 0.06,
                    AfA = data.frame(
                      Pos = c("Anlagen", "Instandsetzung"),
                      Kennzahl = c(9130, 9150),
@@ -93,7 +102,8 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    ),
                
                    konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2019/",
-                   eigene_buchung_konto = c("AT573626000100540567", "AT573626000000540567"),
+                   eigene_buchung_konto = c("AT573626000100540567",
+                                            "AT573626000000540567"),
                    visa = "VISA-RECHNUNG",
                    versicherung = c("UNIQA"),
                    privat = c(
@@ -113,10 +123,14 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
     read.csv2(paste0(konto_path, konto),
               header = FALSE,
               encoding = "UTF-8")
+  knt$id <- seq_len(nrow(knt))
+  
   knt[[2]] <-
     gsub("Auftraggeber: ", "", gsub("Zahlungsempfänger: ", "", knt[[2]]))
-  knt <- knt[, c(6, 2, 4)]
-  names(knt) <- c("datum", "txt", "euro")
+  knt <- knt[, c(6, 2, 4,7)]
+ # print(head(knt))
+  names(knt) <- c("datum", "txt", "euro", "id")
+  # print(head(knt))
   knt$einnahmen <- ifelse(knt$euro > 0, knt$euro, NA)
   knt$ausgaben <- ifelse(knt$euro < 0, knt$euro, NA)
   knt$datum <-
@@ -124,11 +138,25 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   
   knt <- knt[lubridate::year(knt$datum) == jahr, ]
   
-  sva <- grep(sva, knt$txt)
-  knt_sva <- knt[sva, ]
-  knt <- knt[-sva, ]
-  knt_sva$Pos <- "sva"
   
+  # cat("\nSAV\n")
+ # print( sva)
+  sva <-   unique(unlist(lapply(sva , grep,  knt$txt)))
+
+  
+  
+  knt_sva <- knt[sva, ]
+  knt_sva$Pos <- "sva"
+  # Eingänge sind Krankenkosten
+  knt_sva_privat <- knt_sva[is.na(knt_sva$ausgaben),]
+  knt_sva <-  knt_sva[!is.na(knt_sva$ausgaben),]
+  
+ # print(knt_sva)
+  knt <- knt[-sva, ]
+ 
+ 
+  
+ 
   
   eigene_buchung <- c(grep(eigene_buchung_konto[1], knt$txt),
                       grep(eigene_buchung_konto[2], knt$txt))
@@ -136,13 +164,16 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   knt <- knt[-eigene_buchung, ]
   
   
-  prvt <- c()
-  for (i in privat)
-    prvt <- c(prvt, grep(i, knt$txt))
+  # prvt <- c()
+  # for (i in privat)
+  #   prvt <- c(prvt, grep(i, knt$txt))
+  
+  prvt <-  unique(unlist(lapply(privat , grep,  knt$txt)))
   
   knt_privat <- knt[prvt, ]
   knt <- knt[-prvt, ]
   knt_privat$Pos <- "privat"
+
   
   visa <- grep(visa, knt$txt)
   knt_visa <- knt[visa, ]
@@ -166,8 +197,6 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   
   knt$Pos <- ifelse(knt$euro > 0, "Erträge", "Betriebsausgaben")
   
-  
-  
   Einnahmen <- sum(knt$einnahmen, na.rm = TRUE)
   
   if (is.na(SVA))
@@ -189,15 +218,56 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   afa_anlagen	= AfA$Betrag[1]
   afa_instandsetzung	= AfA$Betrag[2]
   
+  
+# Das zusammenfügen muss überarbeitet werden
+# rslt2 ist erster versuch  
+  
+  rslt2<- stp25tools::get_data('
+Pos	              Kennzahl	 Eingaben.Ausgaben	Pauschale
+"Erträge"           	9040	 0   0
+"AfA Anlagen"	        9130	 0	  NA
+"Instandsetzung"	    9150	 0	  NA
+"Reisespesen"	        9160	 0   NA
+"Versicherung (SVA)"	9225	 0	  0
+"Betriebsausgaben"    9230 	0	  NA
+"Betriebs-Pauschale" 	9259	 NA  0
+"Einkünfte"	           320	 0	  0
+"Versicherungsprämien"	NA	 NA  NA
+"Spenden"	              NA	 NA  NA
+"Kirche"	              NA   NA  NA
+"Steuerberater"	        NA	 NA  NA
+"Gewinnfreibetrages"  	NA	 NA  NA
+"Umsatzsteuererklärung" NA	 NA  NA
+"UST Gesamtbetrag"	     0	 0	  0
+"Kleinunternehmer"	    16	 0	  0
+"Kommunalsteuer"        NA	 NA  NA
+"Bemessungsgrundlage"	  NA	 0	  0
+"Kommunalsteuer"	      NA	 0	  0
+"Gemeindekennziffer"   	NA	 70364 70364
+"Steuer"               	NA	 0	  0
+'
+  )
+  
+rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
+
+  print(rslt2)
+  
+#  9259 Pauschalierte Betriebsausgaben
+  # 320   Summe Kennzahl 
   rslt <- data.frame(
     Pos = c(
       "Erträge",
       "AfA Anlagen",      "Instandsetzung",
       "Reisespesen", "Versicherung (SVA)", "Betriebsausgaben",
+           paste0("Betriebsausgabenpauschale ", pauschale*100, "%"),
+      
+      
       "Einkünfte", 
       "Versicherungsprämien", "Spenden","Kirche", "Steuerberater",
+      "Gewinnfreibetrages",
       "Privat (Visa)","Privat (Versicherung)","Privat",
-      "Betriebsausgabenpauschale 20%","Gewinn (ab 2020)",
+ 
+      "Gewinn (ab 2020)",
       "UST Gesamtbetrag", "Kleinunternehmer"
     ),
     Kennzahl = c(
@@ -205,20 +275,25 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
       9130,  9150,
       9160,  9225,  9230,  320,
       455,
-      "",  "",  "",
-      "n.a.", "n.a.", "n.a.",
-      "", "",
+      "",  "",  "","",
+      "", "n.a.", "n.a.",
+      "n.a.", "n.a.",
       "000", "016"
     ),
     Betrag = c(
       Einnahmen,
       afa_anlagen, afa_instandsetzung,
       Reisespesen, SVA, Ausgaben,
+      Pauschale, 
+      
       Einnahmen - afa_anlagen - afa_instandsetzung - Reisespesen - SVA - Ausgaben,
-      Versicherungspraemien, Spenden, Kirche,  Steuerberater,
+      Versicherungspraemien, Spenden, Kirche,  Steuerberater, 0,
       Privat_Visa,  Privat_Versicherung, Privat,
-      Pauschale, Einnahmen - Pauschale - SVA,
-      Einnahmen,Einnahmen
+      
+      Einnahmen - Pauschale - SVA - Reisespesen,
+      
+      Einnahmen,
+      Einnahmen
       
     )
   )
@@ -228,9 +303,22 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
     rbind(knt, knt_kirche, knt_spenden, knt_sva),
     paste0(konto_path, "konto_bereinigt.csv")
   )
-  write.csv(rslt, paste0(konto_path, "Buchungsliste.csv"))
+ 
+  rslt$Eingaben.Ausgaben <- rslt$Betrag
+  rslt$Eingaben.Ausgaben[ 7] <- NA
+  rslt$Pauschale <- rslt$Betrag
+  rslt$Pauschale[c(2,3,6,9)] <- NA
+  rslt$Pauschale[8] <-   rslt$Pauschale[17]
   
-  rslt$Betrag<- stp25rndr::Format2(rslt$Betrag, 2, decimal.mark=",")
+  
+  rslt<- rslt[-17,-3]
+  
+   #cat("\n")
+  rslt$Eingaben.Ausgaben<- stp25rndr::Format2(rslt$Eingaben.Ausgaben, 2, decimal.mark=",")
+    rslt$Pauschale<- stp25rndr::Format2(rslt$Pauschale, 2, decimal.mark=",")
+  write.csv(rslt, paste0(konto_path, "Buchungsliste.csv"))
+  write.csv(rbind( knt_privat, knt_visa, knt_versicherung, knt_sva_privat), paste0(konto_path, "Privat.csv"))
+
   rslt
 }
 
@@ -292,3 +380,9 @@ AfA <-
     
     
   }
+
+
+
+ 
+
+

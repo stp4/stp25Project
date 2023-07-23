@@ -3,14 +3,16 @@
 #' @param KNr,Name,Email,Tel,Adresse,Anrede KundenDaten
 #'
 #' @return string
- 
 Rechnung<- function(KNr=0,
                     Name= "Vorname Name",
                     Email= " ",
                     Tel=" ",
                     Adresse=" ",
                     Anrede= "Sehr geehrte Frau",
-                    Betreff="Beratung"
+                    Betreff="Beratung",
+                    BANK = "BANK",
+                    IBAN = "IBAN",
+                    BIC = "BIC"
                    ){
  
 RNr <-paste0(format(Sys.time(), '%m%d'), KNr)
@@ -85,9 +87,13 @@ knitr::kable(arbeitszeit, format="markdown")
 
 **Zu zahlender Betrag `r paste0(sprintf("%1.1f", euro), "0")` Euro  **
 
+## Bankverbindung: 
 
-IBAN: AT08 3626 0000 0052 4652
-BIC: RZTIAT22260 
+', BANK, '
+
+IBAN: ', IBAN, '
+
+BIC: ', BIC, '
 
 Ich ersuche Sie den Rechnungsbetrag sofort auf mein Geschäftskonto zu überweisen und 
 danke für Ihren Auftrag. 
@@ -110,7 +116,10 @@ rechnung_email<- function(Name="Hans Dampf",
                  Anrede="Hallo",
                  Euro=12,
                  RNr="0815",
-                 Stundenliste=""){
+                 Stundenliste="",
+                 BANK = "BANK",
+                 IBAN = "IBAN",
+                 BIC = "BIC"){
   
   
   Euro<-  paste0(sprintf("%1.1f", Euro), "0")
@@ -122,12 +131,16 @@ rechnung_email<- function(Name="Hans Dampf",
 für die statistisch Beratung erlaube ich mir das vereinbarte Honorar in Rechnung zu stellen. Falls noch Fragen auftauche können Sie mich natürlich jederzeit kontaktieren.
 
 zu zahlender Betrag ',	Euro,' Euro 
-BIC     RZTIAT22260
-IBAN    AT083626000000524652
+
+', BANK, '
+
+IBAN: ', IBAN, '
+
+BIC: ', BIC, '
 
 
-Ich ersuche Sie den Rechnungsbetrag sofort ohne Skontoabzug unter Angabe Ihrer Rechnungsnummer ',
-         RNr, ' zu überweisen und danke
+Ich ersuche Sie den Rechnungsbetrag unter Angabe Ihrer Kundennummer: ',
+RNr, ' zu überweisen und danke
 für Ihren Auftrag.
 
 Mit freundlichen Grüssen
@@ -230,3 +243,6 @@ toString.data.frame = function (object,
     
   }
 }
+
+
+

@@ -154,8 +154,9 @@ Gesamtbetrag:   `r euro `
 #' @export
 #'
 #' @examples
-#' 
+#' \dontrun{
 #' Angebot()
+#' }
 Angebot <- function(x="Position Aufwand  
 Einarbeiten_ins_Thema_und_Kommunikation 2
 Aufbereiten_der_Daten_und_Fehlerprüfung  1.5

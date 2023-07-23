@@ -3,6 +3,7 @@
 export(AZ)
 export(AfA)
 export(Angebot)
+export(Anwesenheitszeiten)
 export(Arbz)
 export(CreateAngebot)
 export(CreateProjekt)

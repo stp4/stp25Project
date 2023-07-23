@@ -1,10 +1,10 @@
 Package: stp25Project
 Title: Projekt Verwaltung
-Description: Erstellen von Projekten.
+Description: Erstellen von einem neuen Projekt.
 Authors@R: person("Wolfgang", "Peter", email = "w.peter@statistik-peter.at",  role = c("aut", "cre"))
 Type: Package
-Version: 0.3.0
-Date: 2019-03-27
+Version: 0.3.2
+Date: 2023-07-23
 License: GPL-3
 Encoding: UTF-8
 Imports: 
@@ -12,11 +12,10 @@ Imports:
   rstudioapi,
   stringr
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Suggests: 
   knitr, 
   rmarkdown, 
   testthat,
   tidyr, 
   dplyr
-VignetteBuilder: knitr

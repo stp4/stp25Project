@@ -5,7 +5,6 @@
 #' @return string
 #' @export
 #'
- 
 Vertrag<- function(name="Vorname Nachname",
                    adr="bitte ergänzen",
                    tel="bitte ergänzen",
@@ -13,7 +12,11 @@ Vertrag<- function(name="Vorname Nachname",
                    knr="0",
                    euro="76",
                    h=" 5-9 Stunden" , 
-                   Betreff="statistische Beratung"
+                   Betreff="statistische Beratung",
+                   zwischenrechnung=400,
+                   BANK = "BANK",
+                   IBAN = "IBAN",
+                   BIC = "BIC"
                    ){
   
   
@@ -95,7 +98,7 @@ und Dritten nicht zugänglich gemacht.
 ## §5				
 Das Honorar für die Auswertung berechnet sich aus der tatsächlich erbrachten 
 Leistungen zum vereinbarten Stundensatz. Zwischenrechnungen werden erstellt, 
-wenn ein Betrag von 350 Euro überschritten wird.				
+wenn ein Betrag von ",zwischenrechnung ," Euro überschritten wird.				
 
 
 ## §6	
@@ -109,9 +112,16 @@ Gerichtsstand für alle, sich aus dem Vertragsverhältnis unmittelbar oder mitte
 ergebenden Streitigkeiten ist Innsbruck.
 
 
-## Bankverbindung:	Raiffeisenbank Kematen			
-+ IBAN: AT08 3626 0000 0052 4652			
-+ BIC: RZTIAT22260			
+## Bankverbindung: 
+
+", BANK, "
+
+IBAN: ", IBAN, "
+
+BIC: ", BIC, "
+
+
+ 
 
 
 
@@ -205,4 +215,6 @@ die Datenschutzbehörde zuständig.
  
 msg
  
-  }
+}
+
+

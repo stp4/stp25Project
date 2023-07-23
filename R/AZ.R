@@ -6,13 +6,15 @@
 #' @param Lines Arbeitsmy_azen als Text
 #' @param sep Tabulator
 #' @param projektabschluss my_az für Projektabschluss
+#' @param zwischenrechnungen  zwischenrechnungen  
+#' @param order sortieren
 #' @param ... nicht Benutzt
 #'
 #' @return data.frame
 #' @export
 #'
 #' @examples
-#'
+#'  \dontrun{
 #'  AZ('
 #' Datum   Start   Ende Projekt  Task
 #' 01-01-2021  14:46 15:20  hs1 "710_HS-3.html Kommentare  plus Grafiken"
@@ -24,77 +26,85 @@
 #' )
 #'
 #'
-#'
-AZ <- function(Lines,
-               projektabschluss = 7,
-               order = TRUE,
-               sep = "\\t") {
-  my_az <- read.table(zz <-
-                        textConnection(gsub(sep, " ", Lines)),
-                      header = TRUE)
+#'}
+AZ <- 
+  function(Lines,
+           projektabschluss = 0,
+           zwischenrechnungen = FALSE,
+           order = TRUE,
+           sep = "\\t") {
+  my_az <- 
+    read.table(
+       zz <- textConnection(
+         gsub(sep, " ", Lines)),
+      header = TRUE)
   close(zz)
   
   if (ncol(my_az) == 4)
-    default_AZ(my_az, projektabschluss, order)
+    default_AZ(my_az, projektabschluss, order, zwischenrechnungen)
   else if (ncol(my_az == 5))
-    extended_AZ(my_az, projektabschluss, order)
-  
+    extended_AZ(my_az, projektabschluss, order, zwischenrechnungen)
 }
 
 
-h_to_time <- function(h, end, rev=FALSE) {
+h_to_time <- 
+  function(h, end, rev = FALSE) {
   x <- !grepl("\\:", h)
   r <-  strptime(h, "%H:%M")
   
   if (length(r) > 0)
-    if(rev)     r[x]  <-  end[x] + as.numeric(h[x]) * 3600
-  else 
+    if (rev)
+      r[x]  <-  end[x] + as.numeric(h[x]) * 3600
+  else
     r[x]  <-  end[x] - as.numeric(h[x]) * 3600
   
   r
 }
 
-to_min_num <- function(x) {
+to_min_num <- 
+  function(x) {
   x <- gsub("[:punct:]", "", x)
   as.numeric(x) * 60
 }
 
-extended_AZ <-  function(my_az,
-                         projektabschluss,
-                         order,
-                         mynames =  c("Datum", "Start", "Ende", "Projekt", "Task"),
-                         jetzt = Sys.time()) {
-  if (length(unique(c(names(my_az), mynames))) == 5)
-    my_az <- my_az[mynames]
-  else
-    names(my_az) <- mynames
+extended_AZ <-
+  function(my_az,
+           projektabschluss,
+           order,
+           zwischenrechnungen = FALSE,
+           mynames =  c("Datum", "Start", "Ende", "Projekt", "Task"),
+           jetzt = Sys.time()) {
+    
+    if (length(unique(c(names(my_az), mynames))) == 5)
+      my_az <- my_az[mynames]
+    else
+      names(my_az) <- mynames
 #  my_az$Datum <-   gsub("[:punct:-]", ".", my_az$Datum)
   
   # add intern
-  my_az <-  rbind(
-    my_az,
-    data.frame(
-      Datum =  format(jetzt, '%d.%m.%Y'),
-      Start = format(jetzt,  '%H:%M'),
-      Ende   = format(jetzt + 60 * projektabschluss,  '%H:%M')   ,
-      Projekt = "Intern",
-      Task  = "Projektabschluss" ,
-      stringsAsFactors = FALSE
-    )
-  )
+    my_az <-  rbind(
+      my_az,
+      data.frame(
+        Datum =  format(jetzt, '%d.%m.%Y'),
+        Start = format(jetzt,  '%H:%M'),
+        Ende   = format(jetzt + 60 * projektabschluss, '%H:%M')   ,
+        Projekt = "Intern",
+        Task  =  if (!zwischenrechnungen) "Projektabschluss" else "Zwischenrechnungen",
+        stringsAsFactors = FALSE
+      ))
   
   #' hier werden die Minuten in Zeit umgewandelt
   my_az$Ende  <- ifelse(is.na(my_az$End), my_az$Start, my_az$End)
   my_az$end   <- strptime(my_az$Ende, "%H:%M")
 
   my_az$strt  <- h_to_time(my_az$Start , my_az$end)
-   my_az$end   <- h_to_time(my_az$Ende,  my_az$strt, rev=TRUE)
+  my_az$end   <- h_to_time(my_az$Ende,  my_az$strt, rev=TRUE)
   
  
   my_az$Datum <- lubridate::parse_date_time(my_az$Datum, c("dmY", "dmy", "dm"))
 
   if (order)
-    my_az <- my_az[order(my_az$Datum), ]
+    my_az <- my_az[order(my_az$Datum, my_az$Start), ]
   
   
   my_az$strt <- as.POSIXct(my_az$strt)
@@ -161,10 +171,10 @@ extended_AZ <-  function(my_az,
 
 
 
-default_AZ <-  function(my_az, projektabschluss, order) {
+default_AZ <-  function(my_az, projektabschluss, order, zwischenrechnungen =FALSE) {
   names(my_az) <- c("Datum",  "Start",   "Ende",   "Task")
  # my_az$Datum <-   gsub("[:punct:-]", ".", my_az$Datum)
-  
+ 
   jetzt <- Sys.time()
   my_az <-  rbind(
     my_az,
@@ -173,7 +183,7 @@ default_AZ <-  function(my_az, projektabschluss, order) {
       
       Start = format(jetzt,  '%H:%M'),
       Ende   = format(jetzt + 60 * projektabschluss,  '%H:%M')   ,
-      Task  = "Projektabschluss" ,
+      Task  =  if (!zwischenrechnungen )"Projektabschluss" else  "Zwischenrechnungen ",
       stringsAsFactors = FALSE
     )
   )

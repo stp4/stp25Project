@@ -1,5 +1,6 @@
 
-Get_Data <-  function(myswd, Rdata) {
+Get_Data <- function(myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
+                      Rdata = "DF.Rdata") {
  
 paste0(
 "#' ---
@@ -11,25 +12,27 @@ paste0(
 #' lang: de-DE
 #' ---
  
- 
 #+ setup, include=FALSE
+# knitr::opts_chunk$set(echo = TRUE)
 
-knitr::opts_chunk$set(echo = TRUE)
-require(stpvers)
 require(tidyverse)
+require(stp25tools)
 
-# source( 'R/miscFun.r' , echo=F)
+#require(stp25output2)
+#require(stp25stat2)
+# require(stp25plot)
+# source('R/miscFun.r', echo=F)
 ",myswd,
 '
 
 # -- Load Data ----------------------------------------------
 #  
-# car::some(DF <- GetData("Raw data/File.R"))
+# DF <- get_data("Raw data/File.R")
 # save(DF, file="Raw data/', Rdata,'")
 
 
 # -- Tidy Data ---------------------------------------------
-# DF %>% Drop_NA(key) %>%
+# DF %>% filter(key) %>%
 #        mutate(jahr = factor(jahr)) %>%
 #        Label(sex=Geschlecht)
 #      
