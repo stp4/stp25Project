@@ -10,8 +10,12 @@ keep_tex: yes
 lang: de-DE
 ---}
 \usage{
-small_project(project = "dummy", datum = "Fri May 10 08:46:24 2019",
-  myswd = NA, Rdata = "DF.Rdata")
+small_project(
+  project = "dummy",
+  datum = "",
+  myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
+  Rdata = "DF.Rdata"
+)
 }
 \description{
 title: ", project,"

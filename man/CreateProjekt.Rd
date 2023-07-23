@@ -4,19 +4,30 @@
 \alias{CreateProjekt}
 \title{Projekt erstellen}
 \usage{
-CreateProjekt(Name = "Romana Dampf", Anrede = "Sehr geehrte Frau",
-  Email = "romi@gmail.com", Tel = "Tel 0650 8550 525",
-  Adresse = "Srasse, Ort", Aufwand = "5-9 Stunden",
-  Thema = "Forschung und Entwicklung", Kommentar = "Kein Kommentar",
+CreateProjekt(
+  Name = "Romana Dampf",
+  Anrede = "Sehr geehrte Frau",
+  Email = "romi@gmail.com",
+  Tel = "Tel 0650 8550 525",
+  Adresse = "Srasse, Ort",
+  Aufwand = "5-9 Stunden",
+  Thema = "Forschung und Entwicklung",
+  Kommentar = "Kein Kommentar",
   Betreff = "statistische Beratung im Zuge einer wissenschaftlichen Arbeit",
-  Stundensatz = 76, Datum = format(Sys.time(), "\%d.\%m.\%Y"),
+  Stundensatz = 76,
+  Datum = format(Sys.time(), "\%d.\%m.\%Y"),
   Zeit = format(Sys.time(), "\%H:\%M"),
-  Folder = "C:/Users/wpete/Dropbox/1_Projekte", KNr = NA,
+  Folder = "C:/Users/wpete/Dropbox/1_Projekte",
+  KNr = NA,
   save_KNr = is.na(KNr),
   kunden_file = "C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv",
-  FunktionsTest = FALSE, useGoogel = FALSE,
-  googel_file = "ProjektVorlageKunde", googel_reiter = "Stammdaten",
-  googel_zell = "A:K", Templat = "small")
+  FunktionsTest = FALSE,
+  Templat = "small",
+  zwischenrechnung = 400,
+  BANK = "BANK",
+  IBAN = "IBAN",
+  BIC = "BIC"
+)
 }
 \arguments{
 \item{Name, Anrede, Email, Tel, Adresse}{Kunde}
@@ -27,7 +38,7 @@ CreateProjekt(Name = "Romana Dampf", Anrede = "Sehr geehrte Frau",
 
 \item{KNr, save_KNr}{Kundennummer normal ist NA}
 
-\item{kunden_file, FunktionsTest, useGoogel, googel_file, googel_reiter, googel_zell}{Datenbank}
+\item{kunden_file, FunktionsTest}{Datenbank}
 }
 \value{
 nichts

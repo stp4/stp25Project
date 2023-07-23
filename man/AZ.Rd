@@ -2,16 +2,26 @@
 % Please edit documentation in R/AZ.R
 \name{AZ}
 \alias{AZ}
-\title{Arbeitszeit}
+\title{Arbeitsmy_az}
 \usage{
-AZ(Lines, sep = "\\\\t", projektabschluss = 7, ...)
+AZ(
+  Lines,
+  projektabschluss = 0,
+  zwischenrechnungen = FALSE,
+  order = TRUE,
+  sep = "\\\\t"
+)
 }
 \arguments{
-\item{Lines}{Arbeitszeiten als Text}
+\item{Lines}{Arbeitsmy_azen als Text}
+
+\item{projektabschluss}{my_az für Projektabschluss}
+
+\item{zwischenrechnungen}{zwischenrechnungen}
+
+\item{order}{sortieren}
 
 \item{sep}{Tabulator}
-
-\item{projektabschluss}{Zeit für Projektabschluss}
 
 \item{...}{nicht Benutzt}
 }
@@ -19,5 +29,20 @@ AZ(Lines, sep = "\\\\t", projektabschluss = 7, ...)
 data.frame
 }
 \description{
-Arbeitszeit
+Arbeitsmy_az
+}
+\examples{
+ \dontrun{
+ AZ('
+Datum   Start   Ende Projekt  Task
+01-01-2021  14:46 15:20  hs1 "710_HS-3.html Kommentare  plus Grafiken"
+26.02.2021   10:17 11:11 hs1 Auswerten
+26.02.2021   10:17 11:08 hs2  Auswerten
+26.02.2021   10:17 11:08 hs1  Auswerten
+',
+10
+)
+
+
+}
 }

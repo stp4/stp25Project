@@ -4,9 +4,20 @@
 \alias{Vertrag}
 \title{Vertrag Templat tEMPLAT}
 \usage{
-Vertrag(name = "Vorname Nachname", adr = "bitte ergänzen",
-  tel = "bitte ergänzen", email = "bitte ergänzen", knr = "0",
-  euro = "76", h = " 5-9 Stunden", Betreff = "statistische Beratung")
+Vertrag(
+  name = "Vorname Nachname",
+  adr = "bitte ergänzen",
+  tel = "bitte ergänzen",
+  email = "bitte ergänzen",
+  knr = "0",
+  euro = "76",
+  h = " 5-9 Stunden",
+  Betreff = "statistische Beratung",
+  zwischenrechnung = 400,
+  BANK = "BANK",
+  IBAN = "IBAN",
+  BIC = "BIC"
+)
 }
 \arguments{
 \item{name, adr, tel, email, knr, euro, h}{Kunde}

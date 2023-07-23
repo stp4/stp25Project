@@ -4,8 +4,18 @@
 \alias{Rechnung}
 \title{Rechnungs-Templat}
 \usage{
-Rechnung(KNr = 0, Name = "Vorname Name", Email = " ", Tel = " ",
-  Adresse = " ", Anrede = "Sehr geehrte Frau", Betreff = "Beratung")
+Rechnung(
+  KNr = 0,
+  Name = "Vorname Name",
+  Email = " ",
+  Tel = " ",
+  Adresse = " ",
+  Anrede = "Sehr geehrte Frau",
+  Betreff = "Beratung",
+  BANK = "BANK",
+  IBAN = "IBAN",
+  BIC = "BIC"
+)
 }
 \arguments{
 \item{KNr, Name, Email, Tel, Adresse, Anrede}{KundenDaten}

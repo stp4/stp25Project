@@ -4,14 +4,28 @@
 \alias{install_projekt}
 \title{Neues Projektordner erstellen}
 \usage{
-install_projekt(project = "000 Dummy",
-  path = "C:/Users/wpete/Dropbox/1_Projekte", knr = 0,
-  datum = date(), time = "08:08", name = "Name",
-  email = "name@email.com", tel = "Tel", adr = "Adresse",
-  h = "5-9 Stunden", thema = Thema, comment = "Test Dummy",
-  euro = "76", anrede = "Sehr geehrte Damen und Herren",
-  betreff = "statistische Beratung", templat = c("small", "large",
-  "chemistry", "technical-report"))
+install_projekt(
+  project = "000 Dummy",
+  path = "C:/Users/wpete/Dropbox/1_Projekte",
+  knr = 0,
+  datum = date(),
+  time = "08:08",
+  name = "Name",
+  email = "name@email.com",
+  tel = "Tel",
+  adr = "Adresse",
+  h = "5-9 Stunden",
+  thema = Thema,
+  comment = "Test Dummy",
+  euro = "85",
+  anrede = "Sehr geehrte Damen und Herren",
+  betreff = "statistische Beratung",
+  templat = "small",
+  zwischenrechnung = zwischenrechnung,
+  BANK = "BANK",
+  IBAN = "IBAN",
+  BIC = "BIC"
+)
 }
 \arguments{
 \item{project}{Name des projektes}

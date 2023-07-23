@@ -4,8 +4,17 @@
 \alias{rechnung_email}
 \title{Rechnung erstellen}
 \usage{
-rechnung_email(Name = "Hans Dampf", Email = "h.dampf@gmail.com",
-  Anrede = "Hallo", Euro = 12, RNr = "0815", Stundenliste = "")
+rechnung_email(
+  Name = "Hans Dampf",
+  Email = "h.dampf@gmail.com",
+  Anrede = "Hallo",
+  Euro = 12,
+  RNr = "0815",
+  Stundenliste = "",
+  BANK = "BANK",
+  IBAN = "IBAN",
+  BIC = "BIC"
+)
 }
 \arguments{
 \item{Name, Anrede, Email, Euro, RNr, Stundenliste}{Kunde}

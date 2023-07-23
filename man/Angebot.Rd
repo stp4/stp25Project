@@ -4,19 +4,25 @@
 \alias{Angebot}
 \title{Angebot}
 \usage{
-
-  Angebot(x = "Position Aufwand  \\nEinarbeiten_ins_Thema_und_Kommunikation 2\\nAufbereiten_der_Daten_und_Fehlerprüfung  1.5\\nDeskriptive_Analyse_in_Form_von_Tabelle  0.5 \\nDeskriptive_Analyse_in_Form_von_Grafiken   3 \\nInferenzstatistische_Analyse_(signifikanz_Test)  0.5\\nErgebnisbericht_mit_stichwortartigen_Kommentaren\\t 2\\n",
-  stundensatz = 85, titel = "Aufwandseinschätzung",
+Angebot(
+  x =
+    "Position Aufwand  \\nEinarbeiten_ins_Thema_und_Kommunikation 2\\nAufbereiten_der_Daten_und_Fehlerprüfung  1.5\\nDeskriptive_Analyse_in_Form_von_Tabelle  0.5 \\nDeskriptive_Analyse_in_Form_von_Grafiken   3 \\nInferenzstatistische_Analyse_(signifikanz_Test)  0.5\\nErgebnisbericht_mit_stichwortartigen_Kommentaren\\t 2\\n",
+  stundensatz = 85,
+  titel = "Aufwandseinschätzung",
   einleitung = "Vielen Dank für Ihre Anfrage!",
   text = "Ich unterbreite Ihnen hiermit folgendes Angebot: ",
   projekt = "Auswertung im Kontext einer wissenschaftlichen Arbeit",
   text2 = "Die nachfolgende Schätzung erfolgt auf Grund von Erfahrungswerten.",
-  text3 = paste("Die Abrechnung erfolgt auf geleistete Arbeitsstunden, der Stundensatz beträgt ",
-  stundensatz, "Euro.",
-  "(Es wird keine Umsatzsteuer ausgewiesen, da die Umsätze gemäß § 6 Abs. 1 Z 27 UStG unecht USt.-befreit sind.)"),
-  closing = "Ich hoffe, dass Ihnen unser Angebot zusagt und würde mich über Ihren Auftrag sehr freuen.",
+  text3 =
+    paste("Die Abrechnung erfolgt auf geleistete Arbeitsstunden, der Stundensatz beträgt ",
+    stundensatz, "Euro.",
+    "(Es wird keine Umsatzsteuer ausgewiesen, da die Umsätze gemäß § 6 Abs. 1 Z 27 UStG unecht USt.-befreit sind.)"),
+  closing =
+    "Ich hoffe, dass Ihnen unser Angebot zusagt und würde mich über Ihren Auftrag sehr freuen.",
   closing2 = "Mit freundlichen Grüßen",
-  closing3 = "DI Wolfgang Peter", sep = "\\n\\n")
+  closing3 = "DI Wolfgang Peter",
+  sep = "\\n\\n"
+)
 }
 \arguments{
 \item{x}{das Angbot}
@@ -36,6 +42,7 @@ text (string)
 Angebot
 }
 \examples{
-
+\dontrun{
 Angebot()
+}
 }

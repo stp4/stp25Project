@@ -10,7 +10,10 @@ keep_tex: yes
 lang: de-DE
 ---}
 \usage{
-Get_Data(myswd, Rdata)
+Get_Data(
+  myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
+  Rdata = "DF.Rdata"
+)
 }
 \description{
 title: Daten Aufbereiten
