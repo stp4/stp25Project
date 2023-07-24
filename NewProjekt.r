@@ -2,7 +2,7 @@
  
 Name      = "Clotting-Coils"    
 Anrede    = "Sehr geehrter Herr" #  " # " Sehr geehrte  und Herren!" #   "Sehr geehrte Damen und Herren!"
-Email     = "dr.m.freund@gmail.com, arian.barnas@gmail.com"
+Email     = "dr.m.dampf@gmail.com, dr.dr.hans@gmail.com"
 Tel       = "  "
 Adresse	  = "Department Radiologie, Anichstrasse 35, 6020 Innsbruck"
 Aufwand	  = "6 bis 8 Stunden"
@@ -16,16 +16,12 @@ Templat   = "small"
 #  85  Doktorand berufsbegleitend
 # 100  Klinik
 # 135  Firmen
-Stundensatz = 85
+Stundensatz = 150
 Zwischenrechnung = 700
 Datum =  format(Sys.time(), "%d.%m.%Y")
 Zeit = format(Sys.time(), "%H:%M")
-Folder  = "C:/Users/wpete/Dropbox/1_Projekte"
-#' 009-Allgemeinmedizin
-# C:/Users/wpete/Dropbox/1_Projekte/002-NURMI
-# /003-Chirurgie-Innsbruck-VTT
-  #"C:/Users/wpete/Dropbox/1_Projekte"
-#/003-Chirurgie-Innsbruck-VTT" ##/006-Forum-Skisport" #   /007-Radiologie
+Folder  = "C:/Users/stp4/Projekte"
+ 
 # 
 #=====================================================
  KNr      =    NA 
@@ -59,7 +55,7 @@ prkt <- stp25Project::CreateProjekt(
   Stundensatz,  Datum,  Zeit,
   Folder,
   KNr,
-  kunden_file = "C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv",
+  kunden_file = "C:/Users/stp4/Projekte/Verwaltung/Kunden.csv",
   FunktionsTest = FALSE,
   Templat = Templat,
   zwischenrechnung = Zwischenrechnung,
