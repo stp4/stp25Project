@@ -32,7 +32,17 @@
 #' 
 #' @param jahr Jahr
 #' @param konto Kontospiegel
-#' @param SVA,Betriebsausgaben,Reisespesen,Versicherungspraemien,Steuerberater Summe, 
+#' @param Betriebsausgaben data.frame
+#'    Betriebsausgaben = data.frame(
+#' datum = "2022-11-07",
+#' txt = "Amazon OKI B432dn A4-Schwarzweißdrucker (Duplex, Netzwerk)",
+#' euro = -265.40,
+#' id = 999,
+#' einnahmen = NA,
+#' ausgaben  = -265.40,
+#' Pos = "Betriebsausgaben"
+#' )
+#' @param SVA,Reisespesen,Versicherungspraemien,Steuerberater Summe, 
 #' @param pauschale Pauschalierung für Kleinunternehmer
 #' @param AfA,afa_anlagen,afa_instandsetzung Abschreibung 
 #' @param konto_path Pfad
@@ -90,7 +100,8 @@
 Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    konto = "umsaetze2019.csv",
                    SVA = NA,
-                   Betriebsausgaben = c(VISA = 0, Buecher = 0),
+                   Betriebsausgaben =  NULL,
+                   Privat_debit= 0,
                    Reisespesen = c(Bus = 0, Taxi = 0),
                    Versicherungspraemien = 0, Steuerberater = 0,
                    # bar_einnahmen = 0,
@@ -104,7 +115,9 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2019/",
                    eigene_buchung_konto = c("AT573626000100540567",
                                             "AT573626000000540567"),
-                   visa = "VISA-RECHNUNG",
+                 #  visa = "VISA-RECHNUNG",
+                   
+                   
                    versicherung = c("UNIQA"),
                    privat = c(
                      "Delinat",
@@ -118,67 +131,101 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    ),
                    kirche = "Bischöfliche",
                    spenden = c("ÖRK", "Kinderpatenschaft"),
-                   sva = "AT69ZZZ00000003350") {
+                   sva = "") {
   knt <-
     read.csv2(paste0(konto_path, konto),
               header = FALSE,
               encoding = "UTF-8")
+  cat("\nInput Konospiegel: ", konto, "\n\n" )
+ # print( head(knt))
+ # cat("\n---------------------------------------\n")
   knt$id <- seq_len(nrow(knt))
-  
+  # Datum geändert
   knt[[2]] <-
     gsub("Auftraggeber: ", "", gsub("Zahlungsempfänger: ", "", knt[[2]]))
-  knt <- knt[, c(6, 2, 4,7)]
+  knt <- knt[, c(1, 2, 4, 7)]
  # print(head(knt))
   names(knt) <- c("datum", "txt", "euro", "id")
-  # print(head(knt))
+ # cat("\nnach dem bereinigen\n")
+
   knt$einnahmen <- ifelse(knt$euro > 0, knt$euro, NA)
   knt$ausgaben <- ifelse(knt$euro < 0, knt$euro, NA)
   knt$datum <-
-    lubridate::as_datetime(knt$datum, format = "%d.%m.%Y %H:%M:%S:")
-  
+    lubridate::as_datetime(knt$datum, format = "%d.%m.%Y")
+   #  print(head(knt[-2]))
+  # cat("\n---------------------------------------\n Jahr: ", jahr, "\n\n")
+   
+   
   knt <- knt[lubridate::year(knt$datum) == jahr, ]
   
+   print( head(knt[-2]))
   
-  # cat("\nSAV\n")
- # print( sva)
-  sva <-   unique(unlist(lapply(sva , grep,  knt$txt)))
-
-  
-  
-  knt_sva <- knt[sva, ]
+ 
+#' SVA im  Konto suchen
+  sva_items <-   unique(unlist(lapply(sva , grep,  knt$txt)))
+  knt_sva <- knt[sva_items, ]
   knt_sva$Pos <- "sva"
   # Eingänge sind Krankenkosten
   knt_sva_privat <- knt_sva[is.na(knt_sva$ausgaben),]
   knt_sva <-  knt_sva[!is.na(knt_sva$ausgaben),]
-  
- # print(knt_sva)
-  knt <- knt[-sva, ]
+  knt <- knt[-sva_items, ]
  
  
-  
  
-  
+#' Auf dem Kono hin und her geschobene Beträge
   eigene_buchung <- c(grep(eigene_buchung_konto[1], knt$txt),
                       grep(eigene_buchung_konto[2], knt$txt))
-  knt_eigene_buchung <- knt[eigene_buchung, ]
-  knt <- knt[-eigene_buchung, ]
+  if (length(eigene_buchung) > 0) {
+    knt_eigene_buchung <- knt[eigene_buchung,]
+    cat("\neigene -buchung-konton: \n")
+    print(knt_eigene_buchung)
+    cat("\n--------------\n")
+    knt <- knt[-eigene_buchung,]
+  }
   
-  
-  # prvt <- c()
-  # for (i in privat)
-  #   prvt <- c(prvt, grep(i, knt$txt))
-  
+ #' Privatentnahme
   prvt <-  unique(unlist(lapply(privat , grep,  knt$txt)))
-  
   knt_privat <- knt[prvt, ]
   knt <- knt[-prvt, ]
   knt_privat$Pos <- "privat"
 
+
+ #  visa <- grep(visa, knt$txt) 
+ #  if (length(visa) > 0) {
+ #  knt_visa <- knt[visa, ]
+ #  
+ #  knt <- knt[-visa, ]
+ #  knt_visa$Pos <- "visa"
+ #  }
+ #  else{
+ #    knt_visa   <- 
+ # data.frame(datum=NA,   
+ #                  euro=NA, 
+ #                  id =NA,
+ #                  einnahmen=NA, 
+ #                  ausgaben=NA,  
+ #                  Pos="Visa")
+ #  }
+ # return(knt_visa)
   
-  visa <- grep(visa, knt$txt)
-  knt_visa <- knt[visa, ]
-  knt <- knt[-visa, ]
-  knt_visa$Pos <- "visa"
+  
+  
+  if (Privat_debit == 0) {
+    Privat_debit_kard <- Privat_debit
+    
+    # datum   euro id einnahmen ausgaben          Pos
+    Privat_debit <-   data.frame(
+      datum = "2022-01-01",
+      txt ="",
+      euro = 0,
+      id = 0,
+      einnahmen = 0,
+      ausgaben = 0,
+      Pos = "Bankomat"
+    )
+  } else {
+    stop("Das ist noch nicht Fertig")
+  }
   
   kirche <- grep(kirche, knt$txt)
   knt_kirche <- knt[kirche, ]
@@ -203,12 +250,29 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
     SVA <- sum(knt_sva$euro, na.rm = TRUE) * (-1)
   Kirche <- sum(knt_kirche$euro, na.rm = TRUE) * (-1)
   Spenden <- sum(knt_spenden$euro, na.rm = TRUE) * (-1)
-  Ausgaben <-
-    sum(knt$ausgaben, na.rm = TRUE) * (-1) + sum(Betriebsausgaben)
+    
+
+  if(!is.null(Betriebsausgaben)){
+    #Fehler abfangen
+    Betriebsausgaben$einnahmen  <- NA
+    Betriebsausgaben$euro <- - abs(Betriebsausgaben$euro)
+    Betriebsausgaben$ausgaben <- - abs(Betriebsausgaben$ausgaben)
+    knt <- rbind(knt, Betriebsausgaben)
+  }
+  
+      Ausgaben <-
+      sum(knt$ausgaben, na.rm = TRUE) * (-1) 
+
+  
+  
+  
+
+
+  
   Pauschale <-
     round(pauschale * sum(knt$einnahmen, na.rm = TRUE), 2)
   
-  Privat_Visa <- sum(knt_visa$euro)
+ # Privat_Visa <- sum(knt_visa$euro)
   Privat_Versicherung <- sum(knt_versicherung$euro)
   Privat <- sum(knt_privat$euro)
   
@@ -263,9 +327,9 @@ rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
       
       
       "Einkünfte", 
-      "Versicherungsprämien", "Spenden","Kirche", "Steuerberater",
+      "Versicherungsprämien", "Spenden", "Kirche", "Steuerberater",
       "Gewinnfreibetrages",
-      "Privat (Visa)","Privat (Versicherung)","Privat",
+      "Privat (Debit)", "Privat (Versicherung)", "Privat",
  
       "Gewinn (ab 2020)",
       "UST Gesamtbetrag", "Kleinunternehmer"
@@ -288,7 +352,7 @@ rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
       
       Einnahmen - afa_anlagen - afa_instandsetzung - Reisespesen - SVA - Ausgaben,
       Versicherungspraemien, Spenden, Kirche,  Steuerberater, 0,
-      Privat_Visa,  Privat_Versicherung, Privat,
+      Privat_debit_kard,  Privat_Versicherung, Privat,
       
       Einnahmen - Pauschale - SVA - Reisespesen,
       
@@ -299,11 +363,18 @@ rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
   )
   
   cat("\nSpeichern der Buchungsliste \n Pfad: ", konto_path, "\n\n")
+  
+  
+
+          
+          
   write.csv(
     rbind(knt, knt_kirche, knt_spenden, knt_sva),
     paste0(konto_path, "konto_bereinigt.csv")
   )
- 
+
+   
+   
   rslt$Eingaben.Ausgaben <- rslt$Betrag
   rslt$Eingaben.Ausgaben[ 7] <- NA
   rslt$Pauschale <- rslt$Betrag
@@ -313,12 +384,22 @@ rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
   
   rslt<- rslt[-17,-3]
   
-   #cat("\n")
-  rslt$Eingaben.Ausgaben<- stp25rndr::Format2(rslt$Eingaben.Ausgaben, 2, decimal.mark=",")
-    rslt$Pauschale<- stp25rndr::Format2(rslt$Pauschale, 2, decimal.mark=",")
+  #cat("\n")
+  rslt$Eingaben.Ausgaben <-
+    stp25rndr::Format2(rslt$Eingaben.Ausgaben, 2, decimal.mark = ",")
+  rslt$Pauschale <-
+    stp25rndr::Format2(rslt$Pauschale, 2, decimal.mark = ",")
   write.csv(rslt, paste0(konto_path, "Buchungsliste.csv"))
-  write.csv(rbind( knt_privat, knt_visa, knt_versicherung, knt_sva_privat), paste0(konto_path, "Privat.csv"))
-
+  
+ 
+     
+ 
+     
+  write.csv(
+    rbind(knt_privat, Privat_debit, knt_versicherung, knt_sva_privat),
+    paste0(konto_path, "Privat.csv")
+  )
+  
   rslt
 }
 
@@ -382,7 +463,5 @@ AfA <-
   }
 
 
-
- 
 
 
