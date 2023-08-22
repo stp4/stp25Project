@@ -83,7 +83,13 @@ install_projekt <- function(project = "000 Dummy",
  
   cat( Stundenliste(euro, myswd, knr, 
                    name, email, tel, adr, 
-                   anrede, betreffv, zwischenrechnung), 
+                   anrede, betreffv, zwischenrechnung,
+                   BANK = BANK,
+                   IBAN = IBAN,
+                   BIC = BIC
+                   
+                   
+                   ), 
       file = "Stundenliste.R")
  
  cat(paste0(

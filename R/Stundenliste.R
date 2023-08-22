@@ -12,7 +12,10 @@ Stundenliste <- function(euro = 85,
                          adr,
                          anrede,
                          betreff,
-                         zwischenrechnung = 400) {
+                         zwischenrechnung = 400,
+                         BANK = "BANK",
+                         IBAN = "IBAN",
+                         BIC = "BIC") {
   jetzt <- Sys.time()
   # print(zeit)
   zeit <-  paste(
@@ -85,7 +88,13 @@ email,
 anrede,
 "', euro, '",
 knr,
-"',  arbeitszeit)
+"',  arbeitszeit,'",
+BANK,"',
+  '",
+IBAN,"',
+  '",
+BIC, "'
+)
   , file = 'Invoice.txt')
 
 
@@ -246,3 +255,28 @@ holidays <- function(jahr = lubridate::year(Sys.Date())) {
   holidays$holiday <- TRUE
   holidays
 }
+
+
+# setwd("C:/Users/wpete/Dropbox/3_Forschung/R-Project/stp25Project/R")
+# 
+# cat(  Stundenliste(
+#   euro = 85,
+#   myswd = "",
+#   knr = "0001",
+#   name = "Hans Dampf",
+#   email = "info@hd.com",
+#   tel = "0815",
+#   adr = "IMp 56",
+#   anrede = " Hochwohlgeboren",
+#   betreff = "Test",
+#   zwischenrechnung = 400,
+#   BANK = "HJD-PRIVATBANK",
+#   IBAN = "1000 0000 0000 000!",
+#   BIC = "ABCDXXX"
+#  
+# 
+#  
+#                   
+#                   
+# ), 
+# file = "Stundenliste_txt.R")
