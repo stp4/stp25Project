@@ -4,11 +4,11 @@
 #' https://finanzonline.bmf.gv.at/fon/login.do
 #' +4369981530117
 #' 
-#' grundsätzlich bis 30. April des Folgejahres bis 30. Juni bei Übermittlung auf elektronischem Wege
+#' grundsaetzlich bis 30. April des Folgejahres bis 30. Juni bei uebermittlung auf elektronischem Wege
 #'
 #'  
 #'
-#' Önace Code	Text	Tätigkeit 73.	Markt- und Meinungsforschung
+#' Önace Code	Text	Taetigkeit 73.	Markt- und Meinungsforschung
 #' 
 #' 
 #' Angaben zur Kommunalsteuer
@@ -18,15 +18,15 @@
 #' Gesamtbetrag der Bemessungsgrundlage: 0
 #' Gesamtbetrag Kommunalsteuer: 0
 #' 
-#' Tätigkeit als  Liebhaberei 
-#' Wenn die Vermietung oder Verpachtung über einen längeren Zeitraum keinen Gewinn
-#' erwarten lässt, sind diese Einkünfte steuerlich unbeachtlich. Das heißt, dass Verluste aus
-#' dieser Tätigkeit mit anderen positiven Einkünften nicht ausgeglichen werden dürfen.
+#' Taetigkeit als  Liebhaberei 
+#' Wenn die Vermietung oder Verpachtung ueber einen laengeren Zeitraum keinen Gewinn
+#' erwarten laesst, sind diese Einkuenfte steuerlich unbeachtlich. Das heißt, dass Verluste aus
+#' dieser Taetigkeit mit anderen positiven Einkuenften nicht ausgeglichen werden duerfen.
 #' Sollte sich ausnahmsweise ein Gewinn ergeben, ist dieser nicht steuerpflichtig.
 #' Zu unterscheiden ist dabei zwischen der so genannten  kleinen  Vermietung wie z.B. der
-#' Vermietung von Ein- und Zweifamilienhäusern, Eigentumswohnungen oder Bungalows und
+#' Vermietung von Ein- und Zweifamilienhaeusern, Eigentumswohnungen oder Bungalows und
 #' der  großen  Vermietung. Das ist die Vermietung von mindestens drei Wohneinheiten,
-#' betrifft also vor allem Miethäuser (siehe dazu das Infoblatt  Liebhaberei im
+#' betrifft also vor allem Miethaeuser (siehe dazu das Infoblatt  Liebhaberei im
 #'                                     Steuerrecht ).
 #'  
 #' 
@@ -43,7 +43,7 @@
 #' Pos = "Betriebsausgaben"
 #' )
 #' @param SVA,Reisespesen,Versicherungspraemien,Steuerberater Summe, 
-#' @param pauschale Pauschalierung für Kleinunternehmer
+#' @param pauschale Pauschalierung fuer Kleinunternehmer
 #' @param AfA,afa_anlagen,afa_instandsetzung Abschreibung 
 #' @param konto_path Pfad
 #' @param eigene_buchung_konto,visa,versicherung,privat,kirche,spenden,sva Such-String fuer die jeweilige Buchung
@@ -62,17 +62,17 @@
 #'     euro = 463.95, nd = 3, rs = 1),
 #'   list(
 #'     nr = 33, datum = "09.11.2012",
-#'     pos = "Büro Fenster+Tür EA-Ceramic e.U. Hallerstraße 35, Ibk",
+#'     pos = "Buero Fenster+Tuer EA-Ceramic e.U. Hallerstraße 35, Ibk",
 #'     type = "I",
 #'     euro = 3517.20, nd = 10, rs = 0.5),
 #'   list(
 #'     nr = 34, datum = "03.12.2012",
-#'     pos = "Büro Fussboden-Sanierung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+#'     pos = "Buero Fussboden-Sanierung EA-Ceramic e.U. Hallerstraße 35. Ibk",
 #'     type = "I",
 #'     euro = 2271.71, nd = 10, rs = 0.5),
 #'   list(
 #'     nr = 35, datum = "03.12.2012",
-#'     pos = "Büro Fussboden-Heizung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+#'     pos = "Buero Fussboden-Heizung EA-Ceramic e.U. Hallerstraße 35. Ibk",
 #'     type = "I",
 #'     euro = 912.48, nd = 10, rs = 0.5),
 #'   list(
@@ -82,7 +82,7 @@
 #'     euro = 475, nd = 3, rs = 1),
 #'   list(
 #'     nr = 130603,  datum = "07.06.2013",
-#'     pos = "Büromöbel Leitgeb&leitgeb 6020 Innsbruck",
+#'     pos = "Bueromöbel Leitgeb&leitgeb 6020 Innsbruck",
 #'     type = "I",
 #'     euro = 8436.00, nd = 10, rs = 0.5),
 #'   jahr=2019,
@@ -99,11 +99,13 @@
 #' }
 Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    konto = "umsaetze2019.csv",
-                   SVA = NA,
-                   Betriebsausgaben =  NULL,
-                   Privat_debit= 0,
+                 
+                   pattern_debit= "Debit",
                    Reisespesen = c(Bus = 0, Taxi = 0),
-                   Versicherungspraemien = 0, Steuerberater = 0,
+                   Betriebsausgaben =  NULL,
+                   
+                   Versicherungspraemien = 0, 
+                   Steuerberater = 0,
                    # bar_einnahmen = 0,
                    pauschale = 0.06,
                    AfA = data.frame(
@@ -137,42 +139,22 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
               header = FALSE,
               encoding = "UTF-8")
   cat("\nInput Konospiegel: ", konto, "\n\n" )
- # print( head(knt))
- # cat("\n---------------------------------------\n")
-  knt$id <- seq_len(nrow(knt))
-  # Datum geändert
-  knt[[2]] <-
-    gsub("Auftraggeber: ", "", gsub("Zahlungsempfänger: ", "", knt[[2]]))
-  knt <- knt[, c(1, 2, 4, 7)]
- # print(head(knt))
-  names(knt) <- c("datum", "txt", "euro", "id")
- # cat("\nnach dem bereinigen\n")
-
-  knt$einnahmen <- ifelse(knt$euro > 0, knt$euro, NA)
-  knt$ausgaben <- ifelse(knt$euro < 0, knt$euro, NA)
-  knt$datum <-
-    lubridate::as_datetime(knt$datum, format = "%d.%m.%Y")
-   #  print(head(knt[-2]))
-  # cat("\n---------------------------------------\n Jahr: ", jahr, "\n\n")
-   
-   
-  knt <- knt[lubridate::year(knt$datum) == jahr, ]
-  
-   print( head(knt[-2]))
-  
+  knt <- make_konto(knt, jahr)
+  print( head(knt[-2]))
  
-#' SVA im  Konto suchen
-  sva_items <-   unique(unlist(lapply(sva , grep,  knt$txt)))
-  knt_sva <- knt[sva_items, ]
-  knt_sva$Pos <- "sva"
-  # Eingänge sind Krankenkosten
+ 
+  
+## SVA im  Konto suchen
+  sva_items <- find_item(sva, knt$txt)
+  knt_sva <- konto_obj(knt, sva_items, "sva")
+  
+## Eingaenge sind Krankenkosten
   knt_sva_privat <- knt_sva[is.na(knt_sva$ausgaben),]
   knt_sva <-  knt_sva[!is.na(knt_sva$ausgaben),]
-  knt <- knt[-sva_items, ]
+ if(!is.null(sva_items))   knt <-  knt[-sva_items, ]
  
- 
- 
-#' Auf dem Kono hin und her geschobene Beträge
+
+## Auf dem Kono hin und her geschobene Betraege
   eigene_buchung <- c(grep(eigene_buchung_konto[1], knt$txt),
                       grep(eigene_buchung_konto[2], knt$txt))
   if (length(eigene_buchung) > 0) {
@@ -183,125 +165,90 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
     knt <- knt[-eigene_buchung,]
   }
   
- #' Privatentnahme
-  prvt <-  unique(unlist(lapply(privat , grep,  knt$txt)))
-  knt_privat <- knt[prvt, ]
-  knt <- knt[-prvt, ]
-  knt_privat$Pos <- "privat"
+##  Privatentnahme
+  prvt_items <- find_item(privat,  knt$txt)
+  knt_privat <- konto_obj(knt, prvt_items, "Privat")
+  if(!is.null(prvt_items)) knt <-   knt[-prvt_items, ]
+ 
 
-
- #  visa <- grep(visa, knt$txt) 
- #  if (length(visa) > 0) {
- #  knt_visa <- knt[visa, ]
- #  
- #  knt <- knt[-visa, ]
- #  knt_visa$Pos <- "visa"
- #  }
- #  else{
- #    knt_visa   <- 
- # data.frame(datum=NA,   
- #                  euro=NA, 
- #                  id =NA,
- #                  einnahmen=NA, 
- #                  ausgaben=NA,  
- #                  Pos="Visa")
- #  }
- # return(knt_visa)
+## Privatentnahme
+  debit_items <- find_item(pattern_debit, knt$txt)
+  Privat_debit_kard <- konto_obj(knt, debit_items, "Bankomat")
+ if(!is.null(debit_items))   knt <- knt[-debit_items, ]
+   
   
   
   
-  if (Privat_debit == 0) {
-    Privat_debit_kard <- Privat_debit
-    
-    # datum   euro id einnahmen ausgaben          Pos
-    Privat_debit <-   data.frame(
-      datum = "2022-01-01",
-      txt ="",
-      euro = 0,
-      id = 0,
-      einnahmen = 0,
-      ausgaben = 0,
-      Pos = "Bankomat"
-    )
-  } else {
-    stop("Das ist noch nicht Fertig")
-  }
   
-  kirche <- grep(kirche, knt$txt)
-  knt_kirche <- knt[kirche, ]
-  knt <- knt[-kirche, ]
-  knt_kirche$Pos <- "kirche"
+## Kirche
+  kirche_items <-  find_item(kirche, knt$txt)
+  knt_kirche <- konto_obj(knt, kirche_items, "Kirche")
+  if(!is.null(kirche_items)) knt <-   knt[-kirche_items, ]
   
-  spenden <- c(grep(spenden[1], knt$txt), grep(spenden[2], knt$txt))
-  knt_spenden <- knt[spenden, ]
-  knt <- knt[-spenden, ]
-  knt_spenden$Pos <- "spenden"
+## Spende 
+  spenden_items <- find_item(spenden, knt$txt)
+  knt_spenden <-  konto_obj(knt, spenden_items, "Spende")
+  if(!is.null(spenden_items)) knt <-   knt[-spenden_items, ]
+ 
+## Versicherung  
+  versicherung_items <- find_item(versicherung, knt$txt)
+  knt_versicherung <-  konto_obj(knt, versicherung_items, "Spende")
+  if(!is.null(versicherung_items)) knt <-   knt[-versicherung_items, ]
   
-  versicherung <- grep(versicherung, knt$txt)
-  knt_versicherung <- knt[versicherung, ]
-  knt <- knt[-versicherung, ]
-  knt_versicherung$Pos <- "versicherung"
   
-  knt$Pos <- ifelse(knt$euro > 0, "Erträge", "Betriebsausgaben")
+  
+  ## Aufdröseln der Positionen im Formular
+  knt$Pos <- ifelse(knt$euro > 0, "Ertraege", "Betriebsausgaben")
   
   Einnahmen <- sum(knt$einnahmen, na.rm = TRUE)
   
-  if (is.na(SVA))
-    SVA <- sum(knt_sva$euro, na.rm = TRUE) * (-1)
+  
+  SVA <- sum(knt_sva$euro, na.rm = TRUE) * (-1)
   Kirche <- sum(knt_kirche$euro, na.rm = TRUE) * (-1)
   Spenden <- sum(knt_spenden$euro, na.rm = TRUE) * (-1)
-    
+  
 
-  if(!is.null(Betriebsausgaben)){
+  if (!is.null(Betriebsausgaben)) {
     #Fehler abfangen
     Betriebsausgaben$einnahmen  <- NA
-    Betriebsausgaben$euro <- - abs(Betriebsausgaben$euro)
-    Betriebsausgaben$ausgaben <- - abs(Betriebsausgaben$ausgaben)
+    Betriebsausgaben$euro <- -abs(Betriebsausgaben$euro)
+    Betriebsausgaben$ausgaben <- -abs(Betriebsausgaben$ausgaben)
     knt <- rbind(knt, Betriebsausgaben)
   }
   
-      Ausgaben <-
-      sum(knt$ausgaben, na.rm = TRUE) * (-1) 
-
+   Ausgaben <- sum(knt$ausgaben, na.rm = TRUE) * (-1) 
+   Pauschale <- round(pauschale * sum(knt$einnahmen, na.rm = TRUE), 2)
+  
+  Privat_Debit <- sum(Privat_debit_kard$euro, na.rm = TRUE)
+  Privat_Versicherung <- sum(knt_versicherung$euro, na.rm = TRUE)
+  Privat <- sum(knt_privat$euro, na.rm = TRUE)
+  
+  Versicherungspraemien <- sum(Versicherungspraemien, na.rm = TRUE)
+  Reisespesen <- sum(Reisespesen, na.rm = TRUE)
+  
+  afa_anlagen	<- AfA$Betrag[1]
+  afa_instandsetzung	<- AfA$Betrag[2]
   
   
-  
-
-
-  
-  Pauschale <-
-    round(pauschale * sum(knt$einnahmen, na.rm = TRUE), 2)
-  
- # Privat_Visa <- sum(knt_visa$euro)
-  Privat_Versicherung <- sum(knt_versicherung$euro)
-  Privat <- sum(knt_privat$euro)
-  
-  Versicherungspraemien <- sum(Versicherungspraemien)
-  Reisespesen <- sum(Reisespesen)
-  
-  afa_anlagen	= AfA$Betrag[1]
-  afa_instandsetzung	= AfA$Betrag[2]
-  
-  
-# Das zusammenfügen muss überarbeitet werden
+# Das zusammenfuegen muss ueberarbeitet werden
 # rslt2 ist erster versuch  
   
   rslt2<- stp25tools::get_data('
 Pos	              Kennzahl	 Eingaben.Ausgaben	Pauschale
-"Erträge"           	9040	 0   0
+"Ertraege"           	9040	 0   0
 "AfA Anlagen"	        9130	 0	  NA
 "Instandsetzung"	    9150	 0	  NA
 "Reisespesen"	        9160	 0   NA
 "Versicherung (SVA)"	9225	 0	  0
 "Betriebsausgaben"    9230 	0	  NA
 "Betriebs-Pauschale" 	9259	 NA  0
-"Einkünfte"	           320	 0	  0
-"Versicherungsprämien"	NA	 NA  NA
+"Einkuenfte"	           320	 0	  0
+"Versicherungspraemien"	NA	 NA  NA
 "Spenden"	              NA	 NA  NA
 "Kirche"	              NA   NA  NA
 "Steuerberater"	        NA	 NA  NA
 "Gewinnfreibetrages"  	NA	 NA  NA
-"Umsatzsteuererklärung" NA	 NA  NA
+"Umsatzsteuererklaerung" NA	 NA  NA
 "UST Gesamtbetrag"	     0	 0	  0
 "Kleinunternehmer"	    16	 0	  0
 "Kommunalsteuer"        NA	 NA  NA
@@ -314,20 +261,24 @@ Pos	              Kennzahl	 Eingaben.Ausgaben	Pauschale
   
 rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
 
-  print(rslt2)
+ # print(rslt2)
   
+
+ 
+
+
 #  9259 Pauschalierte Betriebsausgaben
   # 320   Summe Kennzahl 
   rslt <- data.frame(
     Pos = c(
-      "Erträge",
+      "Ertraege",
       "AfA Anlagen",      "Instandsetzung",
       "Reisespesen", "Versicherung (SVA)", "Betriebsausgaben",
            paste0("Betriebsausgabenpauschale ", pauschale*100, "%"),
       
       
-      "Einkünfte", 
-      "Versicherungsprämien", "Spenden", "Kirche", "Steuerberater",
+      "Einkuenfte", 
+      "Versicherungspraemien", "Spenden", "Kirche", "Steuerberater",
       "Gewinnfreibetrages",
       "Privat (Debit)", "Privat (Versicherung)", "Privat",
  
@@ -339,34 +290,44 @@ rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
       9130,  9150,
       9160,  9225,  9230,  320,
       455,
-      "",  "",  "","",
+      "",  
+      "sind schon eingegeben",  "sind schon eingegeben",
+      
+      "",
       "", "n.a.", "n.a.",
       "n.a.", "n.a.",
       "000", "016"
     ),
     Betrag = c(
       Einnahmen,
-      afa_anlagen, afa_instandsetzung,
-      Reisespesen, SVA, Ausgaben,
+      afa_anlagen, 
+      afa_instandsetzung,
+      Reisespesen, 
+      SVA, 
+      Ausgaben,
       Pauschale, 
       
       Einnahmen - afa_anlagen - afa_instandsetzung - Reisespesen - SVA - Ausgaben,
-      Versicherungspraemien, Spenden, Kirche,  Steuerberater, 0,
-      Privat_debit_kard,  Privat_Versicherung, Privat,
-      
+      Versicherungspraemien, 
+      Spenden,
+      Kirche,  
+      Steuerberater, 
+      0,
+      Privat_Debit, 
+      Privat_Versicherung, 
+      Privat,
       Einnahmen - Pauschale - SVA - Reisespesen,
-      
       Einnahmen,
       Einnahmen
       
     )
   )
-  
+#  stop("hier ist ein Fehler mit den Spenden die kommen hier nicht hinein")
   cat("\nSpeichern der Buchungsliste \n Pfad: ", konto_path, "\n\n")
   
   
 
-          
+    #  print( rbind(knt, knt_kirche, knt_spenden, knt_sva))    
           
   write.csv(
     rbind(knt, knt_kirche, knt_spenden, knt_sva),
@@ -374,31 +335,33 @@ rslt2[[1]][7] <-  paste0(rslt2[[1]][7], pauschale*100, "%")
   )
 
    
-   
+
   rslt$Eingaben.Ausgaben <- rslt$Betrag
-  rslt$Eingaben.Ausgaben[ 7] <- NA
+  rslt$Eingaben.Ausgaben[7] <- NA
+  
   rslt$Pauschale <- rslt$Betrag
-  rslt$Pauschale[c(2,3,6,9)] <- NA
+  rslt$Pauschale[c(2, 3, 6, 9)] <- NA
   rslt$Pauschale[8] <-   rslt$Pauschale[17]
+  rslt <- rslt[-17, -3]
   
-  
-  rslt<- rslt[-17,-3]
-  
-  #cat("\n")
+
   rslt$Eingaben.Ausgaben <-
     stp25rndr::Format2(rslt$Eingaben.Ausgaben, 2, decimal.mark = ",")
   rslt$Pauschale <-
     stp25rndr::Format2(rslt$Pauschale, 2, decimal.mark = ",")
+  
   write.csv(rslt, paste0(konto_path, "Buchungsliste.csv"))
   
- 
+  cat("\n------Privat.csv \n")
      
- 
+ print(
+   list(
+   knt_privat[-2], Privat_Debit[-2], knt_versicherung[-2], knt_sva_privat[-2]))
      
-  write.csv(
-    rbind(knt_privat, Privat_debit, knt_versicherung, knt_sva_privat),
-    paste0(konto_path, "Privat.csv")
-  )
+  # write.csv(
+  #   rbind(knt_privat, Privat_Debit, knt_versicherung, knt_sva_privat),
+  #   paste0(konto_path, "Privat.csv")
+  # )
   
   rslt
 }
@@ -463,5 +426,95 @@ AfA <-
   }
 
 
+
+# setwd("C:/Users/wpete/Dropbox/2_Finanzen/Steuer")
+# 
+# require(stp25Project)
+# afa<-
+#   AfA(
+#     list(
+#       nr = 1, datum = "26.01.2012",
+#       pos = "PC L412 Windert GmbH, Bad Oldeslose",
+#       type = "A",
+#       euro = 463.95, nd = 3, rs = 1),
+#     list(
+#       nr = 33, datum = "09.11.2012",
+#       pos = "Buero Fenster+Tuer EA-Ceramic e.U. Hallerstraße 35, Ibk",
+#       type = "I",
+#       euro = 3517.20, nd = 10, rs = 0.5),
+#     list(
+#       nr = 34, datum = "03.12.2012",
+#       pos = "Buero Fussboden-Sanierung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+#       type = "I",
+#       euro = 2271.71, nd = 10, rs = 0.5),
+#     list(
+#       nr = 35, datum = "03.12.2012",
+#       pos = "Buero Fussboden-Heizung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+#       type = "I",
+#       euro = 912.48, nd = 10, rs = 0.5),
+#     list(
+#       nr = 21694, datum = "23.01.2018",
+#       pos = "Thinkpad T450s Matthias Rimkus",
+#       type = "A",
+#       euro = 475, nd = 3, rs = 1),
+#     list(
+#       nr = 130603,  datum = "07.06.2013",
+#       pos = "Bueromöbel Leitgeb&leitgeb 6020 Innsbruck",
+#       type = "I",
+#       euro = 8436.00, nd = 10, rs = 0.5),
+#     
+#     list(
+#       nr = 1024382,  datum = "22.09.2021",
+#       pos = "THINKPAD T470s ITSCO",
+#       type = "A",
+#       euro = 566.90, nd = 3, rs = 1),
+#     
+#     
+#     jahr=2021,
+#     konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2022/"
+#   )
+
+
+#' das File   
+#' umsaetze_2021.csv
+#' ist der direkt aud Reiffeien exportiere Kontospiegel
+# Steuer(
+#   jahr = 2022,
+#   konto = "meinElba_umsaetze_AT763633600001324656_suche.csv",
+#   AfA = afa,
+#   Versicherungspraemien = c(Zuericher = 460.56,
+#                             Uniqa = 0),
+#   Betriebsausgaben = data.frame(
+#     datum = "2022-11-07",
+#     txt = "Amazon OKI B432dn A4-Schwarzweißdrucker (Duplex, Netzwerk)",
+#     euro = -265.40,
+#     id = 999,
+#     einnahmen = NA,
+#     ausgaben  = -265.40,
+#     Pos = "Betriebsausgaben"
+#   ), 
+#   
+#   sva = c(
+#     "AT953200006400089219",
+#     "AT423200006500089219",
+#     "Sozialversicherungsanstalt",
+#     "Sozialvers.Anstalt"
+#   ),
+#   
+#   
+#   
+#   privat = c(
+#     "AMAZON",
+#     "Delinat",
+#     "Lebensmitteltechnik",
+#     "Deutscher Pressevertrieb",
+#     "TIWAG",
+#     "Privatentnahme",
+#     "Hechenblaikner",
+#     "0006000079753746",
+#     "Wolfgang Peter"
+#   ),
+#   konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2022/"
+# )
 
 
