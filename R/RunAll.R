@@ -62,6 +62,7 @@ Projekt('', '", project,"', '" ,datum,"')
 
 
 #+ tab-arbeitszeit, include=TRUE, echo=FALSE, results='asis'
+  # Tab_Index ( -1)
   source('Stundenliste.R')
   Output( arbeitszeit[-nrow(arbeitszeit),] )
 
@@ -74,18 +75,33 @@ Projekt('', '", project,"', '" ,datum,"')
 
 
 #+ tidy-data, include=TRUE
-#
-# DF %>% 
-#        mutate(jahr = factor(jahr)) %>%
-#        Label(sex='Geschlecht')
+DF <-
+  DF %>%
+  mutate(
+    participants = seq_len(nrow(DF)),
+    #  age =  as.numeric(age),
+    #  sex = factor(sex,   labels = c('Male',  'Female',   'Other')),
+    #  gender	=  factor(gender,   labels =  c('Male' , 'Female', ' Non-Binary', 'N')),
+    #  education = factor(edu, 1:3, labels =  c('Secondary', 'A Levels', 'University')),
+    #  country = NA,
+    #  group = Treatment,
+    dummy = 1
+  ) %>%
+  Label(sex = 'Geschlecht')
 #
 #  save(DF, file='Processed data/", Rdata,"')
 
 
 #+ filter, results='asis'
 #
-#  N <- nrow(DF)
+N <- nrow(DF)
+DF <- DF %>% dplyr::filter(
+                 education !='Secondary' 
+                 )
 
+
+require(report)
+report_participants(DF)
 
 
 # -- Analyze Data ----------------------------------------------
