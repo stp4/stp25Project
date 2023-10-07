@@ -1,10 +1,10 @@
 Package: stp25Project
 Title: Projekt Verwaltung
-Description: Erstellen von einem neuen Projekt.
+Description: Creating a new project.
 Authors@R: person("Wolfgang", "Peter", email = "w.peter@statistik-peter.at",  role = c("aut", "cre"))
 Type: Package
 Version: 0.3.2
-Date: 2023-07-23
+Date: 2023-10-07
 License: GPL-3
 Encoding: UTF-8
 Imports: 

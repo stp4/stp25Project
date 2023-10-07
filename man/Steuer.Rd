@@ -7,9 +7,9 @@
 Steuer(
   jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   konto = "umsaetze2019.csv",
-  SVA = NA,
-  Betriebsausgaben = c(VISA = 0, Buecher = 0),
+  pattern_debit = "Debit",
   Reisespesen = c(Bus = 0, Taxi = 0),
+  Betriebsausgaben = NULL,
   Versicherungspraemien = 0,
   Steuerberater = 0,
   pauschale = 0.06,
@@ -17,13 +17,12 @@ Steuer(
     = c(0, 0)),
   konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2019/",
   eigene_buchung_konto = c("AT573626000100540567", "AT573626000000540567"),
-  visa = "VISA-RECHNUNG",
   versicherung = c("UNIQA"),
   privat = c("Delinat", "Lebensmitteltechnik", "Deutscher Pressevertrieb", "TIWAG",
     "Privatentnahme", "Hechenblaikner", "0006000079753746", "Wolfgang Peter"),
   kirche = "Bischöfliche",
   spenden = c("ÖRK", "Kinderpatenschaft"),
-  sva = "AT69ZZZ00000003350"
+  sva = ""
 )
 }
 \arguments{
@@ -31,15 +30,26 @@ Steuer(
 
 \item{konto}{Kontospiegel}
 
-\item{SVA, Betriebsausgaben, Reisespesen, Versicherungspraemien, Steuerberater}{Summe,}
+\item{Betriebsausgaben}{data.frame
+   Betriebsausgaben = data.frame(
+datum = "2022-11-07",
+txt = "Amazon OKI B432dn A4-Schwarzweißdrucker (Duplex, Netzwerk)",
+euro = -265.40,
+id = 999,
+einnahmen = NA,
+ausgaben  = -265.40,
+Pos = "Betriebsausgaben"
+)}
 
-\item{pauschale}{Pauschalierung für Kleinunternehmer}
+\item{pauschale}{Pauschalierung fuer Kleinunternehmer}
 
 \item{AfA, afa_anlagen, afa_instandsetzung}{Abschreibung}
 
 \item{konto_path}{Pfad}
 
 \item{eigene_buchung_konto, visa, versicherung, privat, kirche, spenden, sva}{Such-String fuer die jeweilige Buchung}
+
+\item{SVA, Reisespesen, Versicherungspraemien, Steuerberater}{Summe,}
 }
 \value{
 data.frame
@@ -49,11 +59,11 @@ https://finanzonline.bmf.gv.at/fon/login.do
 +4369981530117
 }
 \details{
-grundsätzlich bis 30. April des Folgejahres bis 30. Juni bei Übermittlung auf elektronischem Wege
+grundsaetzlich bis 30. April des Folgejahres bis 30. Juni bei uebermittlung auf elektronischem Wege
 
  
 
-Önace Code	Text	Tätigkeit 73.	Markt- und Meinungsforschung
+Önace Code	Text	Taetigkeit 73.	Markt- und Meinungsforschung
 
 
 Angaben zur Kommunalsteuer
@@ -63,15 +73,15 @@ Bemessungsgrundlage: 0
 Gesamtbetrag der Bemessungsgrundlage: 0
 Gesamtbetrag Kommunalsteuer: 0
 
-Tätigkeit als  Liebhaberei 
-Wenn die Vermietung oder Verpachtung über einen längeren Zeitraum keinen Gewinn
-erwarten lässt, sind diese Einkünfte steuerlich unbeachtlich. Das heißt, dass Verluste aus
-dieser Tätigkeit mit anderen positiven Einkünften nicht ausgeglichen werden dürfen.
+Taetigkeit als  Liebhaberei 
+Wenn die Vermietung oder Verpachtung ueber einen laengeren Zeitraum keinen Gewinn
+erwarten laesst, sind diese Einkuenfte steuerlich unbeachtlich. Das heißt, dass Verluste aus
+dieser Taetigkeit mit anderen positiven Einkuenften nicht ausgeglichen werden duerfen.
 Sollte sich ausnahmsweise ein Gewinn ergeben, ist dieser nicht steuerpflichtig.
 Zu unterscheiden ist dabei zwischen der so genannten  kleinen  Vermietung wie z.B. der
-Vermietung von Ein- und Zweifamilienhäusern, Eigentumswohnungen oder Bungalows und
+Vermietung von Ein- und Zweifamilienhaeusern, Eigentumswohnungen oder Bungalows und
 der  großen  Vermietung. Das ist die Vermietung von mindestens drei Wohneinheiten,
-betrifft also vor allem Miethäuser (siehe dazu das Infoblatt  Liebhaberei im
+betrifft also vor allem Miethaeuser (siehe dazu das Infoblatt  Liebhaberei im
                                     Steuerrecht ).
 }
 \examples{
@@ -85,17 +95,17 @@ AfA(
     euro = 463.95, nd = 3, rs = 1),
   list(
     nr = 33, datum = "09.11.2012",
-    pos = "Büro Fenster+Tür EA-Ceramic e.U. Hallerstraße 35, Ibk",
+    pos = "Buero Fenster+Tuer EA-Ceramic e.U. Hallerstraße 35, Ibk",
     type = "I",
     euro = 3517.20, nd = 10, rs = 0.5),
   list(
     nr = 34, datum = "03.12.2012",
-    pos = "Büro Fussboden-Sanierung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+    pos = "Buero Fussboden-Sanierung EA-Ceramic e.U. Hallerstraße 35. Ibk",
     type = "I",
     euro = 2271.71, nd = 10, rs = 0.5),
   list(
     nr = 35, datum = "03.12.2012",
-    pos = "Büro Fussboden-Heizung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+    pos = "Buero Fussboden-Heizung EA-Ceramic e.U. Hallerstraße 35. Ibk",
     type = "I",
     euro = 912.48, nd = 10, rs = 0.5),
   list(
@@ -105,7 +115,7 @@ AfA(
     euro = 475, nd = 3, rs = 1),
   list(
     nr = 130603,  datum = "07.06.2013",
-    pos = "Büromöbel Leitgeb&leitgeb 6020 Innsbruck",
+    pos = "Bueromöbel Leitgeb&leitgeb 6020 Innsbruck",
     type = "I",
     euro = 8436.00, nd = 10, rs = 0.5),
   jahr=2019,
