@@ -25,9 +25,9 @@ install_projekt <- function(project = "000 Dummy",
                             betreff = "statistische Beratung",
                             templat = "small",
                             zwischenrechnung = zwischenrechnung,
-                            BANK = "BANK",
-                            IBAN = "IBAN",
-                            BIC = "BIC"
+                            BANK = "TIROLER SPARKASSE",
+                            IBAN = "AT89 2050 3033 0288 4626",
+                            BIC = "SPIHAT22XXX"
                             
                             ) {
   

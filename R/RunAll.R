@@ -63,9 +63,10 @@ Projekt('', '", project,"', '" ,datum,"')
 
 #+ tab-arbeitszeit, include=TRUE, echo=FALSE, results='asis'
   # Tab_Index ( -1)
+  # set_opt(table =list(include.tabel.number = FALSE)) 
   source('Stundenliste.R')
   Output( arbeitszeit[-nrow(arbeitszeit),] )
-
+  # set_opt(table =list(include.tabel.number = TRUE)) 
 
 
 # -- Load Data ----------------------------------------------

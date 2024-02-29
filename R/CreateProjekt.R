@@ -36,9 +36,9 @@ CreateProjekt<- function(Name = "Romana Dampf",
                      #    googel_zell="A:K",
                          Templat="small",
                      zwischenrechnung=400,
-                     BANK = "BANK",
-                     IBAN = "IBAN",
-                     BIC = "BIC"
+                     BANK = "TIROLER SPARKASSE",
+                     IBAN = "AT89 2050 3033 0288 4626",
+                     BIC = "SPIHAT22XXX"
                          
 ){
   
