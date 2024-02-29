@@ -14,15 +14,15 @@ Vertrag<- function(name="Vorname Nachname",
                    h=" 5-9 Stunden" , 
                    Betreff="statistische Beratung",
                    zwischenrechnung=400,
-                   BANK = "BANK",
-                   IBAN = "IBAN",
-                   BIC = "BIC"
+                   BANK = "TIROLER SPARKASSE",
+                   IBAN = "AT89 2050 3033 0288 4626",
+                   BIC = "SPIHAT22XXX"
                    ){
   
   
   Kunde <- paste(
     " ", name, " ", adr, "\n\n",
-    "Telefon/Skype: ", tel, ", E-Mail: ", email, "\n\n"
+    "Telefon: ", tel, ", E-Mail: ", email, "\n\n"
   )
   
   
