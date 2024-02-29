@@ -12,9 +12,9 @@ Rechnung(
   Adresse = " ",
   Anrede = "Sehr geehrte Frau",
   Betreff = "Beratung",
-  BANK = "BANK",
-  IBAN = "IBAN",
-  BIC = "BIC"
+  BANK = "TIROLER SPARKASSE",
+  IBAN = IBAN(),
+  BIC = "SPIHAT22XXX"
 )
 }
 \arguments{

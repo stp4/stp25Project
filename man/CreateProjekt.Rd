@@ -7,9 +7,9 @@
 CreateProjekt(
   Name = "Romana Dampf",
   Anrede = "Sehr geehrte Frau",
-  Email = "romi@gmail.com",
-  Tel = "Tel 0650 8550 525",
-  Adresse = "Srasse, Ort",
+  Email = "hd@gans.dampf.com",
+  Tel = "Tel 0000 12345678",
+  Adresse = "Strasse, Ort",
   Aufwand = "5-9 Stunden",
   Thema = "Forschung und Entwicklung",
   Kommentar = "Kein Kommentar",
@@ -24,9 +24,9 @@ CreateProjekt(
   FunktionsTest = FALSE,
   Templat = "small",
   zwischenrechnung = 400,
-  BANK = "BANK",
-  IBAN = "IBAN",
-  BIC = "BIC"
+  BANK = "TIROLER SPARKASSE",
+  IBAN = IBAN(),
+  BIC = "SPIHAT22XXX"
 )
 }
 \arguments{

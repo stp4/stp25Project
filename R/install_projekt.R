@@ -26,7 +26,7 @@ install_projekt <- function(project = "000 Dummy",
                             templat = "small",
                             zwischenrechnung = zwischenrechnung,
                             BANK = "TIROLER SPARKASSE",
-                            IBAN = "AT89 2050 3033 0288 4626",
+                            IBAN = IBAN(),
                             BIC = "SPIHAT22XXX"
                             
                             ) {

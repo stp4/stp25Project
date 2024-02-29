@@ -22,9 +22,9 @@ install_projekt(
   betreff = "statistische Beratung",
   templat = "small",
   zwischenrechnung = zwischenrechnung,
-  BANK = "BANK",
-  IBAN = "IBAN",
-  BIC = "BIC"
+  BANK = "TIROLER SPARKASSE",
+  IBAN = IBAN(),
+  BIC = "SPIHAT22XXX"
 )
 }
 \arguments{

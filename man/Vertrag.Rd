@@ -14,9 +14,9 @@ Vertrag(
   h = " 5-9 Stunden",
   Betreff = "statistische Beratung",
   zwischenrechnung = 400,
-  BANK = "BANK",
-  IBAN = "IBAN",
-  BIC = "BIC"
+  BANK = "TIROLER SPARKASSE",
+  IBAN = IBAN(),
+  BIC = "SPIHAT22XXX"
 )
 }
 \arguments{

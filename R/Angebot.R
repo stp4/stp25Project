@@ -59,8 +59,8 @@ author: Dipl.-Ing. Wolfgang Peter
 return-address: 
 - Innsbrucker Straße 14
 - 6176 Völs
-return-phone: +43 699 8153 0117
-return-email: w.peter@statistik-peter.at 
+return-phone: ', phone(), '
+return-email: ', email(), '
 
 address:
 ',

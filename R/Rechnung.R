@@ -13,7 +13,7 @@ Rechnung<- function(KNr=0,
                     Anrede= "Sehr geehrte Frau",
                     Betreff="Beratung",
                     BANK = "TIROLER SPARKASSE",
-                    IBAN = "AT89 2050 3033 0288 4626",
+                    IBAN = IBAN(),
                     BIC = "SPIHAT22XXX"
                    ){
  
@@ -163,7 +163,7 @@ Data Engineering & Statistics
 Innsbruckerstr 14
 6176 Voels / Innsbruck
 
-Mobil: +43 699 81530117
+Mobil: ', phone(), '
 http://statistik-peter.at/
 
   ')}

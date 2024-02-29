@@ -15,9 +15,9 @@ Stundenliste(
   anrede,
   betreff,
   zwischenrechnung = 400,
-  BANK = "BANK",
-  IBAN = "IBAN",
-  BIC = "BIC"
+  BANK = "TIROLER SPARKASSE",
+  IBAN = IBAN(),
+  BIC = "SPIHAT22XXX"
 )
 }
 \arguments{

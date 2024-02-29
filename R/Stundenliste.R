@@ -14,7 +14,7 @@ Stundenliste <- function(euro = 85,
                          betreff,
                          zwischenrechnung = 400,
                          BANK = "TIROLER SPARKASSE",
-                         IBAN = "AT89 2050 3033 0288 4626",
+                         IBAN = IBAN(),
                          BIC = "SPIHAT22XXX") {
   jetzt <- Sys.time()
   # print(zeit)

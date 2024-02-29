@@ -15,9 +15,9 @@
 #'
 CreateProjekt<- function(Name = "Romana Dampf", 
                          Anrede = "Sehr geehrte Frau",
-                         Email = "romi@gmail.com",
-                         Tel = "Tel 0650 8550 525",
-                         Adresse = "Srasse, Ort",
+                         Email = "hd@gans.dampf.com",
+                         Tel = "Tel 0000 12345678",
+                         Adresse = "Strasse, Ort",
                          Aufwand = "5-9 Stunden",
                          Thema = "Forschung und Entwicklung",
                          Kommentar = "Kein Kommentar",
@@ -37,7 +37,7 @@ CreateProjekt<- function(Name = "Romana Dampf",
                          Templat="small",
                      zwischenrechnung=400,
                      BANK = "TIROLER SPARKASSE",
-                     IBAN = "AT89 2050 3033 0288 4626",
+                     IBAN = IBAN(),
                      BIC = "SPIHAT22XXX"
                          
 ){
