@@ -1,0 +1,351 @@
+---
+title: "Exampel Artificial Hip Joint"
+format: html
+---
+
+
+```{r setup}
+#| include: false
+
+require(tidyverse)
+require(knitr)
+require(stp25stat2)
+require(stp25tools)
+require(stp25samplesize) 
+require(stp25output2)
+require(gt)
+require(pwr)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  out.width = "100%",
+  comment = "#"
+)
+
+options(
+  knitr.kable.NA = "",
+  width = 60
+)
+```
+
+
+The examples are all stolen from Bortz Linert 2008. 
+
+Occasionally, an artificial hip joint is required for severe hip joint degeneration. The aim is to examine whether this surgical procedure improves the patient's quality of life.
+
+ 
+
+::: column-margin
+ Bortz, Jürgen, und Gustav A. Lienert. Kurzgefasste Statistik für die klinische Forschung: Leitfaden für die verteilungsfreie Analyse kleiner Stichproben; mit 13 Abblidungen und 97 Tabellen sowie zahlreichen Formeln. 3., Aktualisierte und Bearbeitete Auflage, Springer, 2008.
+:::
+
+
+
+
+::: {.panel-tabset}
+
+
+## Study with a very small sample
+
+For administrative reasons, only 10 patients can be included in the study.
+
+### Ethics Application
+
+As the sample size is limited to 10 participants, we need to perform a power analysis for the ethics application.
+
+ 
+ 
+ 
+```{r}
+#'We will guess that the effect sizes will be large.
+#'for t-tests: 0.2=small, 0.5=medium, and 0.8 large effect sizes
+rst1 <- pwr.t.test(#d=0.8, 
+           n= 10, 
+           sig.level=0.05, 
+           power = .80,
+           type="paired",
+           alternative="greater") |> sample_size()
+
+rst1 |> gt()
+```
+ 
+ 
+Based on the present experimental design and sample size (n=10), a priori power analysis indicates that a detectable difference in change of correct answers with a type I error rate of 0.05 and 80% power is d = 0.85.
+ 
+ 
+### Analyse 
+
+Test selection: We have a small sample, so we choose a non-parametric test.
+
+One possibility would be the signed-rank test but we coos the Wilcoxon signed-rank test.
+The Wilcoxon signed-rank test and the signed-rank test are different tests, so be careful!
+With the signed-rank test, a sort of chi-square test is calculated using the signs of the measured values.
+
+```{r}
+#| include: false
+
+#' Bortz Linert Seite 234
+#' 
+DF<- get_data("
+id t0 t1 sex    age Pain Energy Sleep   Mobility Activities Medication Work Pos.feel Think
+1  17 20 male   59    5      4     4        5          4          5    5        4     4
+2  22 21 female 66    4      3     3        4          4          5    4        5     4
+3  22 21 male   75    4      5     4        5          5          5    4        4     4
+4  15 22 female 64    5      4     4        4          4          4    4        4     4
+5  24 24 female 58    4      4     5        4          4          4    4        4     5
+6  22 22 male   73    4      4     4        4          4          4    5        4     4
+7  21 23 male   75    4      4     4        4          4          4    4        5     4
+8  21 21 female 83    4      5     4        5          5          5    3        4     4
+9  17 22 male   64    5      5     4        5          5          4    4        3     3
+10 21 23 male   77    4      4     5        4          4          3    4        4     5
+") |> mutate(
+  delta = t1-t0,
+  treatment = factor("Treat", c("Control", "Treat"))
+)
+  
+ 
+```
+ 
+ 
+```{r}
+#| include: false
+ rslt2 <- wilcox.test(DF$delta, alternative = "greater", mu = 0)
+```
+ 
+```{r}
+#| tbl-cap: Means, Standard Deviations, and Wilcoxon signed rank test with continuity correction
+
+
+#'
+#' In diesem Beispiel wird der statistische Test manuell programmiert, 
+#' indem die Funktion immer in der folgenden Form geschrieben wird:
+#' 
+#' function(x, by, ... ){ mach_was(x, by)
+#' 
+
+SD_pooled=sqrt((var(DF$t0) + var(DF$t1))/2)
+
+DF |> Tbll_desc(
+  delta[1],
+  include.n = FALSE,
+  include.custom = 
+    function(x, by, ... ){
+      cbind(
+        d = round(mean(x)/SD_pooled, 2),
+        # t.test= t.test(x, alternative = "greater", mu = 0) |> APA(),
+        # Wilcoxon signed rank test with continuity correction
+        wilcox.test =wilcox.test(x, alternative = "greater", mu = 0) |> APA()
+      )
+      }
+  
+  ) -> rslt3
+
+rslt3 |> gt()
+
+```
+ 
+```{r}
+#| tbl-cap: power analysis
+rslt4 <- 
+  pwr.t.test(
+    d=0.78, 
+    n= 10, 
+    sig.level=0.037, 
+    type="paired",
+    alternative="greater") |> sample_size()
+rslt4 |> gt()
+```
+ 
+ 
+ 
+### Results
+
+A statistically significant effect on quality of life was found after the treatment. `r APA(rslt2)`.
+An artificial hip joint improves the quality of life. 
+ 
+
+
+Based on the current experimental design, with a sample size of 10 and a difference in change of `r rslt3$d`, and a type I error rate of 0.037, a posteriori power analysis revealed that the power of the Wilcoxon test was `r rslt4$power`%.
+ 
+ 
+## Large Sampel
+ 
+In this example, we have the opportunity to recruit more participants, so we calculate the sample size for the ethics application using the alpha, beta and effect size metrics.
+ 
+ 
+ 
+### Ethics Application
+
+
+
+
+
+Is there difference in treatment (Control, Tretment)
+across age (<70, >70) and gender (male, female)?
+  
+  + Outcome: subjectively perceived quality of life.  Quality of Life (WHOQOL)
+  + Patients reassess their quality of life 12 weeks after the operation.
+  + H0 = 0,   H1 ≠ 0
+  + Categories of interest: Treatment, Age, and Gender
+  + Numerator df = Treat DF * Age DF * Stage DF = (2-1)*(2 1)*(2-1) 
+  + Number of groups = Treat*Age*Stage = 2*2*2 
+  + You don’t have background info, so you guess that there is a  medium effect size
+  + For f-tests:  0.1=small, 0.25=medium, and 0.4 large effect sizes
+
+```{r}
+sample_size_anova(
+  Drug = c("Control", "Tretment"),
+  Age = c("<70", ">70"),
+  Stage = c("Male", "Female" ),
+  effect =  "medium"
+) |> gt()
+```
+
+
+```{r}
+#| include: false
+
+set.seed(42)
+
+my_model <- function(x, treatment, age, sex, time) {
+  #Alte haben schlechtere Werte am beginn
+  # 1 gut 5 schlecht
+  x <- ifelse(x < 3 & time == "t0" & age > 70, 2, x)
+  
+  x <- ifelse(x > 3  & time == "t1" &  treatment == "Treat" & age < 70, 3, x)
+  x
+}
+
+
+DF_long <-
+  fake_data(
+    n = 130,
+    repeated = 2,
+    treatment =  c("Control", "Treat"),
+    sex = c("male", "female"),
+    age = 50:85,
+    #Physical
+    Pain  = 3:5,
+    Energy  = 1:5,
+    Sleep  = 1:5,
+    Mobility  = 2:5,
+    Activities  = 1:5,
+    Medication  = 1:5,
+    Work  = 1:5,
+    #     Psychological
+    Pos.feel  = 1:5,
+    Think  = 1:5,
+    Esteem  = 1:5,
+    Body  = 1:5,
+    Neg.feel  = 1:5,
+    Spirituality   = 1:5
+  ) |> mutate(
+    Pain =  my_model(Pain, treatment, age, sex, time),
+    Energy =  my_model(Energy, treatment, age, sex, time),
+    Mobility =  my_model(Mobility, treatment, age, sex, time),
+    Activities =  my_model(Activities, treatment, age, sex, time),
+    Medication =  my_model(Medication, treatment, age, sex, time),
+    Work =  my_model(Work, treatment, age, sex, time),
+    Pos.feel =  my_model(Pos.feel, treatment, age, sex, time),
+    Think =  my_model(Think, treatment, age, sex, time),
+    Esteem =  my_model(Esteem, treatment, age, sex, time),
+    Body =  my_model(Body, treatment, age, sex, time),
+    Neg.feel =  my_model(Neg.feel, treatment, age, sex, time),
+    Spirituality =  my_model(Spirituality, treatment, age, sex, time),
+    Physical = Pain + Energy + Mobility + Activities + Medication + Work,
+    Psychological =  Pos.feel+Think+Esteem +Body +Neg.feel+ Spirituality
+  )
+
+
+#head(DF_long)
+#bwplot(Physical ~ time, DF_long)
+
+# Wilder workaraund muss verbessert werden!
+DF1 <- DF_long |> 
+  select(id ,treatment, sex, age, Psychological,time) |>
+  Wide( Psychological~ time ) |> 
+  mutate(Psychological = t1 -t0) |> select(id ,treatment, sex, age, Psychological)
+ 
+DF2 <- DF_long |> 
+  select(id ,treatment, sex, age, Physical,time) |>
+  Wide( Physical~ time ) |> 
+  mutate(Physical = t1 -t0)|> select(  Physical)
+
+DF <- cbind(DF1, DF2)
+
+```
+
+```{r}
+#| tbl-cap: Sociodemographic Characteristics of Participants at Baseline. 
+DF |>
+  Tbll_desc(sex, age, by =~ treatment, include.total = TRUE) |> gt()
+```
+
+```{r}
+#| include: false
+library(faux)
+ require(stp25stat2)
+
+cmat <- c(
+rho1_2 = -.6, rho1_3 = -.5,  rho1_4 = -.5,  rho1_5 =  .5,  rho1_6 = -.2,
+              rho2_3 =  .4,  rho2_4 =  .4,  rho2_5 = -.3,  rho2_6 =  .2,
+                             rho3_4 =  .8,  rho3_5 =  .3,  rho3_6 =  .2,
+                                            rho4_5 =  .2,  rho4_6 =  .3,
+                                                           rho5_6 =  .2
+          )
+as.vector(cmat)
+dat <- 
+  rnorm_multi(130, 6, 0, 1, 
+              cmat, 
+              varnames = c("Pain", "Energy", "Mobility", 
+                          "Activities", "Medication", "Work"))
+
+
+```
+
+```{r}
+#| tbl-cap: Descriptive Statistics and Correlations for Study Variables
+dat |> Tbll_corr(  Pain,Energy,Mobility,Activities,Medication,Work,
+                   include.stars = FALSE) |> gt()
+```
+
+```{r}
+#| tbl-cap: Item Statistics
+dat |> Tbll_reliability(
+  Pain,  Energy,  Mobility,  Activities,  Medication,  Work,
+  include.item_statistics = TRUE,
+  check.keys = TRUE
+  
+) -> dat
+
+dat$item_statistics |> gt()
+
+```
+
+```{r}
+#| tbl-cap: Reliability Cronbachs Alpha
+dat$scale_statistics |> gt()
+```
+
+
+```{r}
+
+Tbll_mean(Physical ~ treatment + sex + age, DF) |> gt()
+```
+
+
+
+```{r}
+#| tbl-cap: Regression Physical
+Physical <- lm(Physical ~ treatment + sex + I(age>70), DF)
+Psychological<- lm(Psychological ~ treatment + sex + I(age>70), DF)
+
+Tbll_reg(Physical, Psychological,
+         digits=c(1,1,2,1)) |> gt() |>  Output()
+```
+
+
+
+:::
+ 

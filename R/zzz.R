@@ -1,6 +1,3 @@
-#<<<<<<< HEAD
-#=======
-IBAN <- function() "AT "
-phone <- function()  "+43 "
-email <- function()  "w.peter "
-#>>>>>>> 849468d06912ca63c50497d84a6e249c3982271e
+IBAN <- function() "AT89 2050 3033 0288 4626"
+phone <- function()  "+43 699 8153 0117"
+email <- function()  "w.peter@statistik-peter.at"
