@@ -38,27 +38,30 @@ require(stp25tools)
 # source('R/miscFun.r', echo=F)
 Projekt('', '", project,"', '" ,datum,"')
 
-# set_opt(
-#   caption = TRUE,
-#   percent = list(
-#     style = 2,
-#     null_percent_sign =  ' . ',
-#     digits = 0,
-#     #percentage_str = '',
-#     #include_name = ', n (%)'
-#   ),
-#   mean = list(style = 1,
-#               include_name = ', mean (sd)'),
-#   median = list(style = 3,
-#                 include_name = ', median (range)'),
-#   Fstat =list(include.statistic=FALSE),
-#   table = list(
-#     stubhead = 'Items',
-#     measure.name.m = 'Mittelwert/Prozent',
-#     measure.name.total = 'Summe',
-#     measure.name.statistics = 'P-Werte'
-#   )
-# )
+set_opt(
+  caption = TRUE,
+  percent = list(
+    style = 2,
+    null_percent_sign =  ' . ',
+    digits = 0
+    #percentage_str = '',
+    #include_name = ', n (%)'
+  ),
+  mean = list(style = 1,
+              include_name = ', mean (sd)'),
+  median = list(style = 1,
+                include_name = ', median (qntl)'),
+  Fstat =list(include.statistic=TRUE),
+  table = list(
+    stubhead = 'Items',
+    measure.name.m = 'Average',
+    # measure.name.total = 'Summe',
+    measure.name.statistics = 'P-value',
+    wrap = NULL,
+    wrap_result = NULL
+
+  )
+)
 
 
 #+ tab-arbeitszeit, include=TRUE, echo=FALSE, results='asis'
