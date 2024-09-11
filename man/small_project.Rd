@@ -5,7 +5,7 @@
 \title{title: ", project,"
 author: Wolfgang Peter
 output:
-  pdf_document
+  html_document
 keep_tex: yes
 lang: de-DE
 ---}
@@ -21,7 +21,7 @@ small_project(
 title: ", project,"
 author: Wolfgang Peter
 output:
-  pdf_document
+  html_document
 keep_tex: yes
 lang: de-DE
 ---

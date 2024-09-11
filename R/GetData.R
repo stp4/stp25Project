@@ -7,7 +7,7 @@ paste0(
 #' title: Daten Aufbereiten
 #' author: Wolfgang Peter
 #' output:
-#'   pdf_document
+#'   html_document
 #' keep_tex: yes
 #' lang: de-DE
 #' ---
@@ -32,10 +32,12 @@ require(stp25tools)
 
 
 # -- Tidy Data ---------------------------------------------
-# DF %>% filter(key) %>%
-#        mutate(jahr = factor(jahr)) %>%
+# DF <- DF |> filter(key) |>
+#        mutate(jahr = factor(jahr)) |>
 #        Label(sex=Geschlecht)
 #      
 #  save(DF, file="Processed data/', Rdata,'")
       
-')}
+')
+  
+}

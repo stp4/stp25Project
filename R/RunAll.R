@@ -13,7 +13,7 @@ small_project <-  function(project = "dummy",
 #' title: ", project,"
 #' author: Wolfgang Peter
 #' output:
-#'   pdf_document
+#'   html_document
 #' keep_tex: yes
 #' lang: de-DE
 #' ---
@@ -44,7 +44,7 @@ set_opt(
     style = 2,
     null_percent_sign =  ' . ',
     digits = 0
-    #percentage_str = '',
+    #percentage_str = ''
     #include_name = ', n (%)'
   ),
   mean = list(style = 1,
@@ -80,7 +80,7 @@ set_opt(
 
 #+ tidy-data, include=TRUE
 DF <-
-  DF %>%
+  DF |>
   mutate(
     participants = seq_len(nrow(DF)),
     #  age =  as.numeric(age),
@@ -90,7 +90,7 @@ DF <-
     #  country = NA,
     #  group = Treatment,
     dummy = 1
-  ) %>%
+  ) |>
   Label(sex = 'Geschlecht')
 #
 #  save(DF, file='Processed data/", Rdata,"')
@@ -99,7 +99,7 @@ DF <-
 #+ filter, results='asis'
 #
 N <- nrow(DF)
-DF <- DF %>% dplyr::filter(
+DF <- DF |> dplyr::filter(
                  education !='Secondary' 
                  )
 
@@ -110,7 +110,7 @@ report_participants(DF)
 
 # -- Analyze Data ----------------------------------------------
 #+ results='asis'
-#  DF %>% Tbll_desc(sex) %>% 
+#  DF |> Tbll_desc(sex) |> 
 Output('Soziodemografische Merkmale der Teilnehmer zu Beginn der Studie')
 
 
