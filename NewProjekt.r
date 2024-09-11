@@ -60,9 +60,9 @@ prkt <- stp25Project::CreateProjekt(
   Templat = Templat,
   zwischenrechnung = Zwischenrechnung,
   
-  BANK = "BANK",
-  IBAN = "IBAN",
-  BIC = "BIC"
+  BANK = "TIROLER SPARKASSE",
+  IBAN = "AT89 2050 3033 0288 4626",
+  BIC = "SPIHAT22XXX"
 )
 
 

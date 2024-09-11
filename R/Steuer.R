@@ -97,7 +97,7 @@
 #'   konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2019/" 
 #' )
 #' }
-Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
+Steuer_raiba <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                    konto = "umsaetze2019.csv",
                  
                    pattern_debit= "Debit",
