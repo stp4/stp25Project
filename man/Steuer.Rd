@@ -6,7 +6,7 @@
 \usage{
 Steuer(
   jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
-  konto = "AT892050303302884626_2023-01-01_2023-12-31.xlsx",
+  konto = "konto-spiegel.xlsx",
   konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2023/",
   Versicherung.SVA = NULL,
   privat = c("AMAZON", "Delinat", "GOOGLE", "Deutscher Pressevertrieb", "TIWAG",

@@ -182,7 +182,7 @@ konto_obj <-
 #'   konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2019/" 
 #' )
 #' #' 
-#'  Steuer(konto = "AT892050303302884626_2023-01-01_2023-12-31.xlsx",
+#'  Steuer(konto = "konto-spiegel.xlsx",
 #'         # AfA = afa,
 #'         konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2023/",
 #'         Versicherung.SVA = 75)
@@ -190,7 +190,7 @@ konto_obj <-
 #'         
 #'         
 Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
-                    konto = "AT892050303302884626_2023-01-01_2023-12-31.xlsx",
+                    konto = "konto-spiegel.xlsx",
                     # AfA = afa,
                     konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2023/",
                     Versicherung.SVA =NULL,

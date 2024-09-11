@@ -61,7 +61,7 @@ prkt <- stp25Project::CreateProjekt(
   zwischenrechnung = Zwischenrechnung,
   
   BANK = "TIROLER SPARKASSE",
-  IBAN = "AT89 2050 3033 0288 4626",
+  IBAN = stp25Project::IBAN(),
   BIC = "SPIHAT22XXX"
 )
 
