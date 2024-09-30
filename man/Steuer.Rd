@@ -84,3 +84,49 @@ der  großen  Vermietung. Das ist die Vermietung von mindestens drei Wohneinheit
 betrifft also vor allem Miethaeuser (siehe dazu das Infoblatt  Liebhaberei im
                                     Steuerrecht ).
 }
+\examples{
+ \dontrun{
+afa<- 
+AfA(
+  list(
+    nr = 1, datum = "26.01.2012",
+    pos = "PC L412 Windert GmbH, Bad Oldeslose",
+    type = "A",
+    euro = 463.95, nd = 3, rs = 1),
+  list(
+    nr = 33, datum = "09.11.2012",
+    pos = "Buero Fenster+Tuer EA-Ceramic e.U. Hallerstraße 35, Ibk",
+    type = "I",
+    euro = 3517.20, nd = 10, rs = 0.5),
+  list(
+    nr = 34, datum = "03.12.2012",
+    pos = "Buero Fussboden-Sanierung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+    type = "I",
+    euro = 2271.71, nd = 10, rs = 0.5),
+  list(
+    nr = 35, datum = "03.12.2012",
+    pos = "Buero Fussboden-Heizung EA-Ceramic e.U. Hallerstraße 35. Ibk",
+    type = "I",
+    euro = 912.48, nd = 10, rs = 0.5),
+  list(
+    nr = 21694, datum = "23.01.2018",
+    pos = "Thinkpad T450s Matthias Rimkus",
+    type = "A",
+    euro = 475, nd = 3, rs = 1),
+  list(
+    nr = 130603,  datum = "07.06.2013",
+    pos = "Bueromöbel Leitgeb&leitgeb 6020 Innsbruck",
+    type = "I",
+    euro = 8436.00, nd = 10, rs = 0.5),
+  jahr=2019,
+  konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2019/" 
+)
+#' 
+ Steuer(konto = "konto-spiegel.xlsx",
+        # AfA = afa,
+        konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2023/",
+        Versicherung.SVA = 75)
+        
+}
+        
+}

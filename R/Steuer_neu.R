@@ -14,17 +14,16 @@
 
 
 
-#' Title
+#' Konto aufraumen
 #'
-#' @param x
-#' @param jahr
-#' @param format
+#' @param x data.frame
+#' @param jahr Jahr
+#' @param format format des string Jahr
 #' @param select Posten des Kontos   Buchungsdatum,	Partnername und Betrag
 #'
-#' @return
+#' @return data.frame
 #' @export
 #'
-#' @examples
 make_konto <- function(x,
                        jahr,
                        format = "%d.%m.%Y",
@@ -187,7 +186,7 @@ konto_obj <-
 #'         konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2023/",
 #'         Versicherung.SVA = 75)
 #'         
-#'         
+#' }
 #'         
 Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                     konto = "konto-spiegel.xlsx",
