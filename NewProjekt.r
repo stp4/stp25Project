@@ -1,12 +1,12 @@
 #======================================================
  
-Name      = "Clotting-Coils"    
+Name      = "Hans Hampf"    
 Anrede    = "Sehr geehrter Herr" #  " # " Sehr geehrte  und Herren!" #   "Sehr geehrte Damen und Herren!"
 Email     = "dr.m.dampf@gmail.com, dr.dr.hans@gmail.com"
-Tel       = "  "
-Adresse	  = "Department Radiologie, Anichstrasse 35, 6020 Innsbruck"
+Tel       = "+43 1234 5678 9  "
+Adresse	  = "Newton Institut für Astrologie"
 Aufwand	  = "6 bis 8 Stunden"
-Thema	    = "Radiologie "
+Thema	    = "Mond-Phasen-Verschiebung"
 
 Kommentar = ""
 Betreff   = "statistische Beratung im Zuge einer wissenschaftlichen Arbeit"
@@ -16,11 +16,24 @@ Templat   = "small"
 #  85  Doktorand berufsbegleitend
 # 100  Klinik
 # 135  Firmen
-Stundensatz = 150
+
+
+
+VPI = c(  "2020" = 1.4,  "2021" = 2.8,  "2022" = 8.6,  "2023" = 7.8)
+#Stundensatz = stp25Project::Stundensatz("Firma", VPI)
+Stundensatz = stp25Project::Stundensatz("Student", VPI)
 Zwischenrechnung = 700
 Datum =  format(Sys.time(), "%d.%m.%Y")
 Zeit = format(Sys.time(), "%H:%M")
-Folder  = "C:/Users/stp4/Projekte"
+Folder  = "C:/Users/wpete/Dropbox/1_Projekte/"
+#    /010-Kinderheilkunde
+#    /007-Radiologie
+#    /008 Biogena
+#    /009-Allgemeinmedizin
+#    /002-NURMI
+#    /003-Chirurgie-Innsbruck-VTT
+#    /006-Forum-Skisport"
+#    "C:/Users/wpete/Dropbox/1_Projekte"
  
 # 
 #=====================================================
@@ -29,6 +42,8 @@ Folder  = "C:/Users/stp4/Projekte"
 #=====================================================
 
 
+ 
+ 
 angebot<- "Position                          Aufwand
 Einarbeiten_ins_Thema_und_Kommunikation            2
 Aufbereiten_der_Daten_und_Fehlerprüfung            2

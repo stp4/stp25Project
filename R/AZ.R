@@ -27,24 +27,43 @@
 #'
 #'
 #'}
-AZ <- 
+AZ <-
   function(Lines,
            projektabschluss = 0,
            zwischenrechnungen = FALSE,
            order = TRUE,
            sep = "\\t") {
-  my_az <- 
-    read.table(
-       zz <- textConnection(
-         gsub(sep, " ", Lines)),
-      header = TRUE)
-  close(zz)
-  
-  if (ncol(my_az) == 4)
-    default_AZ(my_az, projektabschluss, order, zwischenrechnungen)
-  else if (ncol(my_az == 5))
-    extended_AZ(my_az, projektabschluss, order, zwischenrechnungen)
-}
+    my_az <-
+      read.table(zz <- textConnection(gsub(sep, " ", Lines)), header = TRUE)
+    close(zz)
+    
+    
+    
+    if (ncol(my_az) == 4) {
+      
+      if( length(intersect(names(my_az), c("Datum", "Start", "Ende", "Task"))) != 4)  {
+        cat("\n Das wurde uebergeben:\n")
+        print(names(my_az))
+        
+        stop( "Ich brauch die Variablen Datum, Start, Ende, Task" )
+      }
+      my_az <- my_az[c("Datum", "Start", "Ende", "Task")]
+      default_AZ(my_az, projektabschluss, order, zwischenrechnungen)
+    }
+    else if (ncol(my_az == 5)) {
+      
+      
+      if( length(intersect(names(my_az), c("Datum", "Start", "Ende", "Projekt", "Task"))) != 4)  {
+        cat("\n Das wurde uebergeben:\n")
+        print(names(my_az))
+        
+        stop( "Ich brauch die Variablen Datum, Start, Ende, Task, Projekt" )
+      }
+      my_az <- my_az[c("Datum", "Start", "Ende", "Projekt", "Task")]
+      
+      extended_AZ(my_az, projektabschluss, order, zwischenrechnungen)
+    }
+  }
 
 
 h_to_time <- 
@@ -245,3 +264,5 @@ default_AZ <-  function(my_az, projektabschluss, order, zwischenrechnungen =FALS
 # )
 #  
 # x[[1]]
+
+ 
