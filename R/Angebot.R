@@ -94,7 +94,7 @@ warning = FALSE)
 x <- "', x, '"
 stundensatz <- ', stundensatz, '
 
-angebot <-   stp25aggregate::GetData(x, output = FALSE)
+angebot <- stp25tools::get_data(x)
 angebot[, 1] <- gsub("_", " ", as.character(angebot[, 1]))
 mysum<- sum(angebot[, 2])
 #angebot <- rbind(angebot , list("Summe", mysum))
