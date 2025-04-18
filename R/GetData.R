@@ -18,8 +18,8 @@ paste0(
 require(tidyverse)
 require(stp25tools)
 
-#require(stp25output2)
-#require(stp25stat2)
+# require(stp25output2)
+# require(stp25stat2)
 # require(stp25plot)
 # source('R/miscFun.r', echo=F)
 ",myswd,

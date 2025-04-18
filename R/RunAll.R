@@ -38,30 +38,55 @@ require(stp25tools)
 # source('R/miscFun.r', echo=F)
 Projekt('', '", project,"', '" ,datum,"')
 
-set_opt(
-  caption = TRUE,
-  percent = list(
-    style = 2,
-    null_percent_sign =  ' . ',
-    digits = 0
-    #percentage_str = ''
-    #include_name = ', n (%)'
-  ),
-  mean = list(style = 1,
-              include_name = ', mean (sd)'),
-  median = list(style = 1,
-                include_name = ', median (qntl)'),
-  Fstat =list(include.statistic=TRUE),
-  table = list(
-    stubhead = 'Items',
-    measure.name.m = 'Average',
-    # measure.name.total = 'Summe',
-    measure.name.statistics = 'P-value',
-    wrap = NULL,
-    wrap_result = NULL
 
-  )
-)
+
+
+ 
+ 
+set_opt(
+  #  output = 'docx',
+  #  fig_folder = 'Fig/',
+  #  data_folder = 'Raw data/',
+  #  html_folder = 'Results/'
+  #  caption =  TRUE,  #  => include N in caption
+  #  center =  TRUE,
+  #  sep_element = ', ',
+  #  brackets = c('[', ']'),
+  table =    list(
+               wrap = TRUE, 
+               #  wrap_results = TRUE,
+               #  include.tabel.number = TRUE, 
+                  measure.name.m = 'Average',
+               #  measure.name.total = 'Summe',
+                  measure.name.statistics = 'P-value'
+               stubhead = 'Items'
+               ),
+  median  = list(
+               digits = 2
+               #   lead.zero = TRUE,
+               #   seperator = ', ',
+               #   style = 'IQR',
+               #   include_name='(median)' 
+               ),
+  mean =    list(
+               digits = 1,
+               style = 2,
+               include_name = ', mean (sd)'
+               ),   
+  p =       list(
+               digits = 3, 
+               mark.sig = TRUE),
+  prozent = list(
+               digits = 1,
+               style = 2,
+               percentage_str = '%',
+               null_percent_sign = '.',
+               # include_name = '',
+               include_level_multi = TRUE
+               )
+
+
+
 
 
 #+ tab-arbeitszeit, include=TRUE, echo=FALSE, results='asis'
