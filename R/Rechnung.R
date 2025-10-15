@@ -22,7 +22,7 @@ nname<-  paste( Anrede, stringr::str_split(Name, " ")[[1]][2])
   
   
 adr_kunde<-paste("  -", Name, "\n",
-                 "  -", Adresse, "\n",
+               #  "  -", Adresse, "\n",
                  "  -", Email, "\n",
                  "  -", Tel, "\n")
   
@@ -49,7 +49,7 @@ closing: Mit freundlichen Grüßen
 signature: DI Wolfgang Peter
 signature-before: "0.5\\\\baselineskip"
 
-lang: de
+
 papersize: a4
 
 output: komaletter::komaletter 

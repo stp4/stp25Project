@@ -45,6 +45,12 @@ Stundenliste <- function(euro = 85,
     
     "
 
+kunden_file = 'C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv'
+Kunde_dat <- read.csv(kunden_file, stringsAsFactors = FALSE)
+Kunde_dat$Status[Kunde_dat$KNr == ", knr, "] <- 'in Arbeit'
+write.csv(Kunde_dat, kunden_file, row.names = FALSE, quote = FALSE)
+
+
 stp25Project::Arbz()
 
 arbeitszeit <-

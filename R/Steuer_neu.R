@@ -25,9 +25,24 @@
 #' @export
 #'
 make_konto <- function(x,
-                       jahr,
-                       format = "%d.%m.%Y",
-                       select = c(3, 4, 9)) {
+                       jahr,  
+                       select =  NULL,
+                       format = "%d.%m.%Y"
+                    ) {
+  
+  cat("\nKonto aufraumen\n")
+  
+  if(is.null(select)) {
+    select <- which(names(x) %in% "Buchungsdatum")
+    
+    select <-  c(select, which(names(x) %in% "Partnername"))
+    select <-  c(select, which(names(x) %in% "Betrag"))
+   
+    
+  }
+  
+
+  
   x <- x[select]
   x$id <- seq_len(nrow(x))
   names(x) <- c("datum", "txt", "euro", "id")
@@ -192,6 +207,7 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                     konto = "konto-spiegel.xlsx",
                     # AfA = afa,
                     konto_path = "C:/Users/wpete/Dropbox/2_Finanzen/Kontospiegel/2023/",
+                    select = NULL,
                     Versicherung.SVA =NULL,
                     privat = c(
                       "AMAZON",
@@ -202,9 +218,10 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
                       "Privatentnahme",
                       "Krabe",
                       "GIRSTMAIR",
-                      "VAILLANT", "Wolfgang", "SCHULER"
+                      "VAILLANT", "Wolfgang", "SCHULER", "OEBB", "AUDIBLE", "AFA"
+                      
                     ),
-                    sva = c("Sozialversicherungsanstalt"),
+                    sva = c("Sozialvers.Anstalt"),
                     pattern_debit = "Debit",
                     Reisespesen = c(Bus = 0, Taxi = 0),
                     Betriebsausgaben =  NULL,
@@ -226,10 +243,10 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   knt <-
     readxl::read_excel(file, sheet = 1, skip = 3)
   
-#  print(head(knt))
-  knt <- make_konto(knt, jahr)
 
-  
+  knt <- make_konto(knt, jahr, select)
+
+   print(head(knt))
   
   
   
@@ -258,6 +275,8 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   ##  Privatentnahme
   prvt_items <- find_item(privat, knt$txt)
   knt_privat <- konto_obj(knt, prvt_items, "Privat")
+ # print(knt_privat)
+  
   if (!is.null(prvt_items))
     knt <-   knt[-prvt_items, ]
 
@@ -294,29 +313,35 @@ Steuer <- function(jahr = lubridate::year(lubridate::as_date(Sys.time())) - 1,
   
   ## Aufdröseln der Positionen im Formular
   knt$Pos <- ifelse(knt$euro > 0, "Ertraege", "Betriebsausgaben")
-  
+ 
   Einnahmen <- sum(knt$einnahmen, na.rm = TRUE)
-  
-  
-  SVA <-  ifelse(is.null(Versicherung.SVA),
-                 sum(knt_sva$euro, na.rm = TRUE) * (-1),
-                 Versicherung.SVA)
-  Kirche <- sum(knt_kirche$euro, na.rm = TRUE) * (-1)
-  Spenden <- sum(knt_spenden$euro, na.rm = TRUE) * (-1)
-  
-  
-  if (!is.null(Betriebsausgaben)) {
+   if (!is.null(Betriebsausgaben)) {
     #Fehler abfangen
     Betriebsausgaben$einnahmen  <- NA
     Betriebsausgaben$euro <- -abs(Betriebsausgaben$euro)
     Betriebsausgaben$ausgaben <- -abs(Betriebsausgaben$ausgaben)
     knt <- rbind(knt, Betriebsausgaben)
-  }
-  
-  Ausgaben <- sum(knt$ausgaben, na.rm = TRUE) * (-1)
+   } 
+    Ausgaben <- sum(knt$ausgaben, na.rm = TRUE) * (-1)
 
   Pauschale <- round(pauschale * sum(knt$einnahmen, na.rm = TRUE), 2)
+  SVA<- 0
+  if (is.null(Versicherung.SVA)){
+    SVA <- sum(knt_sva$euro, na.rm = TRUE) * (-1)
+  }else{
+    SVA <- Versicherung.SVA
+    Ausgaben <- Ausgaben - Versicherung.SVA
+  }
+
   
+  
+  Kirche <- sum(knt_kirche$euro, na.rm = TRUE) * (-1)
+  Spenden <- sum(knt_spenden$euro, na.rm = TRUE) * (-1)
+  
+  
+
+  
+
   Privat_Debit <- sum(Privat_debit_kard$euro, na.rm = TRUE)
   Privat_Versicherung <- sum(knt_versicherung$euro, na.rm = TRUE)
   Privat <- sum(knt_privat$euro, na.rm = TRUE)
@@ -400,7 +425,7 @@ Pos	              Kennzahl	 Eingaben.Ausgaben	Pauschale
       9160,
       9225,
       9230,
-      xxxx,
+      "xxxx",
       320,
       "",
       "sind schon eingegeben",

@@ -15,12 +15,16 @@ paste0(
 #+ setup, include=FALSE
 # knitr::opts_chunk$set(echo = TRUE)
 
-require(tidyverse)
-require(stp25tools)
-
-# require(stp25output2)
-# require(stp25stat2)
-# require(stp25plot)
+if (!('stp25tools2' %in% .packages())) {
+  library(tidyverse)
+  library(stp25output2)
+  library(stp25tools2)
+  # library(stp25stat2)
+  # library(stp25plot)
+  # library(effects)
+  # library(lattice)
+  # library(ggplot2)
+}
 # source('R/miscFun.r', echo=F)
 ",myswd,
 '

@@ -27,7 +27,7 @@ CreateProjekt<- function(Name = "Romana Dampf",
                          Zeit = format(Sys.time(), "%H:%M"),
                          Folder = "C:/Users/wpete/Dropbox/1_Projekte",
                          KNr = NA, 
-                         save_KNr =  is.na(KNr),
+                        # save_KNr =  is.na(KNr),
                          kunden_file = "C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv",
                          FunktionsTest = FALSE,
                      #    useGoogel= FALSE,
@@ -42,39 +42,38 @@ CreateProjekt<- function(Name = "Romana Dampf",
                          
 ){
   
+ # print(paste("KNR:", KNr, "  save:", save_KNr))
+
+# Kunden Datenbank --------------------------------------------------------
+
+  cat(kunden_file,"\n")
+  Kunde <- read.csv(kunden_file, stringsAsFactors = FALSE)
+   if( !("Status" %in% names(Kunde) )) Kunde$Status <- "unbekannt"
   
-  print(paste("KNR:", KNr, "  save:", save_KNr))
+  if(is.na(KNr)) KNr <- max(Kunde$KNr, na.rm=TRUE) + 1L
+  else if (is.numeric(KNr)) KNr <- as.integer(KNr)
+    
+  neuer_Kunde <-  cleansing_umlaute(paste(KNr, Name))
+  neuer_Kunden_Daten <- data.frame(
+      KNr = KNr,
+      Datum = Datum,
+      Zeit = Zeit,
+      Name = Name,
+      Email = Email,
+      Tel = Tel,
+      Stundensatz = Stundensatz,  
+      Status = "AGB",
+      stringsAsFactors = FALSE
+    )
+
   
- 
-    cat(kunden_file,"\n")
-    Kunde <- read.csv(kunden_file)
-    print(tail(Kunde[1:4]))
-    
- 
-    if(is.na(KNr)) KNr <- Kunde[nrow(Kunde), 1] + 1
-    Kunden_Daten <-  lapply( 
-      list(KNr, Datum, Zeit, 
-           Name, Email, Tel,
-           Adresse, Aufwand, 
-           Thema, Kommentar, Stundensatz),
-      function(x) gsub("[,;]", " ", x))
-    
-    neuer_Kunde <- stp25tools::cleansing_umlaute(paste(KNr, Name))
-    
-    if(save_KNr){
+  
+    Kunde <- tibble::as_tibble(rbind(neuer_Kunden_Daten, Kunde[order(Kunde$KNr, decreasing = TRUE),]))
+    write.csv(Kunde, kunden_file, row.names = FALSE, quote = FALSE)  
+     cat("\n\nSpeichere neue Kunde\n\n")  
+
       
-    cat("\n\nSpeichere neue Kunde\n\n")  
-      
-    write.table(
-      Kunden_Daten,
-      file = kunden_file,
-      sep = ",",
-      append = TRUE,
-      quote = FALSE,
-      col.names = FALSE,
-      row.names = FALSE
-    ) }
-    
+ 
 
   
   if(!FunktionsTest) {
@@ -106,6 +105,9 @@ CreateProjekt<- function(Name = "Romana Dampf",
     
   }
   cat("\nFolder:", Folder, "\n\n")
+  
+  
+  print(head(Kunde[c(1, 4, 8)]))
   
   neuer_Kunde
 }

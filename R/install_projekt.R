@@ -50,6 +50,9 @@ install_projekt <- function(project = "000 Dummy",
   }
   
   
+
+# n-Folder -----------------------------------------------------------------
+
   
   x <- suppressWarnings(invisible(
            folder(folder.name = paste0(path, .Platform$file.sep, project))))
@@ -62,9 +65,18 @@ install_projekt <- function(project = "000 Dummy",
   invisible(folder("Processed data", "Raw data", Results, R, Docs, Fig))
   myswd<- paste0("setwd(\"", x,"\")")
 
+# miscFun.r ---------------------------------------------------------------
+
+
   cat("#-- Eigene Funktionen", file = "R/miscFun.r")
+
+# Readme.R ----------------------------------------------------------------
+
   
   cat(paste(project, datum, path, comment, sep = "\n"), file = "README.txt")
+
+# Vertrag.Rmd -------------------------------------------------------------
+
   
   vrtg <-
     Vertrag(name, adr, tel, email, knr, euro, h, betreff, zwischenrechnung, 
@@ -73,13 +85,17 @@ install_projekt <- function(project = "000 Dummy",
   write(vrtg, file = rty)
   close(rty)
   
+# Rechnung.Rmd ------------------------------------------------------------
+  
   rcng <-
     Rechnung(knr, name, email, tel, adr, anrede, betreff,
              BANK, IBAN, BIC)
   rty <- file("Rechnung.Rmd", encoding = "UTF-8")
   write(rcng, file = rty)
   close(rty)
- 
+
+# Stundenliste.R ----------------------------------------------------------
+
  
   cat( Stundenliste(euro, myswd, knr, 
                    name, email, tel, adr, 
@@ -92,17 +108,44 @@ install_projekt <- function(project = "000 Dummy",
                    ), 
       file = "Stundenliste.R")
  
+  
+
+
+
+# Invoice.R ---------------------------------------------------------------
+
+  
  cat(paste0(
 "rmarkdown::render('Rechnung.Rmd', 
                    encoding='UTF-8', 
                    output_file= '../../2_Finanzen/Honorarnoten ", year, "/",
 project,".pdf')
+
+
+
+kunden_file = 'C:/Users/wpete/Dropbox/1_Projekte/Verwaltung/Kunden.csv'
+Kunde_dat <- read.csv(kunden_file, stringsAsFactors = FALSE)
+Kunde_dat$Status[Kunde_dat$KNr == ", knr, "] <- 'Rechnung'
+write.csv(Kunde_dat, kunden_file, row.names = FALSE, quote = FALSE)
+
+
+
 "), file = "Invoice.R")
+ 
+ 
+
+# Word.docx ---------------------------------------------------------------
+
  
  cat("",file = paste0(project, "(0).docx"))
  
 nms <- abbreviate(project, minlength =7)
  
+
+
+# Run.R -------------------------------------------------------------------
+
+
  if(templat[1]=="small"){
    
    cat( small_project(project, datum, myswd, Rdata), file = paste0("Run-All-", nms, ".R"))

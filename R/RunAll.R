@@ -19,30 +19,23 @@ small_project <-  function(project = "dummy",
 #' ---
  
 #+ setup, include=FALSE
-# knitr::opts_chunk$set(echo = TRUE, warnings=FALSE)
-require(tidyverse)
-  # session <- sessionInfo()
-  # report::report(session)
-require(stp25output2)
-require(stp25stat2)
-require(stp25tools)
-# require(stp25plot)
-      
-#+ setup-plot, include=FALSE
+# knitr::opts_chunk$set(echo = TRUE, warnings = FALSE)
+
+if (!('stp25tools2' %in% .packages())) {
+  library(tidyverse)
+  library(stp25output2)
+  library(stp25tools2)
+  # library(stp25stat2)
+  # library(stp25plot)
+  # library(effects)
+  # library(lattice)
+  # library(ggplot2)
+}
+
 # graphics.off()
-# lattice::trellis.par.set(bw_theme())
-# require(effects)
-# require(lattice)
 # lattice.options(default.args = list(as.table = TRUE))
-  ",myswd," 
-# source('R/miscFun.r', echo=F)
-Projekt('', '", project,"', '" ,datum,"')
+# lattice::trellis.par.set(bw_theme())
 
-
-
-
- 
- 
 set_opt(
   #  output = 'docx',
   #  fig_folder = 'Fig/',
@@ -53,44 +46,46 @@ set_opt(
   #  sep_element = ', ',
   #  brackets = c('[', ']'),
   table =    list(
-               wrap = TRUE, 
-               #  wrap_results = TRUE,
-               #  include.tabel.number = TRUE, 
-                  measure.name.m = 'Average',
-               #  measure.name.total = 'Summe',
-                  measure.name.statistics = 'P-value'
-               stubhead = 'Items'
-               ),
+    wrap = TRUE, 
+    #  wrap_results = TRUE,
+    #  include.tabel.number = TRUE, 
+    measure.name.m = 'Average',
+    #  measure.name.total = 'Summe',
+    measure.name.statistics = 'P-value',
+    stubhead = 'Items'
+  ),
   median  = list(
-               digits = 2
-               #   lead.zero = TRUE,
-               #   seperator = ', ',
-               #   style = 'IQR',
-               #   include_name='(median)' 
-               ),
+    digits = 2
+    #   lead.zero = TRUE,
+    #   seperator = ', ',
+    #   style = 'IQR',
+    #   include_name='(median)' 
+  ),
   mean =    list(
-               digits = 1,
-               style = 2,
-               include_name = ', mean (sd)'
-               ),   
+    digits = 1,
+    style = 1,
+    include_name = ', mean (sd)'
+  ),   
   p =       list(
-               digits = 3, 
-               mark.sig = TRUE),
-  prozent = list(
-               digits = 1,
-               style = 2,
-               percentage_str = '%',
-               null_percent_sign = '.',
-               # include_name = '',
-               include_level_multi = TRUE
-               )
+    digits = 3, 
+    mark.sig = TRUE),
+  percent = list(
+    digits = 1,
+    style = 2,
+    percentage_str = '%',
+    null_percent_sign = '.',
+    # include_name = '',
+    include_level_multi = TRUE
+  )
+)
 
-
-
+  ",myswd," 
+# source('R/miscFun.r', echo=F)
+Projekt('', '", project,"', '" ,datum,"')
 
 
 #+ tab-arbeitszeit, include=TRUE, echo=FALSE, results='asis'
-  # Tab_Index ( -1)
+  # Tab_Index (-1)
   # set_opt(table =list(include.tabel.number = FALSE)) 
   source('Stundenliste.R')
   Output( arbeitszeit[-nrow(arbeitszeit),] )
@@ -99,24 +94,24 @@ set_opt(
 
 # -- Load Data ----------------------------------------------
 # 
-#   DF <- GetData('Raw data/File.R')
+#   DF <- get_data('Raw data/File.R')
 #   save(DF, file = 'Raw data/", Rdata,"')
 
 
 #+ tidy-data, include=TRUE
-DF <-
-  DF |>
-  mutate(
-    participants = seq_len(nrow(DF)),
+# DF <-
+#  DF |>
+#  mutate(
+#    participants = seq_len(nrow(DF)),
     #  age =  as.numeric(age),
     #  sex = factor(sex,   labels = c('Male',  'Female',   'Other')),
     #  gender	=  factor(gender,   labels =  c('Male' , 'Female', ' Non-Binary', 'N')),
     #  education = factor(edu, 1:3, labels =  c('Secondary', 'A Levels', 'University')),
     #  country = NA,
     #  group = Treatment,
-    dummy = 1
-  ) |>
-  Label(sex = 'Geschlecht')
+#    dummy = 1
+#  ) |>
+#  Label(sex = 'Geschlecht')
 #
 #  save(DF, file='Processed data/", Rdata,"')
 
@@ -124,13 +119,9 @@ DF <-
 #+ filter, results='asis'
 #
 N <- nrow(DF)
-DF <- DF |> dplyr::filter(
-                 education !='Secondary' 
-                 )
-
-
-require(report)
-report_participants(DF)
+# DF <- DF |> dplyr::filter(
+#                 education !='Secondary' 
+#                 )
 
 
 # -- Analyze Data ----------------------------------------------
@@ -144,7 +135,6 @@ Output('Soziodemografische Merkmale der Teilnehmer zu Beginn der Studie')
 #  SaveData( w=9.45, h=2.45)
   
 
-  
   
 End()
 ")
