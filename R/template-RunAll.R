@@ -1,6 +1,4 @@
-
-
-
+#' @rdname CreateProjekt
 small_project <-  function(project = "dummy",
                            datum = "",
                            myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
@@ -88,7 +86,7 @@ Projekt('', '", project,"', '" ,datum,"')
   # Tab_Index (-1)
   # set_opt(table =list(include.tabel.number = FALSE)) 
   source('Stundenliste.R')
-  Output( arbeitszeit[-nrow(arbeitszeit),] )
+  Output( Stundenliste[-nrow(Stundenliste),] )
   # set_opt(table =list(include.tabel.number = TRUE)) 
 
 

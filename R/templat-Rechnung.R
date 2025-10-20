@@ -1,30 +1,22 @@
-#' Rechnungs-Templat
-#'
-#' @param KNr,Name,Email,Tel,Adresse,Anrede KundenDaten
-#'
-#' @return string
+#' @rdname CreateProjekt
 #' @export
-#' 
-Rechnung<- function(KNr=0,
-                    Name= "Vorname Name",
-                    Email= " ",
-                    Tel=" ",
-                    Adresse=" ",
-                    Anrede= "Sehr geehrte Frau",
-                    Betreff="Beratung",
-                    BANK = "TIROLER SPARKASSE",
-                    IBAN = IBAN(),
-                    BIC = "SPIHAT22XXX"
+Rechnung<- function( 
+                    KNr,
+                    Name,
+                    Email,
+                    Telfon,
+                    Anrede,
+                    Betreff,
+                    bank,iban,bic
                    ){
  
-RNr <-paste0(format(Sys.time(), '%m%d'), KNr)
-nname<-  paste( Anrede, stringr::str_split(Name, " ")[[1]][2])
+RNr <- paste0(format(Sys.time(), '%m%d'), KNr)
+nname <-  paste( Anrede, stringr::str_split(Name, " ")[[1]][2])
   
   
-adr_kunde<-paste("  -", Name, "\n",
-               #  "  -", Adresse, "\n",
+adr_kunde <- paste("  -", Name, "\n",
                  "  -", Email, "\n",
-                 "  -", Tel, "\n")
+                 "  -", Telfon, "\n")
   
 paste(   
 '---
@@ -62,7 +54,7 @@ library(knitr)
 opts_chunk$set(
   echo = FALSE,
   warning = FALSE)
-
+RECHNUNG <- TRUE
 source("stundenliste.R")
 
 ```
@@ -81,7 +73,7 @@ Steuer-Nr. 81 248/5589, Leistungszeitraum: `r leistungszeitraum `
 
 ```{r stunden-liste, results="markup", echo=FALSE}
 
-knitr::kable(arbeitszeit, format="markdown")
+knitr::kable(Stundenliste, format="markdown")
 
 ```
 
@@ -91,11 +83,11 @@ knitr::kable(arbeitszeit, format="markdown")
 
 ## Bankverbindung: 
 
-', BANK, '
+', bank, '
 
-IBAN: ', IBAN, '
+IBAN: ', iban, '
 
-BIC: ', BIC, '
+BIC: ', bic, '
 
 Ich ersuche Sie den Rechnungsbetrag sofort auf mein Geschäftskonto zu überweisen und 
 danke für Ihren Auftrag. 
@@ -107,24 +99,24 @@ danke für Ihren Auftrag.
 }
 
 
-#' Rechnung erstellen
-#' 
-#'  
-#' @param Name,Anrede,Email,Euro,RNr,Stundenliste  Kunde
-#' @return text
+ 
+
+
+#' @rdname CreateProjekt
 #' @export
-rechnung_email<- function(Name="Hans Dampf",
-                 Email="h.dampf@gmail.com",
-                 Anrede="Hallo",
-                 Euro=12,
-                 RNr="0815",
-                 Stundenliste="",
-                 BANK = "BANK",
-                 IBAN = "IBAN",
-                 BIC = "BIC"){
+rechnung_email <- function(KNr,
+                           Name,
+                           Email,
+                           Anrede,
+                           Euro = 0,
+                           Stundenliste,
+                           bank,
+                           iban,
+                           bic) {
   
   
-  Euro<-  paste0(sprintf("%1.1f", Euro), "0")
+  
+Euro <-  paste0(sprintf("%1.1f", Euro), "0")
   
   paste0(Email,
   '
@@ -134,15 +126,15 @@ für die statistisch Beratung erlaube ich mir das vereinbarte Honorar in Rechnun
 
 zu zahlender Betrag ',	Euro,' Euro 
 
-', BANK, '
+', bank, '
 
-IBAN: ', IBAN, '
+IBAN: ', iban, '
 
-BIC: ', BIC, '
+BIC: ', bic, '
 
 
 Ich ersuche Sie den Rechnungsbetrag unter Angabe Ihrer Kundennummer: ',
-RNr, ' zu überweisen und danke
+  KNr, ' zu überweisen und danke
 für Ihren Auftrag.
 
 Mit freundlichen Grüssen
