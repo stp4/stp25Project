@@ -8,8 +8,6 @@ paste0(
 #' author: Wolfgang Peter
 #' output:
 #'   html_document
-#' keep_tex: yes
-#' lang: de-DE
 #' ---
  
 #+ setup, include=FALSE

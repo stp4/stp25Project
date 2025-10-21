@@ -1,13 +1,13 @@
 #======================================================
  
 Name      = "Hansi Dampfl"    
-Anrede    = "Sehr geehrter Herr" #Sehr geehrte  und Herren!" #   "Sehr geehrte Damen und Herren!"
+Anrede    = "Sehr geehrter Herr"
 Email     = "hans.dampfl@gmx.net"
  
-Telfon       = "+43 664 630 72 98"
+Telfon       = "+43 664 123456"
 Adresse	  = " "
 Aufwand	  = "6-12 Stunden"
-Thema	    = ""
+Thema	    = "Diss"
 
 Kommentar = "Pflegewissenschaften"
 Betreff   = "statistische Beratung im Zuge einer wissenschaftlichen Arbeit"
@@ -18,7 +18,7 @@ Betreff   = "statistische Beratung im Zuge einer wissenschaftlichen Arbeit"
 
 VPI = c(  "2020" = 1.4,  "2021" = 2.8,  "2022" = 8.6,  "2023" = 7.8)
 #Stundensatz = stp25Project::Stundensatz("Firma", VPI)
-Stundensatz = 95 #  stp25Project::Stundensatz("Student", VPI)
+Stundensatz = stp25Project::Stundensatz("Student", VPI)
 Zwischenrechnung = 700
 Datum =  format(Sys.time(), "%d.%m.%Y")
 Zeit = format(Sys.time(), "%H:%M")

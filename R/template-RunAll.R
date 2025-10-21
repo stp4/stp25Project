@@ -12,8 +12,6 @@ small_project <-  function(project = "dummy",
 #' author: Wolfgang Peter
 #' output:
 #'   html_document
-#' keep_tex: yes
-#' lang: de-DE
 #' ---
  
 #+ setup, include=FALSE
@@ -125,7 +123,7 @@ N <- nrow(DF)
 # -- Analyze Data ----------------------------------------------
 #+ results='asis'
 #  DF |> Tbll_desc(sex) |> 
-Output('Soziodemografische Merkmale der Teilnehmer zu Beginn der Studie')
+#     Output('Soziodemografische Merkmale der Teilnehmer zu Beginn der Studie')
 
 
 #+ fig.cap='Health', fig.height=2.70, fig.width=10, echo=FALSE
