@@ -1,246 +1,131 @@
 #' @rdname CreateProjekt
 #' @export
-Rechnung<- function( 
-                    KNr,
-                    Name,
-                    Email,
-                    Telfon,
-                    Anrede,
-                    Betreff,
-                    bank,iban,bic
-                   ){
- 
-RNr <- paste0(format(Sys.time(), '%m%d'), KNr)
-nname <-  paste( Anrede, stringr::str_split(Name, " ")[[1]][2])
+#' @return character LaTex String
+#' @examples
+#' # example code
+#' 
+#' 
+#'  Rechnung(
+#' KNr = "123",
+#' Name = "Hans Dampf",
+#' Telefon = "+43 123 456789",
+#' Email = "Hans_dampf@hotmail.com",
+#' Anrede = "Sehr geehrter Herr",
+#' bank = "TIROLER SPARKASSE",
+#' iban = "AT89 2050 3033 XXXX XXXX",
+#' bic = "SPIHAXXXXXX",
+#' file_rechnung="Rechnung.qmd")
+#' 
+Rechnung <- function(
+    KNr = "000",
+    Name = "Vorname Nachname",
+    Telefon = "+43 123 456789",
+    Email = "v.n@hotmail.com",
+    Anrede = "Sehr geehrter Herr",
+    Betreff = "statistische Beratung im Zuge einer wissenschaftlichen Arbeit",
+    bank = "TIROLER SPARKASSE",
+    iban = "AT89 2050 3033 XXXX XXXX",
+    bic = "SPIHAXXXXXX",
+    Adresse = "", # not used
+    stundenliste = "stundenliste.R",
+    file_rechnung = NULL, #   "Rechnung.qmd", #not used
+    ...
+){
   
   
-adr_kunde <- paste("  -", Name, "\n",
-                 "  -", Email, "\n",
-                 "  -", Telfon, "\n")
+  Email <-  gsub("_", "\\\\\\_", Email)
+  invoice <- paste0(format(Sys.time(), '%m%d'), KNr)
+  nachname <- tryCatch(stringr::str_split(Name, " ")[[1]][2], error = function(e) Name)
+  if(is.na(nachname)) nachname <- Name
   
-paste(   
-'---
-author: Dipl.-Ing. Wolfgang Peter
-return-address: 
-  - Innsbrucker Straße 14
-  - 6176 Völs
-return-phone: ', phone(),
-'return-email: ', email(),
-'
-address:
-',adr_kunde,
-'
-
-customer: ', KNr, '   
-invoice: ', RNr, '     
-subject: Honorarnote
-opening: ', nname,'
-closing: Mit freundlichen Grüßen
-signature: DI Wolfgang Peter
-signature-before: "0.5\\\\baselineskip"
-
-
-papersize: a4
-
-output: komaletter::komaletter 
+  qmd_rcng <- glue::glue('
 ---
-  
+format:
+  pdf:
+    documentclass: scrlttr2
+    papersize: a4
+    pdf-engine: pdflatex
+    keep-tex: false
+    include-in-header:
+      - text: |
+          \\usepackage[ngerman]{babel}
+          \\usepackage{booktabs}
+          \\KOMAoptions{
+            fontsize=12pt,
+            paper=a4,
+            enlargefirstpage=true,
+            pagenumber=botright
+          }
+          \\setkomavar{fromname}{Dipl.-Ing. Wolfgang Peter}
+          \\setkomavar{fromaddress}{Innsbrucker Straße 14\\\\6176 Völs}
+          \\setkomavar{fromphone}{+43 699 8153 12345}
+          \\setkomavar{fromemail}{w.peter@statistik.at}
+          \\setkomavar{subject}{Honorarnote}
+          \\setkomavar{invoice}{<<invoice>>}
+          \\setkomavar{customer}{<<KNr>>}
+          \\setkomavar{date}{\\today}
+---
+
 
 ```{r setup-knit, include=FALSE}
-
 library(knitr)
-opts_chunk$set(
-  echo = FALSE,
-  warning = FALSE)
+opts_chunk$set(echo = FALSE,warning = FALSE)
 RECHNUNG <- TRUE
 source("stundenliste.R")
-
 ```
 
 
-Ich erlaube mir, Ihnen für die ', Betreff, ' folgende Honorarnote zu übermitteln.
 
+```{=latex}
+\\begin{letter}{%
+  <<Name>>\\\\\\
+  
+  <<Telefon>>\\\\\\
+  
+  <<Email>>%
+}
 
-In der Rechnung wird keine Umsatzsteuer ausgewiesen, da die Umsätze 
-gemäß § 6 Abs. 1 Z 27 UStG (Kleinunternehmer) unecht USt.-befreit sind. 
+\\opening{<<Anrede>> <<nachname>>,}
+
+ich erlaube mir, Ihnen für die <<Betreff>> folgende Honorarnote zu übermitteln.
+
+In der Rechnung wird keine Umsatzsteuer ausgewiesen, da die Umsätze gemäß § 6 Abs. 1 Z 27 UStG (Kleinunternehmer) unecht USt.-befreit sind.
 
 Steuer-Nr. 81 248/5589, Leistungszeitraum: `r leistungszeitraum `
 
 
 
+`r knitr::kable(Stundenliste, format = "latex", booktabs = TRUE)`
 
-```{r stunden-liste, results="markup", echo=FALSE}
+\\vspace{1em}
+Zu zahlender Betrag `r paste0(sprintf("%1.1f", euro), "0")` Euro
 
-knitr::kable(Stundenliste, format="markdown")
+\\vspace{1.5em}
+Bankverbindung: <<bank>>
 
-```
+IBAN: <<iban>>
 
+BIC: <<bic>>
 
+Ich ersuche Sie, den Rechnungsbetrag auf 
+mein Geschäftskonto zu überweisen und danke für Ihren Auftrag.
 
-**Zu zahlender Betrag `r paste0(sprintf("%1.1f", euro), "0")` Euro  **
+\\closing{Mit freundlichen Grüßen}
+\\end{letter}
 
-## Bankverbindung: 
-
-', bank, '
-
-IBAN: ', iban, '
-
-BIC: ', bic, '
-
-Ich ersuche Sie den Rechnungsbetrag sofort auf mein Geschäftskonto zu überweisen und 
-danke für Ihren Auftrag. 
-
-'  
-)  
+', 
+.open = "<<", 
+.close = ">>")
   
   
-}
-
-
- 
-
-
-#' @rdname CreateProjekt
-#' @export
-rechnung_email <- function(KNr,
-                           Name,
-                           Email,
-                           Anrede,
-                           Euro = 0,
-                           Stundenliste,
-                           bank,
-                           iban,
-                           bic) {
-  
-  
-  
-Euro <-  paste0(sprintf("%1.1f", Euro), "0")
-  
-  paste0(Email,
-  '
-  
-  ', Anrede, ' ', Name,',
-für die statistisch Beratung erlaube ich mir das vereinbarte Honorar in Rechnung zu stellen. Falls noch Fragen auftauche können Sie mich natürlich jederzeit kontaktieren.
-
-zu zahlender Betrag ',	Euro,' Euro 
-
-', bank, '
-
-IBAN: ', iban, '
-
-BIC: ', bic, '
-
-
-Ich ersuche Sie den Rechnungsbetrag unter Angabe Ihrer Kundennummer: ',
-  KNr, ' zu überweisen und danke
-für Ihren Auftrag.
-
-Mit freundlichen Grüssen
-Wolfgang Peter
-
-
-Stundenliste
-
-', toString_df(Stundenliste) ,
-
-'
-
-
---
-DI Wolfgang PETER
-Statistik-Peter e.U.
-Data Engineering & Statistics
-Innsbruckerstr 14
-6176 Voels / Innsbruck
-
-Mobil: ', phone(), '
-http://statistik-peter.at/
-
-  ')}
-
-
-
-# https://stackoverflow.com/questions/45508982/r-data-frame-to-plain-text
-
-
-toString_df <-
-  function (object,
-            ...,
-            digits = NULL,
-            quote = FALSE,
-            right = TRUE,
-            row.names = TRUE) {
-    nRows <- length(row.names(object))
-    
-    if (length(object) == 0) {
-      return(paste(sprintf(
-        ngettext(
-          nRows,
-          "data frame with 0 columns and %d row",
-          "data frame with 0 columns and %d rows"
-        )
-        ,
-        nRows
-      )
-      , "\\n", sep = ""))
-      
-    } else if (nRows == 0) {
-      return(gettext("<0 rows> (or 0-length row.names)\\n"))
-      
-    } else {
-      # get text-formatted version of the data.frame
-      m <-
-        as.matrix(format.data.frame(object, 
-                                    digits = digits, 
-                                    na.encode = FALSE))
-      
-      # define row-names (if required)
-      if (isTRUE(row.names)) {
-        rowNames = dimnames(object)[[1]]
-        
-        if (is.null(rowNames)) {
-          # no row header available -> use row numbers
-          rowNames = as.character(1:NROW(m))
-          
-        }
-        # add empty header (used with column headers)
-        rowNames = c("", rowNames)
-        
-      }
-      # add column headers
-      m <- rbind(dimnames(m)[[2]], m)
-      
-      # add row headers
-      m <- cbind(rowNames, m)
-      
-      # max-length per-column
-      maxLen = apply(apply(m, c(1, 2),
-                           stringr::str_length), 
-                     2, max, 
-                     na.rm = TRUE)
-      
-      # add right padding
-      ##  t is needed because "If each call to FUN returns a vector of length n, then apply returns an array of dimension c(n, dim(X)[MARGIN])"
-      m = t(apply(m, 
-                  1,
-                  stringr::str_pad, 
-                  width = maxLen, 
-                  side = "right"))
-      
-      m = t(apply(m,
-                  1,
-                  stringr::str_pad,
-                  width = maxLen + 3,
-                  side = "left"))
-      
-      # merge columns
-      m <- apply(m, 1, paste, collapse = "")
-      
-      # merge rows (and return)
-      return(paste(m, collapse = "\n"))
-      
-    }
+  if (!is.null(file_rechnung)) {
+    rty <- file(file_rechnung, encoding = "UTF-8")
+    write(qmd_rcng, file = rty)
+    close(rty)
+    message("Quarto-Rechnung erfolgreich generiert: ", file_rechnung)
+    return(NULL)
   }
-
-
+  else
+    return(qmd_rcng)
+}
 
