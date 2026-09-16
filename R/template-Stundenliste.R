@@ -1,29 +1,29 @@
 #' @rdname CreateProjekt
 #' 
-#' @export
-#' 
-Stundenliste <- function(     KNr,
-                              Name,Email,Telfon,Stundensatz,
-                              Anrede,
-                              Zwischenrechnung,
-                              bank,iban,bic,
-                              string_myswd) {
+Stundenliste <- function(KNr,
+                         Name,
+                         Email,
+                         Telfon,
+                         Stundensatz,
+                         Anrede,
+                         Zwischenrechnung,
+                         bank,
+                         iban,
+                         bic,
+                         string_myswd,
+                         kunden_file
+                         ) {
+  
   jetzt <- Sys.time()
-  # print(zeit)
-  zeit_stempel <-  paste(
-    format(jetzt, '%d.%m.%Y'),
-    " ",
+  zeit_stempel <-  
+    paste(
+    format(jetzt, '%d.%m.%Y'), " ",
     format(jetzt - 60 * 16,  '%H:%M'),
-    format(jetzt,  '%H:%M'),
-    " ",
-    " Einarbeiten_ins_Thema"
+    format(jetzt,  '%H:%M'), " ", " Einarbeiten_ins_Thema"
   )
   
   
- paste0(
-"#' ---
-#' title: Stundenliste
-#' ---
+ paste0("
 
 Status <- 'in Arbeit'
 
@@ -51,8 +51,8 @@ zeit_stempel,
 
 
 
-euro <- ",Stundensatz,"
-zwischenrechnung <- ",Zwischenrechnung,"
+euro <- ", Stundensatz, "
+zwischenrechnung <- ", Zwischenrechnung, "
 h_min <- min(Stundenliste$Summe)
 h_max <- max(Stundenliste$Summe)
 Euro <-  euro * h_max
@@ -74,8 +74,7 @@ if(exists('RECHNUNG')){
 } 
 
 
-stp25Project::update_arbeitszeit(KNr = ", KNr," , Zeit = h_max, Status = Status)
-
+stp25Project::update_arbeitszeit(", kunden_file, " KNr = ", KNr,", Zeit = h_max, Status = Status)
 
 
 if(euro > zwischenrechnung) {
