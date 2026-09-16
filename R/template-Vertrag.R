@@ -1,31 +1,51 @@
-#' @rdname CreateProjekt
-#' @export
-Vertrag<- function(
-    KNr,
-    Name,Email,Telfon,Aufwand,Stundensatz,
-    Anrede,Betreff,
-    Zwischenrechnung,
-    bank,iban,bic){
+#' Vertrag
+#' 
+#' Vorlage zum Erstellen der Vertragsbedingungen als MD-Datei. 
+#' Die Vertragsbedingungen richten sich an Studierende und Forschende, die 
+#' wissenschaftliche Arbeiten (Masterarbeit, PhD-Arbeit, Artikel) verfassen.
+#' 
+#' @param KNr  character.
+#'
+#' @param Name  character.
+#' @param Email  character.
+#' @param Telfon  character.
+#' @param Aufwand  character.
+#' @param Stundensatz  character.
+#' @param Anrede   character. nicht benutzt
+#' @param Betreff  character.
+#' @param Zwischenrechnung  character.
+#' @param bank  character.
+#' @param iban  character.
+#' @param bic  character.
+#' @return character Text im MD-Format
+#' 
+#'  
+#' @examples
+#'  
+#'  Vertrag() |> cat()
+#' 
+Vertrag <- function(KNr = 001,
+                    Name = "Hans Dampf",
+                    Email = "Hans@Dampf.com",
+                    Telfon  = "+43 000 000001",
+                    Aufwand = "3-5 Stunden",
+                    Stundensatz = "100",
+                    Anrede = "",
+                    Betreff = "Beratung",
+                    Zwischenrechnung  = "100",
+                    bank = "Teppich Bank",
+                    iban = "1234 1234 1234 1234",
+                    bic = "DFTR5TVFD") {
   
-
-Kunde <- paste(
-    " ", Name, " \n\n",
-    "Telefon: ", Telfon, ", E-Mail: ", Email, "\n\n"
-  )
   
-  
-  Kondition <- paste0("**Stundensatz: ", Stundensatz, " Euro**\n\n"		,
-                     "**geschätzter Aufwand: ",	 Aufwand, "**\n") 
-  
-  
-paste(
+  glue::glue(
 "---
 title: Vertrag über Betreuungstätigkeit
 author:
   - Statistik-Peter
   - Dipl.-Ing. Wolfgang Peter
   - Innsbrucker Straße 14, 6176 Völs
-date:  Völs, `r format(Sys.time(), '%d.%m.%Y')`
+date: Völs, `r format(Sys.time(), '%d.%m.%Y')`
 geometry: left=3cm, right=3cm, top=2.5cm, bottom=2.3cm
 lang: de-DE
 linestretch: 1.2
@@ -37,23 +57,19 @@ output:
   
 Im Folgenden vereinbaren
 
-",
-Kunde,
-"
+{Name}
+Telefon: {Telfon},  E-Mail: {Email}
 		
 nachfolgend Kunde genannt	und
 
 DI Wolfgang Peter (Statistik-Peter)
 
-einen Vertrag über eine ", Betreff, ".
+einen Vertrag über eine {Betreff}.
 
-",
+**Stundensatz: {Stundensatz} Euro**
+**geschätzter Aufwand	{Aufwand} **
 
-Kondition,
-"
-
-KNr: ",  KNr, 
-"		
+KNr: {KNr}
 
 
 ## §1				
@@ -76,13 +92,15 @@ Eine Erfolgsgarantie wird nicht übernommen.
 
 Der Kunde verpflichtet sich, **aktiv an der Durchführung des Auftrags mitzuwirken**.  
 Insbesondere hat der Kunde alle für die Bearbeitung erforderlichen Informationen, 
-Unterlagen und Daten vollständig, korrekt und rechtzeitig bereitzustellen. Dies betrifft insbesondere:
+Unterlagen und Daten vollständig, korrekt und rechtzeitig bereitzustellen. Dies
+betrifft insbesondere:
 
 - die **Forschungsfrage** und den **wissenschaftlichen Kontext** der Arbeit,  
 - eine Beschreibung der **Datengrundlage** (z. B. Stichprobe, Erhebungsmethode, Messinstrumente),  
 - sowie – sofern vorhanden – relevante **Literatur** oder theoretische Grundlagen des Fachgebiets.  
 
-Der Kunde trägt dafür Sorge, dass alle übermittelten Daten und Informationen im Rahmen des Auftrags zulässig ist. 
+Der Kunde trägt dafür Sorge, dass alle übermittelten Daten und Informationen im 
+Rahmen des Auftrags zulässig ist. 
 
 
 ## §3				
@@ -106,7 +124,7 @@ Nach Ablauf dieser Frist werden die Daten **vollständig und datenschutzkonform 
 ## §5				
 Das Honorar für die Auswertung berechnet sich aus der tatsächlich erbrachten 
 Leistungen zum vereinbarten Stundensatz. Zwischenrechnungen werden erstellt, 
-wenn ein Betrag von ",Zwischenrechnung ," Euro überschritten wird.				
+wenn ein Betrag von {Zwischenrechnung} Euro überschritten wird.				
 
 
 ## §6	
@@ -115,9 +133,10 @@ Die Tabellen und Grafiken werden vom Auftragnehmer mit der Software R im APA-Sty
 
 ## §7		
 Hat der Auftragnehmer in Verletzung seiner vertraglichen Pflichten dem Kunden 
-schuldhaft einen Schaden zugefügt, ist seine Haftung auf die vereinbarte Honorarsumme begrenzt.
-Ansprüche des Kundens erlöschen sechs Monate nach Erbringung der jeweiligen Leistung.
-Die Haftung für Folgeschäden und entgangenen Gewinn ist – auch bei grober Fahrlässigkeit – ausgeschlossen.
+schuldhaft einen Schaden zugefügt, ist seine Haftung auf die vereinbarte 
+Honorarsumme begrenzt. Ansprüche des Kundens erlöschen sechs Monate nach Erbringung 
+der jeweiligen Leistung. Die Haftung für Folgeschäden und entgangenen Gewinn 
+ist – auch bei grober Fahrlässigkeit – ausgeschlossen. 
 Für diese Geschäftsbeziehungen und die gesamten Rechtsbeziehungen der
 Vertragspartner gilt das Recht der Bundesrepublik Österreich. Ausschließlicher 
 Gerichtsstand für alle, sich aus dem Vertragsverhältnis unmittelbar oder mittelbar
@@ -126,11 +145,11 @@ ergebenden Streitigkeiten ist Innsbruck.
 
 ## Bankverbindung: 
 
-", bank, "
+{bank}
 
-IBAN: ", iban, "
+IBAN: iban}
 
-BIC: ", bic, "
+BIC: {bic}
 
 
  
@@ -143,8 +162,8 @@ Die von mir verwendeten statistischen Methoden basieren vor allem auf den
 Empfehlungen von Bortz [4] sowie Sachs [7].
 Die Darstellung der Ergebnisse entspricht wissenschaftlicher Vorgaben, 
 insbesondere halte ich mich bei den Tabellen und Grafiken sowie der 
-Darstellung statistischer Kennzahlen an die Vorgaben von APA-Style[2]. (Der APA-Style 
-ist im Kontext sozialwissenschaftlicher Forschung quasi ein Gold-Standard 
+Darstellung statistischer Kennzahlen an die Vorgaben von APA-Style[2]. 
+(Der APA-Style ist im Kontext sozialwissenschaftlicher Forschung quasi ein Gold-Standard 
 hinsichtlich des Berichtens von Ergebnissen.)
 
 ## Technische Umsetzung
@@ -156,7 +175,8 @@ Die Ergebnisse können in folgenden Formaten bereitgestellt werden:
 - **Grafiken:** PDF, JPG, GIF, Windows Metafile  
 - **Rohdaten:** gängige Statistikformate (z. B. R, SPSS, Minitab)
 
-Darstellungen in **proprietären Formaten** (z. B. MATLAB, SPSS, SAS, STATA) werden **nicht** erstellt.
+Darstellungen in **proprietären Formaten** (z. B. MATLAB, SPSS, SAS, STATA) 
+werden **nicht** erstellt.
 
 Design- oder Layoutarbeiten (Einbindung von Logos, CI-Designs, Hintergrundbildern etc.) 
 sind ausdrücklich **nicht Bestandteil der Leistung**.
@@ -164,11 +184,13 @@ sind ausdrücklich **nicht Bestandteil der Leistung**.
 
 ## Hinweis zur Zusammenarbeit mit Betreuer:innen
 
-Aus meiner Erfahrung hat es sich als äußerst hilfreich erwiesen, die jeweilige **Betreuerin oder den Betreuer** 
-der wissenschaftlichen Arbeit frühzeitig darüber zu informieren, dass statistische Beratung in Anspruch genommen wird.  
-In den meisten Fällen erleichtert dies die Zusammenarbeit erheblich und verhindert Missverständnisse.  
-Ziel ist es, den Fokus auf die inhaltlich relevanten Analysen zu legen, statt Zeit mit unpassenden 
-oder überflüssigen Auswertungen zu verbringen.
+Aus meiner Erfahrung hat es sich als äußerst hilfreich erwiesen, die jeweilige 
+**Betreuerin oder den Betreuer** der wissenschaftlichen Arbeit frühzeitig darüber 
+zu informieren, dass statistische Beratung in Anspruch genommen wird.  
+In den meisten Fällen erleichtert dies die Zusammenarbeit erheblich und verhindert 
+Missverständnisse.  
+Ziel ist es, den Fokus auf die inhaltlich relevanten Analysen zu legen, statt 
+Zeit mit unpassenden oder überflüssigen Auswertungen zu verbringen.
 
 
 
@@ -179,18 +201,23 @@ von etwa 14 Tagen** abgeschlossen werden.
 Die tatsächliche Bearbeitungsdauer hängt jedoch maßgeblich von der **aktiven Mitwirkung 
 des Kunden** sowie der **Komplexität der Fragestellung** ab.  
 Im Verlauf eines Auftrags kann es vorkommen, dass **unvorhergesehene Probleme oder 
-methodische Anpassungen** erforderlich werden, die den zeitgerechten Abschluss des Projekts verzögern.  
-Aus diesem Grund kann **weder eine Erfolgsgarantie noch ein verbindlicher Fertigstellungstermin** zugesichert werden.
+methodische Anpassungen** erforderlich werden, die den zeitgerechten Abschluss des 
+Projekts verzögern.  
+Aus diesem Grund kann **weder eine Erfolgsgarantie noch ein verbindlicher 
+Fertigstellungstermin** zugesichert werden.
 
 
 
 ## Offenlegung meiner Erfahrungen und Qualifikationen
 
 Ich bin seit 2006 als selbstständiger Statistiker tätig und arbeite aktuell als 
-Universitätsassistent (Pre-Doc) am Institut für Allgemeinmedizin der Medizinischen Universität Innsbruck.
+Universitätsassistent (Pre-Doc) am Institut für Allgemeinmedizin der Medizinischen 
+Universität Innsbruck.
 Meine Hauptaufgaben sind Forschung, Lehre und Datenanalyse.
-Ich habe eine naturwissenschaftliche Ausbildung und bin Chemiker mit Vertiefung in Verfahrenstechnik. 
-Darüber hinaus habe ich eine universitäre Informatikausbildung und war als Datenbankprogrammierer tätig. 
+Ich habe eine naturwissenschaftliche Ausbildung und bin Chemiker mit Vertiefung 
+in Verfahrenstechnik. 
+Darüber hinaus habe ich eine universitäre Informatikausbildung und war als 
+Datenbankprogrammierer tätig. 
 
 
 ## Literatur
@@ -217,7 +244,8 @@ Darüber hinaus habe ich eine universitäre Informatikausbildung und war als Dat
 # Datenschutzerklärung				
 
 
-Wir verarbeiten Ihre personenbezogenen Daten, die unter folgende Datenkategorien fallen:				
+Wir verarbeiten Ihre personenbezogenen Daten, die unter folgende Datenkategorien 
+fallen:				
   
 - Name/Firma,				
 - Geschäftsanschrift und sonstige Adressen des Kunden,				
@@ -252,11 +280,9 @@ an uns. Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschut
 verstößt oder Ihre datenschutzrechtlichen Ansprüche sonst in einer Weise verletzt 
 worden sind, können Sie sich bei der Aufsichtsbehörde beschweren. In Österreich ist 
 die Datenschutzbehörde zuständig.				
-", sep ="")
+")
   
  
  
  
 }
-
-
