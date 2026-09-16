@@ -2,7 +2,6 @@
 
 export(AZ)
 export(AfA)
-export(Angebot)
 export(Anwesenheitszeiten)
 export(Arbz)
 export(CreateAngebot)
@@ -12,7 +11,6 @@ export(Rechnung)
 export(Steuer)
 export(Steuer_raiba)
 export(Stundensatz)
-export(Vertrag)
 export(email)
 export(folder)
 export(insert_new_csv)
@@ -21,3 +19,15 @@ export(phone)
 export(rechnung_email)
 export(update_arbeitszeit)
 export(update_status_csv)
+importFrom(glue,glue)
+importFrom(httr,
+  GET,
+  content
+)
+importFrom(rmarkdown,render)
+importFrom(stringr,
+  str_length,
+  str_pad,
+  str_split
+)
+importFrom(tibble,as_tibble)
