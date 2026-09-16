@@ -12,6 +12,7 @@
 #'
 #' @return data.frame
 #' @export
+#' @importFrom httr content GET
 #'
 #' @examples
 #' \dontrun{
@@ -99,10 +100,6 @@ Anwesenheitszeiten <-
                      "Arbeitszeit")]
     
   }
-
-
-
-
 
 
 zeiten <- function(n = 365, time = 2.5) {

@@ -1,13 +1,20 @@
-#' @rdname CreateProjekt
-small_project <-  function(project = "dummy",
-                           datum = "",
-                           myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
-                           Rdata = "DF.Rdata") {
+#' R Code Template
+#' 
+#' @name r_template
+#'
+#' @param myswd sedwd  or here::here()
+#' @param Rdata data - Name
+#' @param project,datum  Metadaten
+#'
+#' @returns character
+template_run_all <-  
+  function(
+    project = "dummy",
+    datum = "",
+    myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
+    Rdata = "DF.Rdata") {
   
-  
-  
-  paste0(
-"#' ---
+  paste0("#' ---
 #' title: ", project,"
 #' author: Wolfgang Peter
 #' output:
@@ -21,7 +28,7 @@ if (!('stp25tools2' %in% .packages())) {
   library(tidyverse)
   library(stp25output2)
   library(stp25tools2)
-  # library(stp25stat2)
+ 
   # library(stp25plot)
   # library(effects)
   # library(lattice)
@@ -137,59 +144,4 @@ End()
   
 } 
 
-
-# RunAll <- function(project, datum, myswd, Rdata)
-# {
-#   
-#   paste0(
-#     '
-# require(tidyverse)
-# require(stp25output2)
-# require(stp25stat2)
-# require(stp25tools)
-# # require(stp25plot)
-#       
-# # - Grafik settings
-# # graphics.off()
-# # lattice::trellis.par.set(bw_theme())
-# # require(effects)
-# # require(lattice)
-# # 
-# # lattice.options(default.args = list(as.table = TRUE))
-# 
-# '
-#     ,myswd,
-#     '
-# Projekt("", "',project,'", "' ,datum,'")
-#       
-# #- Arbeitszeit 
-#     source("Stundenliste.R")
-#     Output( arbeitszeit[-nrow(arbeitszeit),] )
-#       
-# #   Methode()
-# #   Materials("Data laden und transformieren")
-# #   Research_Design("Beschreibung des Studiendesigns (Experiment, Kohortenstudie, ...)")
-# #    Measures("Fragebogen und Skalen (Reliabilitaetsanalyse)")
-# #   # load("Processed data/', Rdata,'")
-# #   # N <- nrow(DF)
-# #   Results()
-# #   Demographic_Variables()
-# #   Statistic("H1 Korrelation", file="(4) Analyse.R")
-# #   Statistic("H2 Regressionsanalyse", file="(5) Analyse.R")
-# #   Statistic("H3 Korrelation", file="(6) Analyse.R")
-# #   Statistic("H4 Regressionsanalyse", file="(7) Analyse.R")
-# #   Statistic("Weitere Befunde", file="(8) Analyse.R")
-#       
-# #  #Anhang()
-# 
-#  End()
-#       
-#       ') 
-# }
-
-
-
-
-# cat(
-#   small_project(), file="C:/Users/wpete/Dropbox/1_Projekte/001 Dummy/analyze.R")
  

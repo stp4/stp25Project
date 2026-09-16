@@ -1,6 +1,3 @@
-
-
-
 #' Arbeitsmy_az
 #'
 #' @param Lines Arbeitsmy_azen als Text
@@ -8,7 +5,6 @@
 #' @param projektabschluss my_az für Projektabschluss
 #' @param zwischenrechnungen  zwischenrechnungen  
 #' @param order sortieren
-#' @param ... nicht Benutzt
 #'
 #' @return data.frame
 #' @export
@@ -37,30 +33,22 @@ AZ <-
       read.table(zz <- textConnection(gsub(sep, " ", Lines)), header = TRUE)
     close(zz)
     
-    
-    
     if (ncol(my_az) == 4) {
-      
       if( length(intersect(names(my_az), c("Datum", "Start", "Ende", "Task"))) != 4)  {
         cat("\n Das wurde uebergeben:\n")
         print(names(my_az))
-        
         stop( "Ich brauch die Variablen Datum, Start, Ende, Task" )
       }
       my_az <- my_az[c("Datum", "Start", "Ende", "Task")]
       default_AZ(my_az, projektabschluss, order, zwischenrechnungen)
     }
     else if (ncol(my_az == 5)) {
-      
-      
       if( length(intersect(names(my_az), c("Datum", "Start", "Ende", "Projekt", "Task"))) != 4)  {
         cat("\n Das wurde uebergeben:\n")
         print(names(my_az))
-        
         stop( "Ich brauch die Variablen Datum, Start, Ende, Task, Projekt" )
       }
       my_az <- my_az[c("Datum", "Start", "Ende", "Projekt", "Task")]
-      
       extended_AZ(my_az, projektabschluss, order, zwischenrechnungen)
     }
   }
@@ -189,7 +177,6 @@ extended_AZ <-
 }
 
 
-
 default_AZ <-  function(my_az, projektabschluss, order, zwischenrechnungen =FALSE) {
   names(my_az) <- c("Datum",  "Start",   "Ende",   "Task")
  # my_az$Datum <-   gsub("[:punct:-]", ".", my_az$Datum)
@@ -207,14 +194,11 @@ default_AZ <-  function(my_az, projektabschluss, order, zwischenrechnungen =FALS
     )
   )
   
- 
   my_az$Ende  <- ifelse(is.na(my_az$End),  my_az$Start, my_az$End)
   my_az$end <- strptime(my_az$Ende, "%H:%M")
   my_az$strt <- h_to_time(my_az$Start , my_az$end)
   my_az$end   <- h_to_time(my_az$Ende,  my_az$strt, rev=TRUE)
-  
   my_az$Datum <- lubridate::parse_date_time(my_az$Datum, c("dmY", "dmy", "dm"))
-  
   
   if (order)
     my_az <- my_az[order(my_az$Datum), ]
@@ -222,26 +206,18 @@ default_AZ <-  function(my_az, projektabschluss, order, zwischenrechnungen =FALS
   my_az$strt <- as.POSIXct(my_az$strt)
   my_az$end <- as.POSIXct(my_az$end)
   
-  
   my_az <-
     dplyr::mutate(
       my_az,
-      
       Ende = format(end, "%H:%M"),
       Start = format(strt, "%H:%M"),
       Datum = format(Datum, "%d.%m.%Y"),
-      Stunden =
-        round(as.numeric(difftime(end, strt, units = "hours")), 2),
+      Stunden = round(as.numeric(difftime(end, strt, units = "hours")), 2),
       Summe = cumsum(Stunden)
     )
   
   my_az$Task <- gsub("_", " ", my_az$Task)
-  my_az[, c("Datum",
-            "Start",
-            "Ende",
-            "Task",
-            "Stunden",
-            "Summe")]
+  my_az[, c("Datum", "Start", "Ende", "Task", "Stunden", "Summe")]
   
 }
 # 

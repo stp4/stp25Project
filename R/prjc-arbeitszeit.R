@@ -1,6 +1,7 @@
 #' Dummy fuer die Stundenliste
 #'
-#' @param x minuten
+#' @param task,time  Task als numeric und  Minuten
+#' @param ... nicht benutzt
 #'
 #' @return string
 #' @export

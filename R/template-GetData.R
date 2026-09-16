@@ -1,15 +1,11 @@
-
-Get_Data <- function(myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
-                      Rdata = "DF.Rdata") {
+#' @rdname r_template
+#' 
+templat_get_data <- 
+  function(
+    myswd = " setwd('C:/Users/wpete/Dropbox/1_Projekte/001 Dummy')",
+    Rdata = "DF.Rdata") {
  
-paste0(
-"#' ---
-#' title: Daten Aufbereiten
-#' author: Wolfgang Peter
-#' output:
-#'   html_document
-#' ---
- 
+paste0("
 #+ setup, include=FALSE
 # knitr::opts_chunk$set(echo = TRUE)
 
@@ -17,8 +13,6 @@ if (!('stp25tools2' %in% .packages())) {
   library(tidyverse)
   library(stp25output2)
   library(stp25tools2)
-  # library(stp25stat2)
-  # library(stp25plot)
   # library(effects)
   # library(lattice)
   # library(ggplot2)
@@ -42,4 +36,7 @@ if (!('stp25tools2' %in% .packages())) {
       
 ')
   
-}
+  }
+
+
+#cat(templat_get_data())
