@@ -7,7 +7,9 @@
 Arbz(task = NULL, time = NULL, ...)
 }
 \arguments{
-\item{x}{minuten}
+\item{task, time}{Task als numeric und  Minuten}
+
+\item{...}{nicht benutzt}
 }
 \value{
 string

@@ -15,11 +15,11 @@ Imports:
   dplyr,
   glue,
   readxl,
-  httr
+  httr,
+  stp25tools2
 LazyData: true
 Suggests: 
   knitr, 
   testthat,
-  quarto,
-  stp25tools2
+  quarto
 Config/roxygen2/version: 8.1.0

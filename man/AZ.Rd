@@ -22,8 +22,6 @@ AZ(
 \item{order}{sortieren}
 
 \item{sep}{Tabulator}
-
-\item{...}{nicht Benutzt}
 }
 \value{
 data.frame

@@ -14,7 +14,7 @@ CreateAngebot(
   Folder = "C:/Users/wpete/Dropbox/1_Projekte",
   KNr = "000",
   x =
-    "Position  Aufwand  \\n  Einarbeiten_ins_Thema_und_Kommunikation  2\\n  Aufbereiten_der_Daten_und_Fehlerprüfung  1.5\\n  Deskriptive_Analyse_in_Form_von_Tabelle  0.5 \\n  Deskriptive_Analyse_in_Form_von_Grafiken   3 \\n  Inferenzstatistische_Analyse_(signifikanz_Test)  0.5\\n  Ergebnisbericht_mit_stichwortartigen_Kommentaren\\t 2\\n  ",
+    "Position  Aufwand\\n  Einarbeiten_ins_Thema_und_Kommunikation  2\\n  Aufbereiten_der_Daten_und_Fehlerprüfung  1.5\\n  Deskriptive_Analyse_in_Form_von_Tabelle  0.5\\n  Deskriptive_Analyse_in_Form_von_Grafiken   3\\n  Inferenzstatistische_Analyse_(signifikanz_Test)  0.5\\n  Ergebnisbericht_mit_stichwortartigen_Kommentaren\\t 2\\n  ",
   stundensatz = 100,
   Betreff = "Aufwandseinschätzung",
   einleitung = "Vielen Dank für Ihre Anfrage!",
@@ -24,23 +24,51 @@ CreateAngebot(
   text3 =
     paste("Die Abrechnung erfolgt auf geleistete Arbeitsstunden, der Stundensatz beträgt ",
     stundensatz, "Euro.",
-    "(Es wird keine Umsatzsteuer ausgewiesen, da die Umsätze gemäß § 6 Abs. 1 Z 27 UStG unecht USt.-befreit sind.)"),
+    "(Es wird keine Umsatzsteuer ausgewiesen, da die Umsätze  gemäß § 6 Abs. 1 Z 27 UStG unecht USt.-befreit sind.)"),
   closing =
-    "Ich hoffe, dass Ihnen unser Angebot zusagt und würde mich über Ihren Auftrag sehr freuen.",
+    "Ich hoffe, dass Ihnen unser Angebot zusagt und  würde mich über Ihren Auftrag sehr freuen.",
   sep = "\\n\\n"
 )
 }
 \arguments{
-\item{Name, Anrede, Email, Tel, Adresse}{Kunde}
+\item{Name}{character.}
 
-\item{Datum, Zeit, Folder}{Allgemeine Parameter}
+\item{Anrede}{character.}
 
-\item{KNr, save_KNr}{Kundennummer normal ist NA}
+\item{Email}{character.}
 
-\item{Aufwand, Thema, Kommentar, Betreff, Stundensatz}{Projekt Daten}
+\item{Tel}{character.}
+
+\item{Adresse}{character.}
+
+\item{Datum}{character. Automatisch}
+
+\item{Folder}{character.}
+
+\item{KNr}{character.}
+
+\item{x}{character. Tabelle mit den Posten}
+
+\item{stundensatz}{character.}
+
+\item{Betreff}{character.}
+
+\item{einleitung}{character.}
+
+\item{text}{character.}
+
+\item{projekt}{character.}
+
+\item{text2}{character.}
+
+\item{text3}{character.}
+
+\item{closing}{character.}
+
+\item{sep}{character.}
 }
 \value{
-nichts
+Folder Name
 }
 \description{
 Angebot erstellen
